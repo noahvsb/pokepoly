@@ -13,8 +13,8 @@ public class Ugentopoly extends Application {
         final Dice dice = new Dice();
 
         Button btn = new Button();
-        btn.setText("Rol dobbelstenen");
-        btn.setOnAction(event -> dice.roll(t -> System.out.println("Klaar met rollen")));
+        btn.setText("Rol");
+        btn.setOnAction(event -> dice.roll(t -> System.out.println("Resultaat: ")));
 
         StackPane root = new StackPane();
         root.getChildren().add(btn);
