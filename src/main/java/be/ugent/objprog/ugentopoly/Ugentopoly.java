@@ -2,83 +2,47 @@ package be.ugent.objprog.ugentopoly;
 
 import be.ugent.objprog.dice.Dice;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
-
 public class Ugentopoly extends Application {
     @Override
-    public void start(Stage spelbordStage) throws Exception {
+    public void start(Stage stage) {
 
         // spelbord
-        ImageView chance = new ImageView();
-        chance.setImage(new Image(getClass().getResource("assets/chance.png").toExternalForm()));
-        chance.setFitHeight(50);
-        chance.setFitWidth(50);
 
-        ImageView chest = new ImageView();
-        chest.setImage(new Image(getClass().getResource("assets/chest.png").toExternalForm()));
-        chest.setFitHeight(50);
-        chest.setFitWidth(50);
+        Tile[] bottomTiles = new Tile[2];
+        bottomTiles[0] = new Tile("start", "start-arrow", 100, 100);
+        bottomTiles[1] = new Tile("test1", null, 50, 100);
 
-        ImageView freeParking = new ImageView();
-        freeParking.setImage(new Image(getClass().getResource("assets/free_parking.png").toExternalForm()));
-        freeParking.setFitHeight(50);
-        freeParking.setFitWidth(50);
+        HBox bottom = new HBox();
+        for (Tile tile : bottomTiles)
+            bottom.getChildren().add(tile.getButton());
 
-        ImageView goToJail = new ImageView();
-        goToJail.setImage(new Image(getClass().getResource("assets/go_to_jail.png").toExternalForm()));
-        goToJail.setFitHeight(50);
-        goToJail.setFitWidth(50);
 
-        Node[] bottomNode = new Node[2];
+        Tile[] leftTiles = new Tile[2];
+        leftTiles[0] = new Tile("overpoort", "go_to_jail", 100, 100);
+        leftTiles[1] = new Tile("test2", null, 50, 100);
 
-        Button chanceTile = new Button("chance", chance);
-        chanceTile.setFont(new Font(20));
-        bottomNode[0] = chanceTile;
+        VBox left = new VBox();
+        for (Tile tile : leftTiles)
+            left.getChildren().add(tile.getButton());
 
-        Button chestTile = new Button("chest", chest);
-        chestTile.setFont(new Font(20));
-        bottomNode[1] = chestTile;
+        BorderPane board = new BorderPane();
+        board.setBottom(bottom);
+        board.setLeft(left);
 
-        HBox bottomTiles = new HBox(bottomNode);
-
-        Node[] leftNode = new Node[2];
-
-        Button freeParkingTile = new Button("free parking", freeParking);
-        freeParkingTile.setFont(new Font(20));
-        leftNode[0] = freeParkingTile;
-
-        Button goToJailTile = new Button("go to jail", goToJail);
-        goToJailTile.setFont(new Font(20));
-        leftNode[1] = goToJailTile;
-
-        HBox leftTiles = new HBox(leftNode);
-
-        BorderPane mainPane = new BorderPane();
-        mainPane.setBottom(bottomTiles);
-        mainPane.setLeft(leftTiles);
-
-        Scene spelbordScene = new Scene(mainPane, 845, 845);
-
-        spelbordStage.setTitle("Ugentopoly");
-        spelbordStage.setScene(spelbordScene);
-        spelbordStage.show();
+        Scene spelbordScene = new Scene(board, 845, 845);
 
 
         //dobbelstenen
-        Stage dobbelstenenStage = new Stage();
         final Dice dice = new Dice();
 
         Button btn = new Button();
@@ -92,10 +56,15 @@ public class Ugentopoly extends Application {
 
         Scene dobbelstenenScene = new Scene(root, 250, 150);
 
-        dobbelstenenStage.setTitle("Dobbelstenen");
-        dobbelstenenStage.setOnCloseRequest(e -> dice.close());
-        dobbelstenenStage.setScene(dobbelstenenScene);
-        dobbelstenenStage.show();
+        //stage
+        stage.setTitle("UGentopoly");
+        stage.setOnCloseRequest(e -> dice.close());
+        stage.setScene(dobbelstenenScene);
+        stage.show();
+
+        Stage spelbord = new Stage();
+        spelbord.setScene(spelbordScene);
+        spelbord.show();
     }
 
     public static void main(String[] args) {
