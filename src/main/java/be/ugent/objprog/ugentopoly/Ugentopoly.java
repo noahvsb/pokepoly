@@ -5,24 +5,18 @@ import be.ugent.objprog.dice.Dice;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.io.IOException;
 
 public class Ugentopoly extends Application {
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
 
         // spelbord
-        Scene spelbordScene = new Scene(new Bord().getMainPane(), 845, 845);
+        Scene spelbordScene = new Scene(new Bord(), 845, 845);
 
 
         //dobbelstenen

@@ -1,9 +1,6 @@
 package be.ugent.objprog.ugentopoly;
 
-import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -11,49 +8,73 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Properties;
 
 public class Tile {
 
     private HBox tileHBox;
     private VBox tileVBox;
     private ImageView imageView;
-    private Stripe stripe;
 
-    private Text tileName;
+    private String id;
+    private Text name;
     private String imageName;
 
     private int width;
     private int height;
     private boolean or;
 
-    public Tile(String name, String imageName, String colour, int width, int height, boolean orientation) {
+    public Tile(String id, String imageName, String colour, int width, int height, boolean orientation) throws IOException {
         // variables
-        tileName = new Text(name);
-        tileName.setFont(new Font(11));
-        tileName.setTextAlignment(TextAlignment.CENTER);
-
+        this.id = id;
         this.imageName = imageName;
         this.width = width;
         this.height = height;
         or = orientation;
 
+        // properties
+        Properties props = new Properties();
+        props.load(getClass().getResourceAsStream("ugentopoly.deel1.properties"));
+
+
+        // name text
+        this.name = new Text(props.getProperty(this.id));
+        this.name.setFont(new Font(11));
+        if (this.name.getText().length() > 13)
+            this.name.setFont(new Font(10));
+        if (this.name.getText().length() > 20)
+            this.name.setFont(new Font(9));
+        this.name.setTextAlignment(TextAlignment.CENTER);
+
         // box
+        tileHBox = new HBox(this.name);
+        tileVBox = new VBox();
+
         if (or) {
-            tileHBox = new HBox(tileName);
             tileHBox.setPrefSize(this.width, this.height);
-            tileHBox.setAlignment(Pos.CENTER);
-            tileHBox.setSpacing(5);
+            tileHBox.setSpacing(40);
+            if (this.name.getText().length() > 9)
+                tileHBox.setSpacing(30);
+            if (this.name.getText().length() > 12)
+                tileHBox.setSpacing(20);
+            tileHBox.setAlignment(Pos.CENTER_RIGHT);
             tileHBox.setOnMousePressed(e -> showInfo());
-            tileHBox.setOnMouseReleased(e -> clickedAgain());
+            tileHBox.setOnMouseReleased(e -> mouseReleased());
             tileHBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
         } else {
-            tileVBox = new VBox(tileName);
+            tileVBox.getChildren().add(this.name);
             tileVBox.setPrefSize(this.width, this.height);
-            tileVBox.setAlignment(Pos.CENTER);
-            tileVBox.setSpacing(5);
+            tileVBox.setSpacing(40);
+            if (this.name.getText().length() > 9)
+                tileHBox.setSpacing(30);
+            if (this.name.getText().length() > 12)
+                tileHBox.setSpacing(20);
+            tileVBox.setAlignment(Pos.BOTTOM_CENTER);
             tileVBox.setOnMousePressed(e -> showInfo());
-            tileVBox.setOnMouseReleased(e -> clickedAgain());
+            tileVBox.setOnMouseReleased(e -> mouseReleased());
             tileVBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
         }
 
@@ -61,46 +82,33 @@ public class Tile {
         if (this.imageName != null) {
             imageView = new ImageView();
             imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/" + this.imageName + ".png")).toExternalForm()));
-            imageView.setFitWidth(this.width / 3);
-            imageView.setFitHeight(this.height / 3);
+            imageView.setFitWidth(Math.max(this.width, this.height) / 3.0);
+            imageView.setFitHeight(Math.max(this.width, this.height) / 3.0);
 
             if (or)
                 tileHBox.getChildren().add(imageView);
             else
                 tileVBox.getChildren().add(imageView);
         } else if (colour != null){
-            if (or) {
-                stripe = new Stripe(colour, 25, 65 );
-                tileHBox.getChildren().add(stripe);
-            }
-            else {
-                stripe = new Stripe(colour, 65, 25 );
-                tileVBox.getChildren().add(stripe);
-            }
+            tileHBox.getChildren().add(new Stripe(colour, 25, 65 ));
+
+            tileVBox.getChildren().add(new Stripe(colour, 65, 25 ));
         }
-
-
-
     }
 
     private void showInfo() {
         // display info
-        System.out.println("info");
+        new TileInfo(id);
 
         // change box look
-        if (or)
-            tileHBox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
-        else
-            tileVBox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
+        tileHBox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
+        tileVBox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
     }
 
-    private void clickedAgain() {
-        System.out.println("test");
+    private void mouseReleased() {
         // change box look
-        if (or)
-            tileHBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
-        else
-            tileVBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        tileHBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        tileVBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
     }
 
     public HBox getHBox() {
@@ -111,7 +119,7 @@ public class Tile {
     }
 
     public String getName() {
-        return tileName.getText();
+        return name.getText();
     }
 
     public String getImagePath() {
