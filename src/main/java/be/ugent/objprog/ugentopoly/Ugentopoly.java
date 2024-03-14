@@ -5,6 +5,8 @@ import be.ugent.objprog.dice.Dice;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -13,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Ugentopoly extends Application {
     @Override
@@ -83,11 +86,18 @@ public class Ugentopoly extends Application {
         for (Tile t : bottomTiles)
             bottom.getChildren().add(t.getButton());
 
+        ImageView logo = new ImageView();
+        logo.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/logo.png")).toExternalForm()));
+        logo.setFitWidth(400);
+        logo.setFitHeight(75);
+        logo.setRotate(45);
+
         BorderPane board = new BorderPane();
         board.setBottom(bottom);
         board.setLeft(left);
         board.setTop(top);
         board.setRight(right);
+        board.setCenter(logo);
 
         Scene spelbordScene = new Scene(board, 845, 845);
 
