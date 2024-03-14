@@ -2,6 +2,7 @@ package be.ugent.objprog.ugentopoly;
 
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,68 +17,90 @@ public class Tile {
 
     private HBox tileHBox;
     private VBox tileVBox;
-    private Button button;
     private ImageView imageView;
+    private Stripe stripe;
 
     private Text tileName;
     private String imageName;
 
     private int width;
     private int height;
+    private boolean or;
 
-    public Tile(String tileName, String imageName, int width, int height) {
-        this.tileName = new Text(tileName);
-        this.tileName.setFont(new Font(11));
-        this.tileName.setTextAlignment(TextAlignment.CENTER);
+    public Tile(String name, String imageName, String colour, int width, int height, boolean orientation) {
+        // variables
+        tileName = new Text(name);
+        tileName.setFont(new Font(11));
+        tileName.setTextAlignment(TextAlignment.CENTER);
 
         this.imageName = imageName;
         this.width = width;
         this.height = height;
+        or = orientation;
 
-        tileHBox = new HBox(this.tileName);
-        tileHBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        tileHBox.setRotate(0);
-        tileHBox.setPrefSize(this.width, this.height);
-        tileHBox.setAlignment(Pos.CENTER);
-        tileHBox.setSpacing(5);
-        tileHBox.setOnMouseClicked(e -> showInfo());
-        tileHBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: lightgreen");
+        // box
+        if (or) {
+            tileHBox = new HBox(tileName);
+            tileHBox.setPrefSize(this.width, this.height);
+            tileHBox.setAlignment(Pos.CENTER);
+            tileHBox.setSpacing(5);
+            tileHBox.setOnMousePressed(e -> showInfo());
+            tileHBox.setOnMouseReleased(e -> clickedAgain());
+            tileHBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        } else {
+            tileVBox = new VBox(tileName);
+            tileVBox.setPrefSize(this.width, this.height);
+            tileVBox.setAlignment(Pos.CENTER);
+            tileVBox.setSpacing(5);
+            tileVBox.setOnMousePressed(e -> showInfo());
+            tileVBox.setOnMouseReleased(e -> clickedAgain());
+            tileVBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        }
 
-        tileVBox = new VBox(this.tileName);
-        tileVBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        tileVBox.setRotate(0);
-        tileVBox.setPrefSize(this.width, this.height);
-        tileVBox.setAlignment(Pos.CENTER);
-        tileVBox.setSpacing(5);
-        tileVBox.setOnMouseClicked(e -> showInfo());
-        tileVBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: lightgreen");
-
-
-
+        // image
         if (this.imageName != null) {
             imageView = new ImageView();
             imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/" + this.imageName + ".png")).toExternalForm()));
             imageView.setFitWidth(this.width / 3);
             imageView.setFitHeight(this.height / 3);
 
-            tileHBox.getChildren().add(imageView);
-
-            tileVBox.getChildren().add(imageView);
-
-            button = new Button(this.tileName.getText(), imageView);
-        } else {
-            button = new Button(this.tileName.getText());
+            if (or)
+                tileHBox.getChildren().add(imageView);
+            else
+                tileVBox.getChildren().add(imageView);
+        } else if (colour != null){
+            if (or) {
+                stripe = new Stripe(colour, 25, 65 );
+                tileHBox.getChildren().add(stripe);
+            }
+            else {
+                stripe = new Stripe(colour, 65, 25 );
+                tileVBox.getChildren().add(stripe);
+            }
         }
 
-        button.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        button.setRotate(0);
-        button.setPrefSize(this.width, this.height);
 
 
     }
 
     private void showInfo() {
+        // display info
         System.out.println("info");
+
+        // change box look
+        if (or)
+            tileHBox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
+        else
+            tileVBox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
+    }
+
+    private void clickedAgain() {
+        System.out.println("test");
+        // change box look
+        if (or)
+            tileHBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        else
+            tileVBox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
     }
 
     public HBox getHBox() {
@@ -85,10 +108,6 @@ public class Tile {
     }
     public VBox getVBox() {
         return tileVBox;
-    }
-
-    public Button getButton() {
-        return button;
     }
 
     public String getName() {
