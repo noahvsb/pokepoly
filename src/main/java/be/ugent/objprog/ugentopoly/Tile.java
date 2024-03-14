@@ -22,20 +22,61 @@ public class Tile {
     private String id;
     private Text name;
     private String imageName;
+    private String colour;
 
     private int width;
     private int height;
     private boolean or;
 
-    public Tile(String id, String imageName, String colour, int width, int height, boolean orientation) throws IOException {
+    private int amount;
+    private int houseCost;
+    private int[] rents;
+
+    // 4 corner tiles and chest + chance
+    public Tile(String id, String imageName, int width, int height, boolean orientation) throws IOException {
         // variables
         this.id = id;
         this.imageName = imageName;
+
         this.width = width;
         this.height = height;
         or = orientation;
 
-        // properties
+        createTile();
+    }
+
+    // tax, railway and utility
+    public Tile(String id, String imageName, int width, int height, boolean orientation, int amount) throws IOException {
+        // variables
+        this.id = id;
+        this.imageName = imageName;
+
+        this.width = width;
+        this.height = height;
+        or = orientation;
+
+        this.amount = amount;
+
+        createTile();
+    }
+
+    // street tiles
+    public Tile(String id, String colour, int width, int height, boolean orientation, int cost,  int houseCost, int... rents) throws IOException {
+        // variables
+        this.id = id;
+        this.colour = colour;
+
+        this.width = width;
+        this.height = height;
+        or = orientation;
+
+        this.houseCost = houseCost;
+        this.rents = rents;
+
+        createTile();
+    }
+
+    private void createTile() throws IOException {
         Properties props = new Properties();
         props.load(getClass().getResourceAsStream("ugentopoly.deel1.properties"));
 

@@ -8,12 +8,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.jdom2.JDOMException;
 
 import java.io.IOException;
 
 public class Ugentopoly extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, JDOMException {
 
         // spelbord
         Scene spelbordScene = new Scene(new Bord(), 845, 845);
