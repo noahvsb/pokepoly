@@ -1,5 +1,6 @@
 package be.ugent.objprog.ugentopoly;
 
+import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -54,7 +55,7 @@ public class Bord extends BorderPane {
                 int houseCost = Integer.parseInt(area.getAttributeValue("house"));
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles.add(new Tile(id, colour, 65, 130, false, cost, houseCost,
+                tiles.add(new Tile(id, colour, 130, 65, cost, houseCost,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
@@ -65,98 +66,93 @@ public class Bord extends BorderPane {
 
             // Chest
             if (type.equals("CHEST")) {
-                tiles.add(new Tile(id, "chest", 65, 130, false));
+                tiles.add(new Tile(id, "chest", 130, 65));
             }
 
             // Chance
             if (type.equals("CHANCE")) {
-                tiles.add(new Tile(id, "chance", 65, 130, false));
+                tiles.add(new Tile(id, "chance", 130, 65));
             }
 
             // Tax
             if (type.equals("TAX")) {
                 int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles.add(new Tile(id, "tax", 65, 130, false, amount));
+                tiles.add(new Tile(id, "tax", 130, 65, amount));
             }
 
             // Railway
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new Tile(id, "railway", 65, 130, false, cost));
+                tiles.add(new Tile(id, "railway", 130, 65, cost));
             }
 
             // Go to jail
             if (type.equals("GO_TO_JAIL")) {
-                tiles.add(new Tile(id, "go_to_jail", 130, 130, false));
+                tiles.add(new Tile(id, "go_to_jail", 130, 130));
             }
 
             // Start
             if (type.equals("START")) {
-                tiles.add(new Tile(id, "start", 130, 130, false));
+                tiles.add(new Tile(id, "start", 130, 130));
             }
 
             // Jail
             if (type.equals("JAIL")) {
-                tiles.add(new Tile(id, "jail", 130, 130, false));
+                tiles.add(new Tile(id, "jail", 130, 130));
             }
 
             // Free parking
             if (type.equals("FREE_PARKING")) {
-                tiles.add(new Tile(id, "free_parking", 130, 130, false));
+                tiles.add(new Tile(id, "free_parking", 130, 130));
             }
 
             // Utility
             if (type.equals("UTILITY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new Tile(id, "utility" + util, 65, 130, false, cost));
+                tiles.add(new Tile(id, "utility" + util, 130, 65, cost));
                 util++;
             }
         }
 
         // adding tiles to left, top, right, bottom
         VBox left = new VBox();
-        left.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         HBox top = new HBox();
         VBox right = new VBox();
+        right.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         HBox bottom = new HBox();
-        bottom.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 
         for (int i = 1; i < tiles.size(); i++) {
             Tile t = tiles.get(i);
 
             // left
             if (i < 10) {
-                HBox h = t.getHBox();
-                left.getChildren().add(h);
+                left.getChildren().addFirst(t);
             }
 
             // top
             else if (i < 21) {
-                VBox v = t.getVBox();
-                top.getChildren().add(v);
+                if (t.getPrefHeight() != 130) {
+                    t.setRotate(90);
+                }
+                top.getChildren().add(t);
             }
 
             // right
             else if (i < 30) {
-                HBox h = t.getHBox();
-                right.getChildren().add(h);
+                right.getChildren().add(t);
             }
 
             // bottom
             else {
-                VBox v = t.getVBox();
-                if (v.getPrefWidth() != 130) {
-                    v.setRotate(180);
-                    v.getChildren().getFirst().setRotate(180);
-                    v.getChildren().getLast().setRotate(180);
+                if (t.getPrefHeight() != 130) {
+                    t.setRotate(-90);
                 }
-                bottom.getChildren().add(v);
+                bottom.getChildren().addFirst(t);
             }
         }
 
         // adding starttile to bottom
-        VBox start = tiles.getFirst().getVBox();
-        bottom.getChildren().add(start);
+        bottom.getChildren().addFirst(tiles.getFirst());
 
 
         // logo
