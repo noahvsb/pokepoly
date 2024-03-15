@@ -113,6 +113,7 @@ public class Bord extends BorderPane {
             }
         }
 
+        // adding tiles to left, top, right, bottom
         VBox left = new VBox();
         left.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         HBox top = new HBox();
@@ -153,7 +154,7 @@ public class Bord extends BorderPane {
             }
         }
 
-        // start
+        // adding starttile to bottom
         VBox start = tiles.getFirst().getVBox();
         bottom.getChildren().add(start);
 
@@ -169,7 +170,7 @@ public class Bord extends BorderPane {
         logo.setStyle("-fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 1.5");
         logo.setAlignment(Pos.CENTER);
 
-        // main
+        // set all parts
         setBottom(bottom);
         setLeft(left);
         setTop(top);

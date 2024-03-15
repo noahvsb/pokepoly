@@ -17,7 +17,8 @@ public class Ugentopoly extends Application {
     public void start(Stage stage) throws IOException, JDOMException {
 
         // spelbord
-        Scene spelbordScene = new Scene(new Bord(), 845, 845);
+        Bord bord = new Bord();
+        Scene spelbordScene = new Scene(bord, 845, 845);
 
 
         //dobbelstenen
