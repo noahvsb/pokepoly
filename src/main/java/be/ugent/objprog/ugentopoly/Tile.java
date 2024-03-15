@@ -83,11 +83,7 @@ public class Tile {
 
         // name text
         this.name = new Text(props.getProperty(this.id));
-        this.name.setFont(new Font(11));
-        if (this.name.getText().length() > 13)
-            this.name.setFont(new Font(10));
-        if (this.name.getText().length() > 20)
-            this.name.setFont(new Font(9));
+        this.name.setFont(new Font(5));
         this.name.setTextAlignment(TextAlignment.CENTER);
 
         // box
@@ -96,11 +92,7 @@ public class Tile {
 
         if (or) {
             tileHBox.setPrefSize(this.width, this.height);
-            tileHBox.setSpacing(40);
-            if (this.name.getText().length() > 9)
-                tileHBox.setSpacing(30);
-            if (this.name.getText().length() > 12)
-                tileHBox.setSpacing(20);
+            tileHBox.setSpacing(20);
             tileHBox.setAlignment(Pos.CENTER_RIGHT);
             tileHBox.setOnMousePressed(e -> showInfo());
             tileHBox.setOnMouseReleased(e -> mouseReleased());
@@ -108,11 +100,7 @@ public class Tile {
         } else {
             tileVBox.getChildren().add(this.name);
             tileVBox.setPrefSize(this.width, this.height);
-            tileVBox.setSpacing(40);
-            if (this.name.getText().length() > 9)
-                tileHBox.setSpacing(30);
-            if (this.name.getText().length() > 12)
-                tileHBox.setSpacing(20);
+            tileVBox.setSpacing(20);
             tileVBox.setAlignment(Pos.BOTTOM_CENTER);
             tileVBox.setOnMousePressed(e -> showInfo());
             tileVBox.setOnMouseReleased(e -> mouseReleased());
@@ -123,8 +111,8 @@ public class Tile {
         if (this.imageName != null) {
             imageView = new ImageView();
             imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/" + this.imageName + ".png")).toExternalForm()));
-            imageView.setFitWidth(Math.max(this.width, this.height) / 3.0);
-            imageView.setFitHeight(Math.max(this.width, this.height) / 3.0);
+            imageView.setFitWidth(Math.max(this.width, this.height) / 5.0);
+            imageView.setFitHeight(Math.max(this.width, this.height) / 5.0);
 
             if (or)
                 tileHBox.getChildren().add(imageView);
