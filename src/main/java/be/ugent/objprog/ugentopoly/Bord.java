@@ -131,10 +131,8 @@ public class Bord extends BorderPane {
 
             // top
             else if (i < 21) {
-                if (t.getPrefHeight() != 130) {
-                    t.setRotate(90);
-                }
-                top.getChildren().add(t);
+                VBox v = t.getVBox();
+                top.getChildren().add(v);
             }
 
             // right
@@ -144,15 +142,18 @@ public class Bord extends BorderPane {
 
             // bottom
             else {
-                if (t.getPrefHeight() != 130) {
-                    t.setRotate(-90);
+                VBox v = t.getVBox();
+                if (v.getPrefWidth() != 130) {
+                    v.setRotate(180);
+                    v.getChildren().getFirst().setRotate(180);
+                    v.getChildren().getLast().setRotate(180);
                 }
-                bottom.getChildren().addFirst(t);
+                bottom.getChildren().addFirst(v);
             }
         }
 
         // adding starttile to bottom
-        bottom.getChildren().addFirst(tiles.getFirst());
+        bottom.getChildren().addFirst(tiles.getFirst().getVBox());
 
 
         // logo

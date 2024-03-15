@@ -16,6 +16,7 @@ public class Tile extends HBox {
 
     private ImageView imageView;
     private Text name;
+    private VBox vbox;
 
     private String id;
     private String imageName;
@@ -79,8 +80,13 @@ public class Tile extends HBox {
         this.name.setFont(new Font(9));
         this.name.setTextAlignment(TextAlignment.CENTER);
 
-        // box
+        Text nameCopy = new Text(this.name.getText());
+        nameCopy.setFont(this.name.getFont());
+        nameCopy.setTextAlignment(this.name.getTextAlignment());
+
+        // boxes
         this.getChildren().add(this.name);
+        vbox = new VBox(nameCopy);
 
         setPrefSize(this.width, this.height);
         setMaxSize(this.width, this.height);
@@ -91,6 +97,15 @@ public class Tile extends HBox {
         setOnMouseReleased(e -> mouseReleased());
         setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
 
+        vbox.setPrefSize(this.height, this.width);
+        vbox.setMaxSize(this.height, this.width);
+        vbox.setMinSize(this.height, this.width);
+        vbox.setSpacing(20);
+        vbox.setAlignment(Pos.BOTTOM_CENTER);
+        vbox.setOnMousePressed(e -> showInfo());
+        vbox.setOnMouseReleased(e -> mouseReleased());
+        vbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+
         // image
         if (this.imageName != null) {
             imageView = new ImageView();
@@ -98,9 +113,18 @@ public class Tile extends HBox {
             imageView.setFitWidth(Math.max(this.width, this.height) / 3.0);
             imageView.setFitHeight(Math.max(this.width, this.height) / 3.0);
 
+            ImageView imageViewCopy = new ImageView();
+            imageViewCopy.setImage(imageView.getImage());
+            imageViewCopy.setFitWidth(imageView.getFitWidth());
+            imageViewCopy.setFitHeight(imageView.getFitHeight());
+
             getChildren().add(imageView);
+
+            vbox.getChildren().add(imageViewCopy);
         } else if (colour != null){
             getChildren().add(new Stripe(colour, 25, 65 ));
+
+            vbox.getChildren().add(new Stripe(colour, 65, 25));
         }
     }
 
@@ -110,11 +134,13 @@ public class Tile extends HBox {
 
         // change box look
         setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
+        vbox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
     }
 
     private void mouseReleased() {
         // change box look
         setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        vbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
     }
 
     public String getName() {
@@ -123,5 +149,9 @@ public class Tile extends HBox {
 
     public String getImagePath() {
         return "assets/" + imageName + ".png";
+    }
+
+    public VBox getVBox() {
+        return vbox;
     }
 }
