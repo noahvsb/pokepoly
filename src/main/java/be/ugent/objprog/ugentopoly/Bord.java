@@ -1,10 +1,6 @@
 package be.ugent.objprog.ugentopoly;
 
-import be.ugent.objprog.ugentopoly.tiles.ChanceTile;
-import be.ugent.objprog.ugentopoly.tiles.ChestTile;
-import be.ugent.objprog.ugentopoly.tiles.StreetTile;
-import be.ugent.objprog.ugentopoly.tiles.Tile;
-
+import be.ugent.objprog.ugentopoly.tiles.*;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -79,40 +75,40 @@ public class Bord extends BorderPane {
             // Tax
             if (type.equals("TAX")) {
                 int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles.add(new Tile(id, "tax", 130, 65, amount));
+                tiles.add(new TaxTile(id, 130, 65, amount));
             }
 
             // Railway
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new Tile(id, "railway", 130, 65, cost));
+                tiles.add(new RailwayTile(id, 130, 65, cost));
             }
 
             // Utility
             if (type.equals("UTILITY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new Tile(id, "utility" + util, 130, 65, cost));
+                tiles.add(new UtilityTile(id, util, 130, 65, cost));
                 util++;
             }
 
             // Go to jail
             if (type.equals("GO_TO_JAIL")) {
-                tiles.add(new Tile(id, "go_to_jail", 130, 130));
+                tiles.add(new CornerTile(id, "go_to_jail", 130, 130));
             }
 
             // Start
             if (type.equals("START")) {
-                tiles.add(new Tile(id, "start", 130, 130));
+                tiles.add(new CornerTile(id, "start", 130, 130));
             }
 
             // Jail
             if (type.equals("JAIL")) {
-                tiles.add(new Tile(id, "jail", 130, 130));
+                tiles.add(new CornerTile(id, "jail", 130, 130));
             }
 
             // Free parking
             if (type.equals("FREE_PARKING")) {
-                tiles.add(new Tile(id, "free_parking", 130, 130));
+                tiles.add(new CornerTile(id, "free_parking", 130, 130));
             }
         }
 

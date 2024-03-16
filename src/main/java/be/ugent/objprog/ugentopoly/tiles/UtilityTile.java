@@ -1,5 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.tiles.Tile;
+import be.ugent.objprog.ugentopoly.tiles.TileInfo;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,16 +15,18 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 
-public class TaxTile implements Tile {
+public class UtilityTile implements Tile {
     private String id;
     private int width;
     private int height;
     private Text name;
 
     private int cost;
+    private int util;
 
-    public TaxTile(String id, int width, int height, int cost) throws IOException {
+    public UtilityTile(String id, int util, int width, int height, int cost) throws IOException {
         this.id = id;
+        this.util = util;
 
         this.width = width;
         this.height = height;
@@ -70,7 +74,7 @@ public class TaxTile implements Tile {
 
         // image
         ImageView imageView = new ImageView();
-        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/tax.png")).toExternalForm()));
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/utility" + util + ".png")).toExternalForm()));
         imageView.setFitWidth(Math.max(width, height) / 3.0);
         imageView.setFitHeight(Math.max(width, height) / 3.0);
 
@@ -115,7 +119,7 @@ public class TaxTile implements Tile {
 
     @Override
     public String getImagePath() {
-        return "assets/tax.png";
+        return "assets/utility" + util + ".png";
     }
 
     @Override

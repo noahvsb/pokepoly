@@ -1,8 +1,6 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 

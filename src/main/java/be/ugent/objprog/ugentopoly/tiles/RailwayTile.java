@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 
-public class TaxTile implements Tile {
+public class RailwayTile implements Tile {
     private String id;
     private int width;
     private int height;
@@ -21,7 +21,7 @@ public class TaxTile implements Tile {
 
     private int cost;
 
-    public TaxTile(String id, int width, int height, int cost) throws IOException {
+    public RailwayTile(String id, int width, int height, int cost) throws IOException {
         this.id = id;
 
         this.width = width;
@@ -70,7 +70,7 @@ public class TaxTile implements Tile {
 
         // image
         ImageView imageView = new ImageView();
-        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/tax.png")).toExternalForm()));
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/railway.png")).toExternalForm()));
         imageView.setFitWidth(Math.max(width, height) / 3.0);
         imageView.setFitHeight(Math.max(width, height) / 3.0);
 
@@ -115,7 +115,7 @@ public class TaxTile implements Tile {
 
     @Override
     public String getImagePath() {
-        return "assets/tax.png";
+        return "assets/railway.png";
     }
 
     @Override
