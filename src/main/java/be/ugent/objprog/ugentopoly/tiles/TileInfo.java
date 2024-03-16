@@ -1,4 +1,4 @@
-package be.ugent.objprog.ugentopoly;
+package be.ugent.objprog.ugentopoly.tiles;
 
 import javafx.scene.layout.VBox;
 

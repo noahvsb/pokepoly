@@ -1,6 +1,10 @@
 package be.ugent.objprog.ugentopoly;
 
-import javafx.geometry.Insets;
+import be.ugent.objprog.ugentopoly.tiles.ChanceTile;
+import be.ugent.objprog.ugentopoly.tiles.ChestTile;
+import be.ugent.objprog.ugentopoly.tiles.StreetTile;
+import be.ugent.objprog.ugentopoly.tiles.Tile;
+
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -16,8 +20,6 @@ import org.jdom2.input.SAXBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Objects;
 
 public class Bord extends BorderPane {
@@ -55,7 +57,7 @@ public class Bord extends BorderPane {
                 int houseCost = Integer.parseInt(area.getAttributeValue("house"));
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles.add(new Tile(id, colour, 130, 65, cost, houseCost,
+                tiles.add(new StreetTile(id, colour, 130, 65, cost, houseCost,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
@@ -66,12 +68,12 @@ public class Bord extends BorderPane {
 
             // Chest
             if (type.equals("CHEST")) {
-                tiles.add(new Tile(id, "chest", 130, 65));
+                tiles.add(new ChestTile(id, 130, 65));
             }
 
             // Chance
             if (type.equals("CHANCE")) {
-                tiles.add(new Tile(id, "chance", 130, 65));
+                tiles.add(new ChanceTile(id, 130, 65));
             }
 
             // Tax
@@ -84,6 +86,13 @@ public class Bord extends BorderPane {
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
                 tiles.add(new Tile(id, "railway", 130, 65, cost));
+            }
+
+            // Utility
+            if (type.equals("UTILITY")) {
+                int cost = Integer.parseInt(tile.getAttributeValue("cost"));
+                tiles.add(new Tile(id, "utility" + util, 130, 65, cost));
+                util++;
             }
 
             // Go to jail
@@ -105,13 +114,6 @@ public class Bord extends BorderPane {
             if (type.equals("FREE_PARKING")) {
                 tiles.add(new Tile(id, "free_parking", 130, 130));
             }
-
-            // Utility
-            if (type.equals("UTILITY")) {
-                int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new Tile(id, "utility" + util, 130, 65, cost));
-                util++;
-            }
         }
 
         // adding tiles to left, top, right, bottom
@@ -126,18 +128,21 @@ public class Bord extends BorderPane {
 
             // left
             if (i < 10) {
-                left.getChildren().addFirst(t);
+                left.getChildren().addFirst(t.getHbox());
             }
 
             // top
             else if (i < 21) {
                 VBox v = t.getVBox();
+                if (v.getPrefWidth() == 130) {
+                    v.setSpacing(40);
+                }
                 top.getChildren().add(v);
             }
 
             // right
             else if (i < 30) {
-                right.getChildren().add(t);
+                right.getChildren().add(t.getHbox());
             }
 
             // bottom
@@ -147,13 +152,17 @@ public class Bord extends BorderPane {
                     v.setRotate(180);
                     v.getChildren().getFirst().setRotate(180);
                     v.getChildren().getLast().setRotate(180);
+                } else {
+                    v.setSpacing(20);
                 }
                 bottom.getChildren().addFirst(v);
             }
         }
 
         // adding starttile to bottom
-        bottom.getChildren().addFirst(tiles.getFirst().getVBox());
+        VBox start = tiles.getFirst().getVBox();
+        start.setSpacing(40);
+        bottom.getChildren().addFirst(start);
 
 
         // logo
