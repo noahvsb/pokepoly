@@ -1,5 +1,6 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Bord;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,16 +22,27 @@ public class StreetTile implements Tile {
     private int houseCost;
     private int[] rents;
 
-    public StreetTile(String id, String colour, int width, int height, int cost,  int houseCost, int... rents) throws IOException {
+    private HBox hbox;
+    private VBox vbox;
+
+    private boolean mouseToggle;
+    private boolean mouseClickBlock;
+    private Bord bord;
+
+    public StreetTile(String id, String colour, int cost,  int houseCost, Bord bord, int... rents) throws IOException {
         this.id = id;
         this.colour = colour;
 
-        this.width = width;
-        this.height = height;
+        this.width = n * 2;
+        this.height = n;
 
         this.cost = cost;
         this.houseCost = houseCost;
         this.rents = rents;
+
+        mouseToggle = true;
+        mouseClickBlock = false;
+        this.bord = bord;
 
         createTile();
     }
@@ -39,12 +51,14 @@ public class StreetTile implements Tile {
     @Override
     public void createTile() throws IOException {
         Properties props = new Properties();
-        props.load(getClass().getResourceAsStream("ugentopoly.deel1.properties"));
+        props.load(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.deel1.properties"));
 
         // name text
         name = new Text();
         name.setText(props.getProperty(id).replaceAll(" ", "\n"));
-        name.setFont(new Font(9));
+        if (name.getText().equals("Hoveniersberg"))
+            name.setText("Hoveniers-\nberg");
+        name.setFont(new Font(fontSize));
         name.setTextAlignment(TextAlignment.CENTER);
 
         Text nameCopy = new Text(name.getText());
@@ -52,25 +66,22 @@ public class StreetTile implements Tile {
         nameCopy.setTextAlignment(name.getTextAlignment());
 
         // boxes
-        hbox.getChildren().add(name);
-        vbox.getChildren().add(nameCopy);
+        hbox = new HBox(name);
+        vbox = new VBox(nameCopy);
 
         hbox.setPrefSize(width, height);
         hbox.setMaxSize(width, height);
         hbox.setMinSize(width, height);
         hbox.setAlignment(Pos.CENTER_RIGHT);
-        hbox.setOnMousePressed(e -> showInfo());
-        hbox.setOnMouseReleased(e -> mouseReleased());
-        hbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        hbox.setOnMouseClicked(e -> tilePressed());
+        hbox.setStyle(normalStyle);
 
         vbox.setPrefSize(height, width);
         vbox.setMaxSize(height, width);
         vbox.setMinSize(height, width);
-        vbox.setSpacing(20);
         vbox.setAlignment(Pos.BOTTOM_CENTER);
-        vbox.setOnMousePressed(e -> showInfo());
-        vbox.setOnMouseReleased(e -> mouseReleased());
-        vbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        vbox.setOnMouseClicked(e -> tilePressed());
+        vbox.setStyle(normalStyle);
 
         // stripe (areaColour)
         hbox.getChildren().add(new Stripe(colour, 25, 65 ));
@@ -81,20 +92,36 @@ public class StreetTile implements Tile {
     }
 
     @Override
-    public void showInfo() {
-        // display info
-        new TileInfo(id);
+    public void tilePressed() {
+        if (mouseToggle && !mouseClickBlock) {
+            // display info
+            new TileInfo(id);
 
-        // change box look
-        hbox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
-        vbox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
+            // change box look
+            hbox.setStyle(highlightStyle);
+            vbox.setStyle(highlightStyle);
+
+            // block other tiles so they can't get clicked
+            bord.changeMouseClickBlock(this);
+
+            // change mouseToggle
+            mouseToggle = !mouseToggle;
+        } else if (!mouseClickBlock) {
+            // change box look
+            hbox.setStyle(normalStyle);
+            vbox.setStyle(normalStyle);
+
+            // unblock other tiles
+            bord.changeMouseClickBlock(this);
+
+            // change mouse toggle
+            mouseToggle = !mouseToggle;
+        }
     }
 
     @Override
-    public void mouseReleased() {
-        // change box look
-        hbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
-        vbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+    public void changeMouseClickBlock() {
+        mouseClickBlock = !mouseClickBlock;
     }
 
     @Override
@@ -113,7 +140,7 @@ public class StreetTile implements Tile {
     }
 
     @Override
-    public HBox getHbox() {
+    public HBox getHBox() {
         return hbox;
     }
 

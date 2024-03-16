@@ -20,6 +20,12 @@ import java.util.Objects;
 
 public class Bord extends BorderPane {
 
+    private ArrayList<Tile> tiles;
+    private VBox left;
+    private VBox right;
+    private HBox top;
+    private HBox bottom;
+
     public Bord() throws IOException, JDOMException {
         // reading xml-file using JDOM
         Document doc = new SAXBuilder().build(getClass().getResourceAsStream("ugentopoly.deel1.xml"));
@@ -30,10 +36,11 @@ public class Bord extends BorderPane {
         Element rootTiles = root.getChild("tiles");
 
         // tiles
-        ArrayList<Tile> tiles = new ArrayList<>();
+        tiles = new ArrayList<>();
 
         int util = 1;
 
+        // instantiate tiles
         for (int i = 0; i < 40; i++) {
             Element tile = rootTiles.getChildren().get(i);
             String type = tile.getAttributeValue("type");
@@ -53,7 +60,7 @@ public class Bord extends BorderPane {
                 int houseCost = Integer.parseInt(area.getAttributeValue("house"));
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles.add(new StreetTile(id, colour, 130, 65, cost, houseCost,
+                tiles.add(new StreetTile(id, colour, cost, houseCost, this,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
@@ -64,81 +71,80 @@ public class Bord extends BorderPane {
 
             // Chest
             if (type.equals("CHEST")) {
-                tiles.add(new ChestTile(id, 130, 65));
+                tiles.add(new ChestTile(id, this));
             }
 
             // Chance
             if (type.equals("CHANCE")) {
-                tiles.add(new ChanceTile(id, 130, 65));
+                tiles.add(new ChanceTile(id, this));
             }
 
             // Tax
             if (type.equals("TAX")) {
                 int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles.add(new TaxTile(id, 130, 65, amount));
+                tiles.add(new TaxTile(id, amount, this));
             }
 
             // Railway
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new RailwayTile(id, 130, 65, cost));
+                tiles.add(new RailwayTile(id, cost, this));
             }
 
             // Utility
             if (type.equals("UTILITY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new UtilityTile(id, util, 130, 65, cost));
+                tiles.add(new UtilityTile(id, util, cost, this));
                 util++;
             }
 
             // Go to jail
             if (type.equals("GO_TO_JAIL")) {
-                tiles.add(new CornerTile(id, "go_to_jail", 130, 130));
+                tiles.add(new CornerTile(id, "go_to_jail", this));
             }
 
             // Start
             if (type.equals("START")) {
-                tiles.add(new CornerTile(id, "start", 130, 130));
+                tiles.add(new CornerTile(id, "start", this));
             }
 
             // Jail
             if (type.equals("JAIL")) {
-                tiles.add(new CornerTile(id, "jail", 130, 130));
+                tiles.add(new CornerTile(id, "jail", this));
             }
 
             // Free parking
             if (type.equals("FREE_PARKING")) {
-                tiles.add(new CornerTile(id, "free_parking", 130, 130));
+                tiles.add(new CornerTile(id, "free_parking", this));
             }
         }
 
         // adding tiles to left, top, right, bottom
-        VBox left = new VBox();
-        HBox top = new HBox();
-        VBox right = new VBox();
+        left = new VBox();
+        top = new HBox();
+        right = new VBox();
         right.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        HBox bottom = new HBox();
+        bottom = new HBox();
 
         for (int i = 1; i < tiles.size(); i++) {
             Tile t = tiles.get(i);
 
             // left
             if (i < 10) {
-                left.getChildren().addFirst(t.getHbox());
+                left.getChildren().addFirst(t.getHBox());
             }
 
             // top
             else if (i < 21) {
                 VBox v = t.getVBox();
-                if (v.getPrefWidth() == 130) {
+                if (v.getPrefWidth() == 130)
                     v.setSpacing(40);
-                }
                 top.getChildren().add(v);
             }
 
             // right
             else if (i < 30) {
-                right.getChildren().add(t.getHbox());
+                right.getChildren().add(t.getHBox());
             }
 
             // bottom
@@ -149,7 +155,7 @@ public class Bord extends BorderPane {
                     v.getChildren().getFirst().setRotate(180);
                     v.getChildren().getLast().setRotate(180);
                 } else {
-                    v.setSpacing(20);
+                    v.setSpacing(10);
                 }
                 bottom.getChildren().addFirst(v);
             }
@@ -164,12 +170,12 @@ public class Bord extends BorderPane {
         // logo
         ImageView logoImage = new ImageView();
         logoImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/logo.png")).toExternalForm()));
-        logoImage.setFitWidth(400);
-        logoImage.setFitHeight(75);
+        logoImage.setFitWidth(500);
+        logoImage.setFitHeight(100);
         logoImage.setRotate(45);
         HBox logo = new HBox(logoImage);
         logo.setPrefSize(585, 585);
-        logo.setStyle("-fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 1.5");
+        logo.setStyle("-fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 1");
         logo.setAlignment(Pos.CENTER);
 
         // set all parts
@@ -178,5 +184,11 @@ public class Bord extends BorderPane {
         setTop(top);
         setRight(right);
         setCenter(logo);
+    }
+
+    public void changeMouseClickBlock(Tile dontToggle) {
+        for (Tile t : tiles)
+            if (!t.equals(dontToggle))
+                t.changeMouseClickBlock();
     }
 }

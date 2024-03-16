@@ -6,14 +6,20 @@ import java.io.IOException;
 
 public interface Tile {
 
-    HBox hbox = new HBox();
-    VBox vbox = new VBox();
+    double fontSize = 11;
+
+    int n = 65;
+
+    double borderWidth = 1;
+
+    String normalStyle = "-fx-border-color: black; -fx-border-width: " + borderWidth + "; -fx-background-color: white";
+    String highlightStyle = "-fx-border-color: white; -fx-border-width: " + borderWidth + "; -fx-background-color: white";
 
     void createTile() throws IOException;
 
-    void showInfo();
+    void tilePressed();
 
-    void mouseReleased();
+    void changeMouseClickBlock();
 
     String getId();
 
@@ -21,7 +27,7 @@ public interface Tile {
 
     String getImagePath();
 
-    HBox getHbox();
+    HBox getHBox();
 
     VBox getVBox();
 }

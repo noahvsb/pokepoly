@@ -1,7 +1,6 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
-import be.ugent.objprog.ugentopoly.tiles.Tile;
-import be.ugent.objprog.ugentopoly.tiles.TileInfo;
+import be.ugent.objprog.ugentopoly.Bord;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,14 +23,25 @@ public class UtilityTile implements Tile {
     private int cost;
     private int util;
 
-    public UtilityTile(String id, int util, int width, int height, int cost) throws IOException {
+    private HBox hbox;
+    private VBox vbox;
+
+    private boolean mouseToggle;
+    private boolean mouseClickBlock;
+    private Bord bord;
+
+    public UtilityTile(String id, int util, int cost, Bord bord) throws IOException {
         this.id = id;
         this.util = util;
 
-        this.width = width;
-        this.height = height;
+        this.width = n * 2;
+        this.height = n;
 
         this.cost = cost;
+
+        mouseToggle = true;
+        mouseClickBlock = false;
+        this.bord = bord;
 
         createTile();
     }
@@ -39,12 +49,12 @@ public class UtilityTile implements Tile {
     @Override
     public void createTile() throws IOException {
         Properties props = new Properties();
-        props.load(getClass().getResourceAsStream("ugentopoly.deel1.properties"));
+        props.load(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.deel1.properties"));
 
         // name text
         name = new Text();
         name.setText(props.getProperty(id).replaceAll(" ", "\n"));
-        name.setFont(new Font(9));
+        name.setFont(new Font(fontSize));
         name.setTextAlignment(TextAlignment.CENTER);
 
         Text nameCopy = new Text(name.getText());
@@ -52,31 +62,28 @@ public class UtilityTile implements Tile {
         nameCopy.setTextAlignment(name.getTextAlignment());
 
         // boxes
-        hbox.getChildren().add(name);
-        vbox.getChildren().add(nameCopy);
+        hbox = new HBox(name);
+        vbox = new VBox(nameCopy);
 
         hbox.setPrefSize(width, height);
         hbox.setMaxSize(width, height);
         hbox.setMinSize(width, height);
         hbox.setAlignment(Pos.CENTER_RIGHT);
-        hbox.setOnMousePressed(e -> showInfo());
-        hbox.setOnMouseReleased(e -> mouseReleased());
-        hbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        hbox.setOnMouseClicked(e -> tilePressed());
+        hbox.setStyle(normalStyle);
 
         vbox.setPrefSize(height, width);
         vbox.setMaxSize(height, width);
         vbox.setMinSize(height, width);
-        vbox.setSpacing(20);
         vbox.setAlignment(Pos.BOTTOM_CENTER);
-        vbox.setOnMousePressed(e -> showInfo());
-        vbox.setOnMouseReleased(e -> mouseReleased());
-        vbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+        vbox.setOnMouseClicked(e -> tilePressed());
+        vbox.setStyle(normalStyle);
 
         // image
         ImageView imageView = new ImageView();
-        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/utility" + util + ".png")).toExternalForm()));
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
         imageView.setFitWidth(Math.max(width, height) / 3.0);
-        imageView.setFitHeight(Math.max(width, height) / 3.0);
+        imageView.setFitHeight(Math.max(width, height) / 5.0);
 
         ImageView imageViewCopy = new ImageView();
         imageViewCopy.setImage(imageView.getImage());
@@ -88,23 +95,42 @@ public class UtilityTile implements Tile {
 
         vbox.getChildren().add(imageViewCopy);
         vbox.setSpacing(12);
+        if (name.getText().equals("Schamper")) {
+            vbox.setSpacing(30);
+        }
     }
 
     @Override
-    public void showInfo() {
-        // display info
-        new TileInfo(id);
+    public void tilePressed() {
+        if (mouseToggle && !mouseClickBlock) {
+            // display info
+            new TileInfo(id);
 
-        // change box look
-        hbox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
-        vbox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1.5; -fx-background-color: white");
+            // change box look
+            hbox.setStyle(highlightStyle);
+            vbox.setStyle(highlightStyle);
+
+            // block other tiles so they can't get clicked
+            bord.changeMouseClickBlock(this);
+
+            // change mouseToggle
+            mouseToggle = !mouseToggle;
+        } else if (!mouseClickBlock) {
+            // change box look
+            hbox.setStyle(normalStyle);
+            vbox.setStyle(normalStyle);
+
+            // unblock other tiles
+            bord.changeMouseClickBlock(this);
+
+            // change mouse toggle
+            mouseToggle = !mouseToggle;
+        }
     }
 
     @Override
-    public void mouseReleased() {
-        // change box look
-        hbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
-        vbox.setStyle("-fx-border-color: black; -fx-border-width: 1.5; -fx-background-color: white");
+    public void changeMouseClickBlock() {
+        mouseClickBlock = !mouseClickBlock;
     }
 
     @Override
@@ -119,11 +145,11 @@ public class UtilityTile implements Tile {
 
     @Override
     public String getImagePath() {
-        return "assets/utility" + util + ".png";
+        return "/be/ugent/objprog/ugentopoly/assets/utility" + util + ".png";
     }
 
     @Override
-    public HBox getHbox() {
+    public HBox getHBox() {
         return hbox;
     }
 
