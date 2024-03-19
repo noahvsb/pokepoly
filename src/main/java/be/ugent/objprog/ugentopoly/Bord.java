@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import org.jdom2.Document;
@@ -36,6 +37,7 @@ public class Bord extends BorderPane {
         Element rootTiles = root.getChild("tiles");
 
         // tiles
+        InfoTile infoTile = new InfoTile();
         tiles = new ArrayList<>();
 
         int util = 1;
@@ -60,7 +62,7 @@ public class Bord extends BorderPane {
                 int houseCost = Integer.parseInt(area.getAttributeValue("house"));
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles.add(new StreetTile(id, colour, cost, houseCost, this,
+                tiles.add(new StreetTile(id, colour, cost, houseCost, this, infoTile,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
@@ -71,12 +73,12 @@ public class Bord extends BorderPane {
 
             // Chest
             if (type.equals("CHEST")) {
-                tiles.add(new ChestTile(id, this));
+                tiles.add(new ChestTile(id, this, infoTile));
             }
 
             // Chance
             if (type.equals("CHANCE")) {
-                tiles.add(new ChanceTile(id, this));
+                tiles.add(new ChanceTile(id, this, infoTile));
             }
 
             // Tax
@@ -167,23 +169,24 @@ public class Bord extends BorderPane {
         bottom.getChildren().addFirst(start);
 
 
-        // logo
-        ImageView logoImage = new ImageView();
-        logoImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/logo.png")).toExternalForm()));
-        logoImage.setFitWidth(500);
-        logoImage.setFitHeight(100);
-        logoImage.setRotate(45);
-        HBox logo = new HBox(logoImage);
-        logo.setPrefSize(585, 585);
-        logo.setStyle("-fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 1");
-        logo.setAlignment(Pos.CENTER);
+        // logo + infoTile
+        ImageView logo = new ImageView();
+        logo.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/logo.png")).toExternalForm()));
+        logo.setFitWidth(500);
+        logo.setFitHeight(100);
+        logo.setRotate(45);
+
+        StackPane center = new StackPane(logo, infoTile);
+        center.setPrefSize(585, 585);
+        center.setStyle("-fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 1");
+        center.setAlignment(Pos.CENTER);
 
         // set all parts
         setBottom(bottom);
         setLeft(left);
         setTop(top);
         setRight(right);
-        setCenter(logo);
+        setCenter(center);
     }
 
     public void changeMouseClickBlock(Tile dontToggle) {

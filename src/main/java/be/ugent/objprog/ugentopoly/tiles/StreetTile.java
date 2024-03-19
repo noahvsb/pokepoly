@@ -2,9 +2,11 @@ package be.ugent.objprog.ugentopoly.tiles;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -28,8 +30,9 @@ public class StreetTile implements Tile {
     private boolean mouseToggle;
     private boolean mouseClickBlock;
     private Bord bord;
+    private InfoTile infoTile;
 
-    public StreetTile(String id, String colour, int cost,  int houseCost, Bord bord, int... rents) throws IOException {
+    public StreetTile(String id, String colour, int cost,  int houseCost, Bord bord, InfoTile infoTile, int... rents) throws IOException {
         this.id = id;
         this.colour = colour;
 
@@ -43,6 +46,7 @@ public class StreetTile implements Tile {
         mouseToggle = true;
         mouseClickBlock = false;
         this.bord = bord;
+        this.infoTile = infoTile;
 
         createTile();
     }
@@ -65,9 +69,13 @@ public class StreetTile implements Tile {
         nameCopy.setFont(name.getFont());
         nameCopy.setTextAlignment(name.getTextAlignment());
 
+        Text nameCopy2 = new Text(name.getText());
+        nameCopy2.setFont(name.getFont());
+        nameCopy2.setTextAlignment(name.getTextAlignment());
+
         // boxes
-        hbox = new HBox(name);
-        vbox = new VBox(nameCopy);
+        hbox = new HBox(nameCopy);
+        vbox = new VBox(nameCopy2);
 
         hbox.setPrefSize(width, height);
         hbox.setMaxSize(width, height);
@@ -94,8 +102,27 @@ public class StreetTile implements Tile {
     @Override
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
-            // display info
-            new TileInfo(id);
+            // prepare and show infoTile
+            Text title = name;
+            title.setFont(Font.font("System", FontWeight.BOLD, 11));
+            title.setTextAlignment(TextAlignment.CENTER);
+
+            Text rent = new Text();
+            rent.setText("Huur: €" + rents[0]);
+            rent.setFont(new Font(11));
+            rent.setTextAlignment(TextAlignment.CENTER);
+
+            Text price = new Text();
+            price.setText("Kostprijs: €" + cost);
+            price.setFont(new Font(11));
+            price.setTextAlignment(TextAlignment.CENTER);
+
+            Text currentOwner = new Text();
+            currentOwner.setText("Huidige eigenaar\n<te koop>");
+            currentOwner.setFont(new Font(11));
+            currentOwner.setTextAlignment(TextAlignment.CENTER);
+
+            infoTile.setup(30, new Stripe(colour, 200, 50), title, rent, price, currentOwner);
 
             // change box look
             hbox.setStyle(highlightStyle);
@@ -107,6 +134,9 @@ public class StreetTile implements Tile {
             // change mouseToggle
             mouseToggle = !mouseToggle;
         } else if (!mouseClickBlock) {
+            // reset infoTile
+            infoTile.reset();
+
             // change box look
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);

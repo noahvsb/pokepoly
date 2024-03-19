@@ -19,6 +19,7 @@ public class ChestTile implements Tile {
     private int width;
     private int height;
     private Text name;
+    private ImageView imageView;
 
     private HBox hbox;
     private VBox vbox;
@@ -26,8 +27,9 @@ public class ChestTile implements Tile {
     private boolean mouseToggle;
     private boolean mouseClickBlock;
     private Bord bord;
+    private InfoTile infoTile;
 
-    public ChestTile(String id, Bord bord) throws IOException {
+    public ChestTile(String id, Bord bord, InfoTile infoTile) throws IOException {
         this.id = id;
 
         this.width = n * 2;
@@ -36,6 +38,7 @@ public class ChestTile implements Tile {
         mouseToggle = true;
         mouseClickBlock = false;
         this.bord = bord;
+        this.infoTile = infoTile;
 
         createTile();
     }
@@ -75,7 +78,7 @@ public class ChestTile implements Tile {
         vbox.setStyle(normalStyle);
 
         // image
-        ImageView imageView = new ImageView();
+        imageView = new ImageView();
         imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
         imageView.setFitWidth(Math.max(width, height) / 3.0);
         imageView.setFitHeight(Math.max(width, height) / 3.0);
@@ -85,10 +88,15 @@ public class ChestTile implements Tile {
         imageViewCopy.setFitWidth(imageView.getFitWidth());
         imageViewCopy.setFitHeight(imageView.getFitHeight());
 
-        hbox.getChildren().add(imageView);
+        ImageView imageViewCopy2 = new ImageView();
+        imageViewCopy2.setImage(imageView.getImage());
+        imageViewCopy2.setFitWidth(imageView.getFitWidth());
+        imageViewCopy2.setFitHeight(imageView.getFitHeight());
+
+        hbox.getChildren().add(imageViewCopy);
         hbox.setSpacing(12);
 
-        vbox.getChildren().add(imageViewCopy);
+        vbox.getChildren().add(imageViewCopy2);
         vbox.setSpacing(12);
     }
 
@@ -96,7 +104,12 @@ public class ChestTile implements Tile {
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
             // display info
-            new TileInfo(id);
+            Text description = new Text();
+            description.setText("Neem een\nAlgemeen Fonds-kaart");
+            description.setTextAlignment(TextAlignment.CENTER);
+            description.setFont(new Font(15));
+
+            infoTile.setup(Pos.CENTER, 100, imageView, description);
 
             // change box look
             hbox.setStyle(highlightStyle);
@@ -108,6 +121,9 @@ public class ChestTile implements Tile {
             // change mouseToggle
             mouseToggle = !mouseToggle;
         } else if (!mouseClickBlock) {
+            // reset info
+            infoTile.reset();
+
             // change box look
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);

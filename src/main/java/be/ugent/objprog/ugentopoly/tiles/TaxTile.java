@@ -100,7 +100,7 @@ public class TaxTile implements Tile {
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
             // display info
-            new TileInfo(id);
+            new InfoTile();
 
             // change box look
             hbox.setStyle(highlightStyle);
