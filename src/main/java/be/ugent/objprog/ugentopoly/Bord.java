@@ -72,53 +72,47 @@ public class Bord extends BorderPane {
             }
 
             // Chest
-            if (type.equals("CHEST")) {
+            if (type.equals("CHEST"))
                 tiles.add(new ChestTile(id, this, infoTile));
-            }
 
             // Chance
-            if (type.equals("CHANCE")) {
+            if (type.equals("CHANCE"))
                 tiles.add(new ChanceTile(id, this, infoTile));
-            }
 
             // Tax
             if (type.equals("TAX")) {
                 int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles.add(new TaxTile(id, amount, this));
+                tiles.add(new TaxTile(id, amount, this, infoTile));
             }
 
             // Railway
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new RailwayTile(id, cost, this));
+                tiles.add(new RailwayTile(id, cost, this, infoTile));
             }
 
             // Utility
             if (type.equals("UTILITY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new UtilityTile(id, util, cost, this));
+                tiles.add(new UtilityTile(id, util, cost, this, infoTile));
                 util++;
             }
 
             // Go to jail
-            if (type.equals("GO_TO_JAIL")) {
-                tiles.add(new CornerTile(id, "go_to_jail", this));
-            }
+            if (type.equals("GO_TO_JAIL"))
+                tiles.add(new CornerTile(id, "go_to_jail", this, infoTile));
 
             // Start
-            if (type.equals("START")) {
-                tiles.add(new CornerTile(id, "start", this));
-            }
+            if (type.equals("START"))
+                tiles.add(new CornerTile(id, "start", this, infoTile));
 
             // Jail
-            if (type.equals("JAIL")) {
-                tiles.add(new CornerTile(id, "jail", this));
-            }
+            if (type.equals("JAIL"))
+                tiles.add(new CornerTile(id, "jail", this, infoTile));
 
             // Free parking
-            if (type.equals("FREE_PARKING")) {
-                tiles.add(new CornerTile(id, "free_parking", this));
-            }
+            if (type.equals("FREE_PARKING"))
+                tiles.add(new CornerTile(id, "free_parking", this, infoTile));
         }
 
         // adding tiles to left, top, right, bottom

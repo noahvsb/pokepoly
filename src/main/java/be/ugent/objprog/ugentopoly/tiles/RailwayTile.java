@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -16,11 +17,15 @@ import java.util.Properties;
 
 public class RailwayTile implements Tile {
     private String id;
+    private String nameStr;
     private int width;
     private int height;
     private Text name;
+    private ImageView imageView;
 
     private int cost;
+    private int rentFor1;
+    private String owner;
 
     private HBox hbox;
     private VBox vbox;
@@ -28,18 +33,22 @@ public class RailwayTile implements Tile {
     private boolean mouseToggle;
     private boolean mouseClickBlock;
     private Bord bord;
+    private InfoTile infoTile;
 
-    public RailwayTile(String id, int cost, Bord bord) throws IOException {
+    public RailwayTile(String id, int cost, Bord bord, InfoTile infoTile) throws IOException {
         this.id = id;
 
         width = n * 2;
         height = n;
 
         this.cost = cost;
+        rentFor1 = cost / 4;
+        owner = "<te koop>";
 
         mouseToggle = true;
         mouseClickBlock = false;
         this.bord = bord;
+        this.infoTile = infoTile;
 
         createTile();
     }
@@ -50,8 +59,10 @@ public class RailwayTile implements Tile {
         props.load(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.deel1.properties"));
 
         // name text
+        nameStr = props.getProperty(id);
+
         name = new Text();
-        name.setText(props.getProperty(id).replaceAll(" ", "\n"));
+        name.setText(nameStr.replaceAll(" ", "\n"));
         name.setFont(new Font(fontSize));
         name.setTextAlignment(TextAlignment.CENTER);
 
@@ -79,7 +90,7 @@ public class RailwayTile implements Tile {
         vbox.setStyle(normalStyle);
 
         // image
-        ImageView imageView = new ImageView();
+        imageView = new ImageView();
         imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
         imageView.setFitWidth(Math.max(width, height) / 3.0);
         imageView.setFitHeight(Math.max(width, height) / 3.0);
@@ -89,10 +100,15 @@ public class RailwayTile implements Tile {
         imageViewCopy.setFitWidth(imageView.getFitWidth());
         imageViewCopy.setFitHeight(imageView.getFitHeight());
 
-        hbox.getChildren().add(imageView);
+        ImageView imageViewCopy2 = new ImageView();
+        imageViewCopy2.setImage(imageView.getImage());
+        imageViewCopy2.setFitWidth(imageView.getFitWidth());
+        imageViewCopy2.setFitHeight(imageView.getFitHeight());
+
+        hbox.getChildren().add(imageViewCopy);
         hbox.setSpacing(12);
 
-        vbox.getChildren().add(imageViewCopy);
+        vbox.getChildren().add(imageViewCopy2);
         vbox.setSpacing(12);
     }
 
@@ -100,7 +116,29 @@ public class RailwayTile implements Tile {
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
             // display info
-            new InfoTile();
+            Text title = new Text(nameStr);
+            title.setFont(Font.font("System", FontWeight.BOLD, 13));
+
+            Text huur1 = new Text("Huur met 1:          €" + rentFor1);
+            huur1.setFont(new Font(13));
+
+            Text huur2 = new Text("Huur met 2:        €" + (rentFor1 * 2));
+            huur2.setFont(new Font(13));
+
+            Text huur3 = new Text("Huur met 3:        €" + (rentFor1 * 3));
+            huur3.setFont(new Font(13));
+
+            Text huur4 = new Text("Huur met 4:        €" + (rentFor1 * 4));
+            huur4.setFont(new Font(13));
+
+            Text costPrice = new Text("Kostprijs:   €" + cost);
+            costPrice.setFont(new Font(13));
+
+            Text currentOwner = new Text("Huidige eigenaar\n" + owner);
+            currentOwner.setFont(new Font(13));
+            currentOwner.setTextAlignment(TextAlignment.CENTER);
+
+            infoTile.setup(13, imageView, title, huur1, huur2, huur3, huur4, costPrice, currentOwner);
 
             // change box look
             hbox.setStyle(highlightStyle);
@@ -112,6 +150,9 @@ public class RailwayTile implements Tile {
             // change mouseToggle
             mouseToggle = !mouseToggle;
         } else if (!mouseClickBlock) {
+            // reset infoTile
+            infoTile.reset();
+
             // change box look
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);

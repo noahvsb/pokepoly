@@ -104,12 +104,11 @@ public class ChestTile implements Tile {
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
             // display info
-            Text description = new Text();
-            description.setText("Neem een\nAlgemeen Fonds-kaart");
+            Text description = new Text("Neem een\nAlgemeen Fonds-kaart");
             description.setTextAlignment(TextAlignment.CENTER);
             description.setFont(new Font(15));
 
-            infoTile.setup(Pos.CENTER, 100, imageView, description);
+            infoTile.setup(100, imageView, description);
 
             // change box look
             hbox.setStyle(highlightStyle);

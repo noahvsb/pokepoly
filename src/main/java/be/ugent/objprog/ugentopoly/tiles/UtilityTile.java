@@ -19,9 +19,11 @@ public class UtilityTile implements Tile {
     private int width;
     private int height;
     private Text name;
+    private ImageView imageView;
 
     private int cost;
     private int util;
+    private String owner;
 
     private HBox hbox;
     private VBox vbox;
@@ -29,8 +31,9 @@ public class UtilityTile implements Tile {
     private boolean mouseToggle;
     private boolean mouseClickBlock;
     private Bord bord;
+    private InfoTile infoTile;
 
-    public UtilityTile(String id, int util, int cost, Bord bord) throws IOException {
+    public UtilityTile(String id, int util, int cost, Bord bord, InfoTile infoTile) throws IOException {
         this.id = id;
         this.util = util;
 
@@ -38,10 +41,12 @@ public class UtilityTile implements Tile {
         this.height = n;
 
         this.cost = cost;
+        owner = "<te koop>";
 
         mouseToggle = true;
         mouseClickBlock = false;
         this.bord = bord;
+        this.infoTile = infoTile;
 
         createTile();
     }
@@ -80,20 +85,25 @@ public class UtilityTile implements Tile {
         vbox.setStyle(normalStyle);
 
         // image
-        ImageView imageView = new ImageView();
+        imageView = new ImageView();
         imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
-        imageView.setFitWidth(Math.max(width, height) / 3.0);
-        imageView.setFitHeight(Math.max(width, height) / 5.0);
+        imageView.setFitWidth(Math.max(width, height) / 2.0);
+        imageView.setFitHeight(Math.max(width, height) / (util == 1 ? 6.0 : 4.0));
 
         ImageView imageViewCopy = new ImageView();
         imageViewCopy.setImage(imageView.getImage());
         imageViewCopy.setFitWidth(imageView.getFitWidth());
         imageViewCopy.setFitHeight(imageView.getFitHeight());
 
-        hbox.getChildren().add(imageView);
+        ImageView imageViewCopy2 = new ImageView();
+        imageViewCopy2.setImage(imageView.getImage());
+        imageViewCopy2.setFitWidth(imageView.getFitWidth());
+        imageViewCopy2.setFitHeight(imageView.getFitHeight());
+
+        hbox.getChildren().add(imageViewCopy);
         hbox.setSpacing(12);
 
-        vbox.getChildren().add(imageViewCopy);
+        vbox.getChildren().add(imageViewCopy2);
         vbox.setSpacing(12);
         if (name.getText().equals("Schamper")) {
             vbox.setSpacing(30);
@@ -104,7 +114,23 @@ public class UtilityTile implements Tile {
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
             // display info
-            new InfoTile();
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(util == 1 ? 33.333 : 50);
+
+            Text huur1 = new Text("Huur met 1:     worp x €4");
+            huur1.setFont(new Font(13));
+
+            Text huur2 = new Text("Huur met 2:   worp x €10");
+            huur2.setFont(new Font(13));
+
+            Text costPrice = new Text("Kostprijs:   €" + cost);
+            costPrice.setFont(new Font(13));
+
+            Text currentOwner = new Text("Huidige eigenaar\n" + owner);
+            currentOwner.setFont(new Font(13));
+            currentOwner.setTextAlignment(TextAlignment.CENTER);
+
+            infoTile.setup(20, imageView, huur1, huur2, costPrice, currentOwner);
 
             // change box look
             hbox.setStyle(highlightStyle);
@@ -116,6 +142,9 @@ public class UtilityTile implements Tile {
             // change mouseToggle
             mouseToggle = !mouseToggle;
         } else if (!mouseClickBlock) {
+            // reset info
+            infoTile.reset();
+
             // change box look
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);

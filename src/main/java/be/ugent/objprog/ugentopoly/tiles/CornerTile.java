@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -16,10 +17,12 @@ import java.util.Properties;
 
 public class CornerTile implements Tile {
     private String id;
+    private String nameStr;
     private int width;
     private int height;
     private Text name;
     private String imageName;
+    private ImageView imageView;
 
     private HBox hbox;
     private VBox vbox;
@@ -27,8 +30,9 @@ public class CornerTile implements Tile {
     private boolean mouseToggle;
     private boolean mouseClickBlock;
     private Bord bord;
+    private InfoTile infoTile;
 
-    public CornerTile(String id, String imageName, Bord bord) throws IOException {
+    public CornerTile(String id, String imageName, Bord bord, InfoTile infoTile) throws IOException {
         this.id = id;
 
         this.width = n * 2;
@@ -38,6 +42,7 @@ public class CornerTile implements Tile {
         mouseToggle = true;
         mouseClickBlock = false;
         this.bord = bord;
+        this.infoTile = infoTile;
 
         createTile();
     }
@@ -48,8 +53,10 @@ public class CornerTile implements Tile {
         props.load(Objects.requireNonNull(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.deel1.properties")));
 
         // name text
+        nameStr = props.getProperty(id);
+
         name = new Text();
-        name.setText(props.getProperty(id).replaceAll(" ", "\n"));
+        name.setText(nameStr.replaceAll(" ", "\n"));
         name.setFont(new Font(fontSize));
         name.setTextAlignment(TextAlignment.CENTER);
 
@@ -77,7 +84,7 @@ public class CornerTile implements Tile {
         vbox.setStyle(normalStyle);
 
         // image
-        ImageView imageView = new ImageView();
+        imageView = new ImageView();
         imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
         imageView.setFitWidth(Math.max(width, height) / 3.0);
         imageView.setFitHeight(Math.max(width, height) / 3.0);
@@ -87,10 +94,15 @@ public class CornerTile implements Tile {
         imageViewCopy.setFitWidth(imageView.getFitWidth());
         imageViewCopy.setFitHeight(imageView.getFitHeight());
 
-        hbox.getChildren().add(imageView);
+        ImageView imageViewCopy2 = new ImageView();
+        imageViewCopy2.setImage(imageView.getImage());
+        imageViewCopy2.setFitWidth(imageView.getFitWidth());
+        imageViewCopy2.setFitHeight(imageView.getFitHeight());
+
+        hbox.getChildren().add(imageViewCopy);
         hbox.setSpacing(12);
 
-        vbox.getChildren().add(imageViewCopy);
+        vbox.getChildren().add(imageViewCopy2);
         vbox.setSpacing(12);
     }
 
@@ -98,7 +110,10 @@ public class CornerTile implements Tile {
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
             // display info
-            new InfoTile();
+            Text title = new Text(nameStr);
+            title.setFont(Font.font("System", FontWeight.BOLD, 13));
+
+            infoTile.setup(75, imageView, title);
 
             // change box look
             hbox.setStyle(highlightStyle);
@@ -110,6 +125,9 @@ public class CornerTile implements Tile {
             // change mouseToggle
             mouseToggle = !mouseToggle;
         } else if (!mouseClickBlock) {
+            // reset infoTile
+            infoTile.reset();
+
             // change box look
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);

@@ -18,16 +18,18 @@ public class InfoTile extends VBox {
         setPrefSize(w, h);
         setMinSize(w, h);
         setMaxSize(w, h);
-        setStyle("-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 5; -fx-border-width: 3; -fx-border-color: black");
+        setStyle("-fx-background-color: white; -fx-background-radius: 7; -fx-border-width: 1; -fx-border-color: black; -fx-border-insets: 5");
     }
 
+    // default
     public void setup(double spacing, Node... nodes) {
-        setAlignment(Pos.TOP_CENTER);
+        setAlignment(Pos.CENTER);
         setSpacing(spacing);
         getChildren().addAll(nodes);
         setVisible(true);
     }
 
+    // different alignment
     public void setup(Pos alignment, double spacing, Node... nodes) {
         setAlignment(alignment);
         setSpacing(spacing);

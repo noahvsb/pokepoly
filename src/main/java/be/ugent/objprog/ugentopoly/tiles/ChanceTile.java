@@ -104,11 +104,10 @@ public class ChanceTile implements Tile {
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
             // display info
-            Text description = new Text();
-            description.setText("Neem een Kans-kaart");
+            Text description = new Text("Neem een Kans-kaart");
             description.setFont(new Font(15));
 
-            infoTile.setup(Pos.CENTER, 100, imageView, description);
+            infoTile.setup(100, imageView, description);
 
             // change box look
             hbox.setStyle(highlightStyle);

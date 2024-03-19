@@ -2,7 +2,6 @@ package be.ugent.objprog.ugentopoly.tiles;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -15,6 +14,7 @@ import java.util.Properties;
 
 public class StreetTile implements Tile {
     private String id;
+    private String nameStr;
     private int width;
     private int height;
     private Text name;
@@ -23,6 +23,7 @@ public class StreetTile implements Tile {
     private int cost;
     private int houseCost;
     private int[] rents;
+    private String owner;
 
     private HBox hbox;
     private VBox vbox;
@@ -42,6 +43,7 @@ public class StreetTile implements Tile {
         this.cost = cost;
         this.houseCost = houseCost;
         this.rents = rents;
+        owner = "<te koop>";
 
         mouseToggle = true;
         mouseClickBlock = false;
@@ -58,8 +60,9 @@ public class StreetTile implements Tile {
         props.load(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.deel1.properties"));
 
         // name text
+        nameStr = props.getProperty(id);
         name = new Text();
-        name.setText(props.getProperty(id).replaceAll(" ", "\n"));
+        name.setText(nameStr.replaceAll(" ", "\n"));
         if (name.getText().equals("Hoveniersberg"))
             name.setText("Hoveniers-\nberg");
         name.setFont(new Font(fontSize));
@@ -69,13 +72,9 @@ public class StreetTile implements Tile {
         nameCopy.setFont(name.getFont());
         nameCopy.setTextAlignment(name.getTextAlignment());
 
-        Text nameCopy2 = new Text(name.getText());
-        nameCopy2.setFont(name.getFont());
-        nameCopy2.setTextAlignment(name.getTextAlignment());
-
         // boxes
-        hbox = new HBox(nameCopy);
-        vbox = new VBox(nameCopy2);
+        hbox = new HBox(name);
+        vbox = new VBox(nameCopy);
 
         hbox.setPrefSize(width, height);
         hbox.setMaxSize(width, height);
@@ -103,26 +102,20 @@ public class StreetTile implements Tile {
     public void tilePressed() {
         if (mouseToggle && !mouseClickBlock) {
             // prepare and show infoTile
-            Text title = name;
-            title.setFont(Font.font("System", FontWeight.BOLD, 11));
-            title.setTextAlignment(TextAlignment.CENTER);
+            Text title = new Text(nameStr);
+            title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
-            Text rent = new Text();
-            rent.setText("Huur: €" + rents[0]);
-            rent.setFont(new Font(11));
-            rent.setTextAlignment(TextAlignment.CENTER);
+            Text rent = new Text("Huur:           €" + rents[0]);
+            rent.setFont(new Font(13));
 
-            Text price = new Text();
-            price.setText("Kostprijs: €" + cost);
-            price.setFont(new Font(11));
-            price.setTextAlignment(TextAlignment.CENTER);
+            Text price = new Text("Kostprijs:     €" + cost);
+            price.setFont(new Font(13));
 
-            Text currentOwner = new Text();
-            currentOwner.setText("Huidige eigenaar\n<te koop>");
-            currentOwner.setFont(new Font(11));
+            Text currentOwner = new Text("Huidige eigenaar\n" + owner);
+            currentOwner.setFont(new Font(13));
             currentOwner.setTextAlignment(TextAlignment.CENTER);
 
-            infoTile.setup(30, new Stripe(colour, 200, 50), title, rent, price, currentOwner);
+            infoTile.setup(Pos.TOP_CENTER, 30, new Stripe(colour, 200, 50), title, rent, price, currentOwner);
 
             // change box look
             hbox.setStyle(highlightStyle);

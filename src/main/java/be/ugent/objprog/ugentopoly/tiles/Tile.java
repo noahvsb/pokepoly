@@ -13,7 +13,7 @@ public interface Tile {
     double borderWidth = 1;
 
     String normalStyle = "-fx-border-color: black; -fx-border-width: " + borderWidth + "; -fx-background-color: white";
-    String highlightStyle = "-fx-border-color: black; -fx-border-width: " + (borderWidth + 2) + "; -fx-background-color: white";
+    String highlightStyle = "-fx-border-color: #1F8CFF; -fx-border-width: " + (borderWidth + 1) + "; -fx-background-color: white";
 
     void createTile() throws IOException;
 
