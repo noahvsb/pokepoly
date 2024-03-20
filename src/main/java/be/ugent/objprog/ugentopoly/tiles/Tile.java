@@ -1,33 +1,160 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Properties;
 
-public interface Tile {
+public abstract class Tile {
 
-    double fontSize = 11;
+    // final variables
+    protected static final double FONT_SIZE = 11;
 
-    int n = 65;
+    protected static final int N = 65;
 
-    double borderWidth = 1;
+    protected static final double BORDER_WIDTH = 1;
 
-    String normalStyle = "-fx-border-color: black; -fx-border-width: " + borderWidth + "; -fx-background-color: white";
-    String highlightStyle = "-fx-border-color: #1F8CFF; -fx-border-width: " + (borderWidth + 1) + "; -fx-background-color: white";
+    protected static final String NORMAL_STYLE = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: white";
+    protected static final String HIGHLIGHT_STYLE = "-fx-border-color: #1F8CFF; -fx-border-width: " + (BORDER_WIDTH + 1) + "; -fx-background-color: white";
 
-    void createTile() throws IOException;
+    // other variables
+    protected String id;
+    protected String nameStr;
+    protected String imageName;
+    protected int width;
+    protected int height;
 
-    void tilePressed();
+    protected HBox hbox;
+    protected VBox vbox;
 
-    void changeMouseToggle();
+    protected InfoTile infoTile;
 
-    String getId();
+    protected boolean mouseToggle;
 
-    String getName();
+    public void createTile() throws IOException {
+        Properties props = new Properties();
+        props.load(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.deel1.properties"));
 
-    String getImagePath();
+        // name text
+        nameStr = props.getProperty(id);
 
-    HBox getHBox();
+        // boxes
+        hbox = new HBox(createName());
+        vbox = new VBox(createName());
 
-    VBox getVBox();
+        hbox.setPrefSize(width, height);
+        hbox.setMaxSize(width, height);
+        hbox.setMinSize(width, height);
+        hbox.setSpacing(12);
+        hbox.setAlignment(Pos.CENTER_RIGHT);
+        hbox.setOnMouseClicked(e -> tilePressed());
+        hbox.setStyle(NORMAL_STYLE);
+
+        vbox.setPrefSize(height, width);
+        vbox.setMaxSize(height, width);
+        vbox.setMinSize(height, width);
+        vbox.setSpacing(12);
+        vbox.setAlignment(Pos.BOTTOM_CENTER);
+        vbox.setOnMouseClicked(e -> tilePressed());
+        vbox.setStyle(NORMAL_STYLE);
+
+        // graphic
+        hbox.getChildren().add(createGraphic(true));
+
+        vbox.getChildren().add(createGraphic(false));
+    }
+
+    public Text createName() {
+        Text name = new Text();
+        name.setText(nameStr.replaceAll(" ", "\n"));
+        name.setFont(new Font(FONT_SIZE));
+        name.setTextAlignment(TextAlignment.CENTER);
+
+        // aangezien er hier maar 1 uitzondering is, vond ik het nog doenbaar voor deze cheese
+        if (name.getText().equals("Hoveniersberg"))
+            name.setText("Hoveniers-\nberg");
+
+        return name;
+    }
+
+    public Node createGraphic(boolean orientation) {
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
+        imageView.setFitWidth(Math.max(width, height) / 3.0);
+        imageView.setFitHeight(Math.max(width, height) / 3.0);
+
+        return imageView;
+    }
+
+    public void tilePressed() {
+        Tile currentActive = infoTile.getCurrentActive();
+
+        // set active
+        if (mouseToggle) {
+            if (currentActive != null) {
+                currentActive.getHBox().setStyle(NORMAL_STYLE);
+                currentActive.getVBox().setStyle(NORMAL_STYLE);
+
+                currentActive.changeMouseToggle();
+
+                infoTile.reset();
+            }
+
+            // display info
+            setupInfoTile();
+
+            // change box look
+            hbox.setStyle(HIGHLIGHT_STYLE);
+            vbox.setStyle(HIGHLIGHT_STYLE);
+
+            // change mouseToggle
+            mouseToggle = !mouseToggle;
+        }
+        // set inactive
+        else {
+            // reset infoTile
+            infoTile.reset();
+
+            // change box look
+            hbox.setStyle(NORMAL_STYLE);
+            vbox.setStyle(NORMAL_STYLE);
+
+            // change mouse toggle
+            mouseToggle = !mouseToggle;
+        }
+    }
+
+    public abstract void setupInfoTile();
+
+    public void changeMouseToggle() {
+        mouseToggle = !mouseToggle;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return nameStr;
+    }
+
+    public String getImagePath() {
+        return "/be/ugent/objprog/ugentopoly/assets/" + imageName + ".png";
+    }
+
+    public HBox getHBox() {
+        return hbox;
+    }
+
+    public VBox getVBox() {
+        return vbox;
+    }
 }
