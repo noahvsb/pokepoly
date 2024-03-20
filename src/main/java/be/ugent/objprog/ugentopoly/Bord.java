@@ -183,10 +183,4 @@ public class Bord extends BorderPane {
         setRight(right);
         setCenter(center);
     }
-
-    public void changeMouseClickBlock(Tile dontToggle) {
-        for (Tile t : tiles)
-            if (!t.equals(dontToggle))
-                t.changeMouseClickBlock();
-    }
 }

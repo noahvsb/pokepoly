@@ -31,7 +31,6 @@ public class RailwayTile implements Tile {
     private VBox vbox;
 
     private boolean mouseToggle;
-    private boolean mouseClickBlock;
     private Bord bord;
     private InfoTile infoTile;
 
@@ -46,7 +45,6 @@ public class RailwayTile implements Tile {
         owner = "<te koop>";
 
         mouseToggle = true;
-        mouseClickBlock = false;
         this.bord = bord;
         this.infoTile = infoTile;
 
@@ -114,7 +112,17 @@ public class RailwayTile implements Tile {
 
     @Override
     public void tilePressed() {
-        if (mouseToggle && !mouseClickBlock) {
+        Tile currentActive = infoTile.getCurrentActive();
+
+        // set active
+        if (mouseToggle) {
+            if (currentActive != null) {
+                currentActive.changeMouseToggle();
+                currentActive.getHBox().setStyle(normalStyle);
+                currentActive.getVBox().setStyle(normalStyle);
+                infoTile.reset();
+            }
+
             // display info
             Text title = new Text(nameStr);
             title.setFont(Font.font("System", FontWeight.BOLD, 13));
@@ -138,18 +146,17 @@ public class RailwayTile implements Tile {
             currentOwner.setFont(new Font(13));
             currentOwner.setTextAlignment(TextAlignment.CENTER);
 
-            infoTile.setup(13, imageView, title, huur1, huur2, huur3, huur4, costPrice, currentOwner);
+            infoTile.setup(13, this, imageView, title, huur1, huur2, huur3, huur4, costPrice, currentOwner);
 
             // change box look
             hbox.setStyle(highlightStyle);
             vbox.setStyle(highlightStyle);
 
-            // block other tiles so they can't get clicked
-            bord.changeMouseClickBlock(this);
-
             // change mouseToggle
             mouseToggle = !mouseToggle;
-        } else if (!mouseClickBlock) {
+        }
+        // set inactive
+        else {
             // reset infoTile
             infoTile.reset();
 
@@ -157,17 +164,14 @@ public class RailwayTile implements Tile {
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);
 
-            // unblock other tiles
-            bord.changeMouseClickBlock(this);
-
             // change mouse toggle
             mouseToggle = !mouseToggle;
         }
     }
 
     @Override
-    public void changeMouseClickBlock() {
-        mouseClickBlock = !mouseClickBlock;
+    public void changeMouseToggle() {
+        mouseToggle = !mouseToggle;
     }
 
     @Override

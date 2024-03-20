@@ -29,7 +29,6 @@ public class StreetTile implements Tile {
     private VBox vbox;
 
     private boolean mouseToggle;
-    private boolean mouseClickBlock;
     private Bord bord;
     private InfoTile infoTile;
 
@@ -46,7 +45,6 @@ public class StreetTile implements Tile {
         owner = "<te koop>";
 
         mouseToggle = true;
-        mouseClickBlock = false;
         this.bord = bord;
         this.infoTile = infoTile;
 
@@ -100,8 +98,20 @@ public class StreetTile implements Tile {
 
     @Override
     public void tilePressed() {
-        if (mouseToggle && !mouseClickBlock) {
-            // prepare and show infoTile
+        Tile currentActive = infoTile.getCurrentActive();
+
+        // set active
+        if (mouseToggle) {
+            if (currentActive != null) {
+                currentActive.getHBox().setStyle(normalStyle);
+                currentActive.getVBox().setStyle(normalStyle);
+
+                currentActive.changeMouseToggle();
+
+                infoTile.reset();
+            }
+
+            // display info
             Text title = new Text(nameStr);
             title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
@@ -115,18 +125,17 @@ public class StreetTile implements Tile {
             currentOwner.setFont(new Font(13));
             currentOwner.setTextAlignment(TextAlignment.CENTER);
 
-            infoTile.setup(Pos.TOP_CENTER, 30, new Stripe(colour, 200, 50), title, rent, price, currentOwner);
+            infoTile.setup(Pos.TOP_CENTER, 30, this, new Stripe(colour, 200, 50), title, rent, price, currentOwner);
 
             // change box look
             hbox.setStyle(highlightStyle);
             vbox.setStyle(highlightStyle);
 
-            // block other tiles so they can't get clicked
-            bord.changeMouseClickBlock(this);
-
             // change mouseToggle
             mouseToggle = !mouseToggle;
-        } else if (!mouseClickBlock) {
+        }
+        // set inactive
+        else {
             // reset infoTile
             infoTile.reset();
 
@@ -134,17 +143,14 @@ public class StreetTile implements Tile {
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);
 
-            // unblock other tiles
-            bord.changeMouseClickBlock(this);
-
             // change mouse toggle
             mouseToggle = !mouseToggle;
         }
     }
 
     @Override
-    public void changeMouseClickBlock() {
-        mouseClickBlock = !mouseClickBlock;
+    public void changeMouseToggle() {
+        mouseToggle = !mouseToggle;
     }
 
     @Override

@@ -29,7 +29,6 @@ public class TaxTile implements Tile {
     private VBox vbox;
 
     private boolean mouseToggle;
-    private boolean mouseClickBlock;
     private Bord bord;
     private InfoTile infoTile;
 
@@ -42,7 +41,6 @@ public class TaxTile implements Tile {
         this.cost = cost;
 
         mouseToggle = true;
-        mouseClickBlock = false;
         this.bord = bord;
         this.infoTile = infoTile;
 
@@ -110,7 +108,17 @@ public class TaxTile implements Tile {
 
     @Override
     public void tilePressed() {
-        if (mouseToggle && !mouseClickBlock) {
+        Tile currentActive = infoTile.getCurrentActive();
+
+        // set active
+        if (mouseToggle) {
+            if (currentActive != null) {
+                currentActive.changeMouseToggle();
+                currentActive.getHBox().setStyle(normalStyle);
+                currentActive.getVBox().setStyle(normalStyle);
+                infoTile.reset();
+            }
+
             // display info
             Text title = new Text(nameStr);
             title.setFont(Font.font("System", FontWeight.BOLD, 13));
@@ -118,36 +126,35 @@ public class TaxTile implements Tile {
             Text description = new Text("te betalen: €" + cost);
             description.setFont(new Font(13));
 
-            infoTile.setup(50, imageView, title, description);
+            infoTile.setup(50, this, imageView, title, description);
 
             // change box look
             hbox.setStyle(highlightStyle);
             vbox.setStyle(highlightStyle);
 
-            // block other tiles so they can't get clicked
-            bord.changeMouseClickBlock(this);
-
             // change mouseToggle
             mouseToggle = !mouseToggle;
-        } else if (!mouseClickBlock) {
-            // reset info
+        }
+        // set inactive
+        else {
+            // reset infoTile
             infoTile.reset();
 
             // change box look
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);
 
-            // unblock other tiles
-            bord.changeMouseClickBlock(this);
-
             // change mouse toggle
             mouseToggle = !mouseToggle;
         }
     }
 
+
+
+
     @Override
-    public void changeMouseClickBlock() {
-        mouseClickBlock = !mouseClickBlock;
+    public void changeMouseToggle() {
+        mouseToggle = !mouseToggle;
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface Tile {
 
     void tilePressed();
 
-    void changeMouseClickBlock();
+    void changeMouseToggle();
 
     String getId();
 

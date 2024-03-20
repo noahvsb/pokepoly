@@ -25,7 +25,6 @@ public class ChestTile implements Tile {
     private VBox vbox;
 
     private boolean mouseToggle;
-    private boolean mouseClickBlock;
     private Bord bord;
     private InfoTile infoTile;
 
@@ -36,7 +35,6 @@ public class ChestTile implements Tile {
         this.height = n;
 
         mouseToggle = true;
-        mouseClickBlock = false;
         this.bord = bord;
         this.infoTile = infoTile;
 
@@ -102,42 +100,50 @@ public class ChestTile implements Tile {
 
     @Override
     public void tilePressed() {
-        if (mouseToggle && !mouseClickBlock) {
+        Tile currentActive = infoTile.getCurrentActive();
+
+        // set active
+        if (mouseToggle) {
+            if (currentActive != null) {
+                currentActive.changeMouseToggle();
+                currentActive.getHBox().setStyle(normalStyle);
+                currentActive.getVBox().setStyle(normalStyle);
+                infoTile.reset();
+            }
+
             // display info
             Text description = new Text("Neem een\nAlgemeen Fonds-kaart");
             description.setTextAlignment(TextAlignment.CENTER);
             description.setFont(new Font(15));
 
-            infoTile.setup(100, imageView, description);
+            infoTile.setup(100, this, imageView, description);
 
             // change box look
             hbox.setStyle(highlightStyle);
             vbox.setStyle(highlightStyle);
 
-            // block other tiles so they can't get clicked
-            bord.changeMouseClickBlock(this);
-
             // change mouseToggle
             mouseToggle = !mouseToggle;
-        } else if (!mouseClickBlock) {
-            // reset info
+        }
+        // set inactive
+        else {
+            // reset infoTile
             infoTile.reset();
 
             // change box look
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);
 
-            // unblock other tiles
-            bord.changeMouseClickBlock(this);
-
             // change mouse toggle
             mouseToggle = !mouseToggle;
         }
     }
 
+
+
     @Override
-    public void changeMouseClickBlock() {
-        mouseClickBlock = !mouseClickBlock;
+    public void changeMouseToggle() {
+        mouseToggle = !mouseToggle;
     }
 
     @Override

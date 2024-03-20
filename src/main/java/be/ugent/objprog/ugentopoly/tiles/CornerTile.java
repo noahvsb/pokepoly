@@ -28,7 +28,6 @@ public class CornerTile implements Tile {
     private VBox vbox;
 
     private boolean mouseToggle;
-    private boolean mouseClickBlock;
     private Bord bord;
     private InfoTile infoTile;
 
@@ -40,7 +39,6 @@ public class CornerTile implements Tile {
         this.imageName = imageName;
 
         mouseToggle = true;
-        mouseClickBlock = false;
         this.bord = bord;
         this.infoTile = infoTile;
 
@@ -108,23 +106,32 @@ public class CornerTile implements Tile {
 
     @Override
     public void tilePressed() {
-        if (mouseToggle && !mouseClickBlock) {
+        Tile currentActive = infoTile.getCurrentActive();
+
+        // set active
+        if (mouseToggle) {
+            if (currentActive != null) {
+                currentActive.changeMouseToggle();
+                currentActive.getHBox().setStyle(normalStyle);
+                currentActive.getVBox().setStyle(normalStyle);
+                infoTile.reset();
+            }
+
             // display info
             Text title = new Text(nameStr);
             title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
-            infoTile.setup(75, imageView, title);
+            infoTile.setup(75, this, imageView, title);
 
             // change box look
             hbox.setStyle(highlightStyle);
             vbox.setStyle(highlightStyle);
 
-            // block other tiles so they can't get clicked
-            bord.changeMouseClickBlock(this);
-
             // change mouseToggle
             mouseToggle = !mouseToggle;
-        } else if (!mouseClickBlock) {
+        }
+        // set inactive
+        else {
             // reset infoTile
             infoTile.reset();
 
@@ -132,17 +139,14 @@ public class CornerTile implements Tile {
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);
 
-            // unblock other tiles
-            bord.changeMouseClickBlock(this);
-
             // change mouse toggle
             mouseToggle = !mouseToggle;
         }
     }
 
     @Override
-    public void changeMouseClickBlock() {
-        mouseClickBlock = !mouseClickBlock;
+    public void changeMouseToggle() {
+        mouseToggle = !mouseToggle;
     }
 
     @Override
