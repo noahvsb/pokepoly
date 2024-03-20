@@ -24,7 +24,7 @@ public class RailwayTile implements Tile {
     private ImageView imageView;
 
     private int cost;
-    private int rentFor1;
+    private int rent;
     private String owner;
 
     private HBox hbox;
@@ -35,14 +35,14 @@ public class RailwayTile implements Tile {
     private Bord bord;
     private InfoTile infoTile;
 
-    public RailwayTile(String id, int cost, Bord bord, InfoTile infoTile) throws IOException {
+    public RailwayTile(String id, int cost, int rent, Bord bord, InfoTile infoTile) throws IOException {
         this.id = id;
 
         width = n * 2;
         height = n;
 
         this.cost = cost;
-        rentFor1 = cost / 4;
+        this.rent = rent;
         owner = "<te koop>";
 
         mouseToggle = true;
@@ -119,16 +119,16 @@ public class RailwayTile implements Tile {
             Text title = new Text(nameStr);
             title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
-            Text huur1 = new Text("Huur met 1:          €" + rentFor1);
+            Text huur1 = new Text("Huur met 1:          €" + rent);
             huur1.setFont(new Font(13));
 
-            Text huur2 = new Text("Huur met 2:        €" + (rentFor1 * 2));
+            Text huur2 = new Text("Huur met 2:        €" + (rent * 2));
             huur2.setFont(new Font(13));
 
-            Text huur3 = new Text("Huur met 3:        €" + (rentFor1 * 3));
+            Text huur3 = new Text("Huur met 3:        €" + (rent * 3));
             huur3.setFont(new Font(13));
 
-            Text huur4 = new Text("Huur met 4:        €" + (rentFor1 * 4));
+            Text huur4 = new Text("Huur met 4:        €" + (rent * 4));
             huur4.setFont(new Font(13));
 
             Text costPrice = new Text("Kostprijs:   €" + cost);

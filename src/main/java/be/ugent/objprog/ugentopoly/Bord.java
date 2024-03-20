@@ -88,7 +88,8 @@ public class Bord extends BorderPane {
             // Railway
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new RailwayTile(id, cost, this, infoTile));
+                int rent = Integer.parseInt(tile.getAttributeValue("rent"));
+                tiles.add(new RailwayTile(id, cost, rent, this, infoTile));
             }
 
             // Utility

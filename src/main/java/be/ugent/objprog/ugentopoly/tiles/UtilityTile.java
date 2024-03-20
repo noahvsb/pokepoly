@@ -101,13 +101,10 @@ public class UtilityTile implements Tile {
         imageViewCopy2.setFitHeight(imageView.getFitHeight());
 
         hbox.getChildren().add(imageViewCopy);
-        hbox.setSpacing(12);
+        hbox.setSpacing(8);
 
         vbox.getChildren().add(imageViewCopy2);
-        vbox.setSpacing(12);
-        if (name.getText().equals("Schamper")) {
-            vbox.setSpacing(30);
-        }
+        vbox.setSpacing(33);
     }
 
     @Override
