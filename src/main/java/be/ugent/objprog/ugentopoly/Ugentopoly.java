@@ -43,6 +43,7 @@ public class Ugentopoly extends Application {
 
         Stage spelbord = new Stage();
         spelbord.setTitle("Ugentopoly");
+        spelbord.setOnCloseRequest(e -> stage.close());
         spelbord.setScene(spelbordScene);
         spelbord.show();
     }

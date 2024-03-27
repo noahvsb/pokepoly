@@ -1,9 +1,12 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class ChanceTile extends Tile {
 
@@ -18,6 +21,20 @@ public class ChanceTile extends Tile {
         this.infoTile = infoTile;
 
         createTile();
+    }
+
+    @Override
+    public ImageView createGraphic(boolean orientation) {
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
+        imageView.setFitWidth(Math.max(width, height) / 3.0);
+        imageView.setFitHeight(Math.max(width, height) / 2.0);
+
+        // zelfde opmerking als bij StreetTile
+        hbox.setSpacing(hbox.getSpacing());
+        vbox.setSpacing(vbox.getSpacing());
+
+        return imageView;
     }
 
     @Override

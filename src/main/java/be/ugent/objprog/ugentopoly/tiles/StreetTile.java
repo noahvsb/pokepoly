@@ -38,8 +38,11 @@ public class StreetTile extends Tile {
         /* deze code hoort hier niet echt thuis, maar het is wel doordat deze graphic zo specifiek is,
            dat de spacing lichtjes aangepast moet worden
          */
-        hbox.setSpacing(30);
-        vbox.setSpacing(30);
+        hbox.setAlignment(Pos.CENTER_RIGHT);
+        hbox.setSpacing(35);
+
+        vbox.setAlignment(Pos.BOTTOM_CENTER);
+        vbox.setSpacing(55);
 
         return new Stripe(colour, orientation ? 25 : 65, orientation ? 65 : 25);
     }

@@ -54,7 +54,7 @@ public abstract class Tile {
         hbox.setMaxSize(width, height);
         hbox.setMinSize(width, height);
         hbox.setSpacing(12);
-        hbox.setAlignment(Pos.CENTER_RIGHT);
+        hbox.setAlignment(Pos.CENTER);
         hbox.setOnMouseClicked(e -> tilePressed());
         hbox.setStyle(NORMAL_STYLE);
 
@@ -62,7 +62,7 @@ public abstract class Tile {
         vbox.setMaxSize(height, width);
         vbox.setMinSize(height, width);
         vbox.setSpacing(12);
-        vbox.setAlignment(Pos.BOTTOM_CENTER);
+        vbox.setAlignment(Pos.CENTER);
         vbox.setOnMouseClicked(e -> tilePressed());
         vbox.setStyle(NORMAL_STYLE);
 
@@ -74,13 +74,16 @@ public abstract class Tile {
 
     public Text createName() {
         Text name = new Text();
-        name.setText(nameStr.replaceAll(" ", "\n"));
+        name.setText(nameStr);
+        name.setWrappingWidth(60);
         name.setFont(new Font(FONT_SIZE));
         name.setTextAlignment(TextAlignment.CENTER);
 
-        // aangezien er hier maar 1 uitzondering is, vond ik het nog doenbaar voor deze cheese
+        // aangezien er hier maar 2 uitzondering zijn, vond ik het nog doenbaar voor deze cheese
         if (name.getText().equals("Hoveniersberg"))
             name.setText("Hoveniers-\nberg");
+        if (name.getText().equals("Boekentoren"))
+            name.setText("Boeken-\ntoren");
 
         return name;
     }
