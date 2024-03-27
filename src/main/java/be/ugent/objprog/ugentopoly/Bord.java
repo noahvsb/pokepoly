@@ -134,8 +134,6 @@ public class Bord extends BorderPane {
             // top
             else if (i < 21) {
                 VBox v = t.getVBox();
-                if (v.getPrefWidth() == 130)
-                    v.setSpacing(40);
                 top.getChildren().add(v);
             }
 
@@ -151,8 +149,6 @@ public class Bord extends BorderPane {
                     v.setRotate(180);
                     v.getChildren().getFirst().setRotate(180);
                     v.getChildren().getLast().setRotate(180);
-                } else {
-                    v.setSpacing(10);
                 }
                 bottom.getChildren().addFirst(v);
             }
@@ -160,7 +156,6 @@ public class Bord extends BorderPane {
 
         // adding starttile to bottom
         VBox start = tiles.getFirst().getVBox();
-        start.setSpacing(40);
         bottom.getChildren().addFirst(start);
 
 

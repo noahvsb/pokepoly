@@ -39,8 +39,8 @@ public class UtilityTile extends Tile {
         imageView.setFitHeight(Math.max(width, height) / (util == 1 ? 6.0 : 4.0));
 
         // zelfde opmerking als bij StreetTile
-        hbox.setSpacing(8);
-        vbox.setSpacing(33);
+        hbox.setSpacing(0);
+        vbox.setSpacing(25);
 
         return imageView;
     }
