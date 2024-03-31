@@ -23,7 +23,7 @@ public abstract class Tile {
     protected static final double BORDER_WIDTH = 1;
 
     protected static final String NORMAL_STYLE = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: white";
-    protected static final String HIGHLIGHT_STYLE = "-fx-border-color: #1F8CFF; -fx-border-width: " + (BORDER_WIDTH + 1) + "; -fx-background-color: white";
+    protected static final String HIGHLIGHT_STYLE = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: #E3F1FF";
 
     // other variables
     protected String id;
