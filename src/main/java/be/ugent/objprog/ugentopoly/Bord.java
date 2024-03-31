@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class Bord extends BorderPane {
 
-    private ArrayList<Tile> tiles;
+    private Tile[] tiles;
     private VBox left;
     private VBox right;
     private HBox top;
@@ -38,7 +38,7 @@ public class Bord extends BorderPane {
 
         // tiles
         InfoTile infoTile = new InfoTile();
-        tiles = new ArrayList<>();
+        tiles = new Tile[40];
 
         int util = 1;
 
@@ -47,6 +47,7 @@ public class Bord extends BorderPane {
             Element tile = rootTiles.getChildren().get(i);
             String type = tile.getAttributeValue("type");
             String id = tile.getAttributeValue("id");
+            int pos = Integer.parseInt(tile.getAttributeValue("position"));
 
             // Street
             if (type.equals("STREET")) {
@@ -62,58 +63,58 @@ public class Bord extends BorderPane {
                 int houseCost = Integer.parseInt(area.getAttributeValue("house"));
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles.add(new StreetTile(id, colour, cost, houseCost, infoTile,
+                tiles[pos] = new StreetTile(id, colour, cost, houseCost, infoTile,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
                         Integer.parseInt(tile.getAttributeValue("rent3")),
                         Integer.parseInt(tile.getAttributeValue("rent4")),
-                        Integer.parseInt(tile.getAttributeValue("rent5"))));
+                        Integer.parseInt(tile.getAttributeValue("rent5")));
             }
 
             // Chest
             if (type.equals("CHEST"))
-                tiles.add(new ChestTile(id, infoTile));
+                tiles[pos] = new ChestTile(id, infoTile);
 
             // Chance
             if (type.equals("CHANCE"))
-                tiles.add(new ChanceTile(id, infoTile));
+                tiles[pos] = new ChanceTile(id, infoTile);
 
             // Tax
             if (type.equals("TAX")) {
                 int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles.add(new TaxTile(id, amount, infoTile));
+                tiles[pos] = new TaxTile(id, amount, infoTile);
             }
 
             // Railway
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
                 int rent = Integer.parseInt(tile.getAttributeValue("rent"));
-                tiles.add(new RailwayTile(id, cost, rent, infoTile));
+                tiles[pos] = new RailwayTile(id, cost, rent, infoTile);
             }
 
             // Utility
             if (type.equals("UTILITY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles.add(new UtilityTile(id, util, cost, infoTile));
+                tiles[pos] = new UtilityTile(id, util, cost, infoTile);
                 util++;
             }
 
             // Go to jail
             if (type.equals("GO_TO_JAIL"))
-                tiles.add(new CornerTile(id, "go_to_jail", infoTile));
+                tiles[pos] = new CornerTile(id, "go_to_jail", infoTile);
 
             // Start
             if (type.equals("START"))
-                tiles.add(new CornerTile(id, "start", infoTile));
+                tiles[pos] = new CornerTile(id, "start", infoTile);
 
             // Jail
             if (type.equals("JAIL"))
-                tiles.add(new CornerTile(id, "jail", infoTile));
+                tiles[pos] = new CornerTile(id, "jail", infoTile);
 
             // Free parking
             if (type.equals("FREE_PARKING"))
-                tiles.add(new CornerTile(id, "free_parking",  infoTile));
+                tiles[pos] = new CornerTile(id, "free_parking",  infoTile);
         }
 
         // adding tiles to left, top, right, bottom
@@ -123,8 +124,8 @@ public class Bord extends BorderPane {
         right.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         bottom = new HBox();
 
-        for (int i = 1; i < tiles.size(); i++) {
-            Tile t = tiles.get(i);
+        for (int i = 1; i < tiles.length; i++) {
+            Tile t = tiles[i];
 
             // left
             if (i < 10) {
@@ -155,7 +156,7 @@ public class Bord extends BorderPane {
         }
 
         // adding starttile to bottom
-        VBox start = tiles.getFirst().getVBox();
+        VBox start = tiles[0].getVBox();
         bottom.getChildren().addFirst(start);
 
 
