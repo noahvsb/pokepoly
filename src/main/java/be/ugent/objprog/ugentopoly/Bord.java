@@ -16,7 +16,6 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Bord extends BorderPane {
@@ -32,7 +31,7 @@ public class Bord extends BorderPane {
         Document doc = new SAXBuilder().build(getClass().getResourceAsStream("ugentopoly.deel1.xml"));
         Element root = doc.getRootElement();
 
-        Element rootSettings = root.getChild("settings");
+        //Element rootSettings = root.getChild("settings");
         Element rootAreas = root.getChild("areas");
         Element rootTiles = root.getChild("tiles");
 

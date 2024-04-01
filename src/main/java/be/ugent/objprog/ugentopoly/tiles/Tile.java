@@ -145,10 +145,6 @@ public abstract class Tile {
         return id;
     }
 
-    public String getName() {
-        return nameStr;
-    }
-
     public String getImagePath() {
         return "/be/ugent/objprog/ugentopoly/assets/" + imageName + ".png";
     }
