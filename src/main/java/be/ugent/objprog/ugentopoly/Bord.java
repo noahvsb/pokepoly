@@ -31,7 +31,7 @@ public class Bord extends BorderPane {
         Document doc = new SAXBuilder().build(getClass().getResourceAsStream("ugentopoly.deel1.xml"));
         Element root = doc.getRootElement();
 
-        //Element rootSettings = root.getChild("settings");
+        Element rootSettings = root.getChild("settings");
         Element rootAreas = root.getChild("areas");
         Element rootTiles = root.getChild("tiles");
 
@@ -59,10 +59,9 @@ public class Bord extends BorderPane {
                 }
 
                 String colour = area.getAttributeValue("color");
-                int houseCost = Integer.parseInt(area.getAttributeValue("house"));
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles[pos] = new StreetTile(id, colour, cost, houseCost, infoTile,
+                tiles[pos] = new StreetTile(id, colour, cost, infoTile,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
@@ -105,7 +104,7 @@ public class Bord extends BorderPane {
 
             // Start
             if (type.equals("START"))
-                tiles[pos] = new CornerTile(id, "start", infoTile);
+                tiles[pos] = new CornerTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")));
 
             // Jail
             if (type.equals("JAIL"))

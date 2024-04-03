@@ -5,11 +5,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class CornerTile extends Tile {
+
+    private int start;
 
     public CornerTile(String id, String imageName, InfoTile infoTile) throws IOException {
         this.id = id;
@@ -20,6 +23,21 @@ public class CornerTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
+
+        createTile();
+    }
+
+    public CornerTile(String id, String imageName, InfoTile infoTile, int start) throws IOException {
+        this.id = id;
+
+        this.width = N * 2;
+        this.height = N * 2;
+        this.imageName = imageName;
+
+        mouseToggle = true;
+        this.infoTile = infoTile;
+
+        this.start = start;
 
         createTile();
     }
@@ -46,6 +64,25 @@ public class CornerTile extends Tile {
         Text title = new Text(nameStr);
         title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
-        infoTile.setup(75, this, createGraphic(true), title);
+        Text description = new Text(getDescription());
+        description.setFont(new Font(13));
+        description.setTextAlignment(TextAlignment.CENTER);
+        description.setWrappingWidth(180);
+
+        infoTile.setup(40, this, createGraphic(true), title, description);
+    }
+
+    public String getDescription() {
+        if (id.equals("tile.start"))
+            return "Ontvang €" + start + " bij passeren";
+        if (id.equals("tile.jail"))
+            return "Gooi met beide dobbelstenen hetzelfde aantal ogen om uit de gevangenis te geraken";
+        if (id.equals("tile.freeparking"))
+            return "Ontvang alles uit de bonuspot";
+        if (id.equals("tile.gotojail"))
+            return "Ga direct naar de gevangenis!";
+
+        System.err.println("Noah, gij prutser!!");
+        return null;
     }
 }

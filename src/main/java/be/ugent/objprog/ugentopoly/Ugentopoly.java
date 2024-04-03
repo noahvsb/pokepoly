@@ -22,30 +22,35 @@ public class Ugentopoly extends Application {
 
 
         //dobbelstenen
-        final Dice dice = new Dice();
+        /*
+            final Dice dice = new Dice();
 
-        Button btn = new Button();
-        btn.setText("ROL");
-        btn.setFont(new Font(40));
-        btn.setOnAction(event -> dice.roll(t -> System.out.println("Resultaat: " + dice.getLastRoll())));
-        btn.setPrefSize(200, 100);
+            Button btn = new Button();
+            btn.setText("ROL");
+            btn.setFont(new Font(40));
+            btn.setOnAction(event -> dice.roll(t -> System.out.println("Resultaat: " + dice.getLastRoll())));
+            btn.setPrefSize(200, 100);
 
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
+            StackPane root = new StackPane();
+            root.getChildren().add(btn);
 
-        Scene dobbelstenenScene = new Scene(root, 250, 150);
+            Scene dobbelstenenScene = new Scene(root, 250, 150);
+         */
 
         //stage
-        stage.setTitle("Dobbelstenen");
-        stage.setOnCloseRequest(e -> dice.close());
-        stage.setScene(dobbelstenenScene);
-        stage.show();
+        /* dobbelstenen:
+            Stage dobbelstenenStage = new Stage();
+            dobbelstenenStage.setTitle("Dobbelstenen");
+            dobbelstenenStage.setOnCloseRequest(e -> dice.close());
+            dobbelstenenStage.setScene(dobbelstenenScene);
+            dobbelstenenStage.show();
+         */
 
-        Stage spelbord = new Stage();
-        spelbord.setTitle("Ugentopoly");
-        spelbord.setOnCloseRequest(e -> stage.close());
-        spelbord.setScene(spelbordScene);
-        spelbord.show();
+
+        stage.setTitle("Ugentopoly");
+        //stage.setOnCloseRequest(e -> dobbelstenenStage.close());
+        stage.setScene(spelbordScene);
+        stage.show();
     }
 
     public static void main(String[] args) {

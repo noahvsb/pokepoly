@@ -12,11 +12,10 @@ public class StreetTile extends Tile {
 
     private String colour;
     private int cost;
-    private int houseCost;
     private int[] rents;
     private String owner;
 
-    public StreetTile(String id, String colour, int cost,  int houseCost, InfoTile infoTile, int... rents) throws IOException {
+    public StreetTile(String id, String colour, int cost, InfoTile infoTile, int... rents) throws IOException {
         this.id = id;
         this.colour = colour;
 
@@ -24,7 +23,6 @@ public class StreetTile extends Tile {
         this.height = N;
 
         this.cost = cost;
-        this.houseCost = houseCost;
         this.rents = rents;
         owner = "<te koop>";
 

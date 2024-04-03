@@ -23,9 +23,10 @@ public class ChestTile extends Tile {
 
     @Override
     public void setupInfoTile() {
-        Text description = new Text("Neem een\nAlgemeen Fonds-kaart");
+        Text description = new Text("Neem een Algemeen Fonds-kaart");
         description.setTextAlignment(TextAlignment.CENTER);
         description.setFont(new Font(15));
+        description.setWrappingWidth(180);
 
         infoTile.setup(100, this, createGraphic(true), description);
     }
