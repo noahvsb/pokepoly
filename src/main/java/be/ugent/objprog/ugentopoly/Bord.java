@@ -21,14 +21,14 @@ import java.util.Objects;
 public class Bord extends BorderPane {
 
     private Tile[] tiles;
-    private VBox left;
-    private VBox right;
-    private HBox top;
-    private HBox bottom;
+    private VBox leftTiles;
+    private VBox rightTiles;
+    private HBox topTiles;
+    private HBox bottomTiles;
 
     public Bord() throws IOException, JDOMException {
         // reading xml-file using JDOM
-        Document doc = new SAXBuilder().build(getClass().getResourceAsStream("ugentopoly.deel1.xml"));
+        Document doc = new SAXBuilder().build(getClass().getResourceAsStream("ugentopoly.xml"));
         Element root = doc.getRootElement();
 
         Element rootSettings = root.getChild("settings");
@@ -116,29 +116,29 @@ public class Bord extends BorderPane {
         }
 
         // adding tiles to left, top, right, bottom
-        left = new VBox();
-        top = new HBox();
-        right = new VBox();
-        right.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        bottom = new HBox();
+        leftTiles = new VBox();
+        topTiles = new HBox();
+        rightTiles = new VBox();
+        rightTiles.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        bottomTiles = new HBox();
 
         for (int i = 1; i < tiles.length; i++) {
             Tile t = tiles[i];
 
             // left
             if (i < 10) {
-                left.getChildren().addFirst(t.getHBox());
+                leftTiles.getChildren().addFirst(t.getHBox());
             }
 
             // top
             else if (i < 21) {
                 VBox v = t.getVBox();
-                top.getChildren().add(v);
+                topTiles.getChildren().add(v);
             }
 
             // right
             else if (i < 30) {
-                right.getChildren().add(t.getHBox());
+                rightTiles.getChildren().add(t.getHBox());
             }
 
             // bottom
@@ -149,13 +149,13 @@ public class Bord extends BorderPane {
                     v.getChildren().getFirst().setRotate(180);
                     v.getChildren().getLast().setRotate(180);
                 }
-                bottom.getChildren().addFirst(v);
+                bottomTiles.getChildren().addFirst(v);
             }
         }
 
         // adding starttile to bottom
         VBox start = tiles[0].getVBox();
-        bottom.getChildren().addFirst(start);
+        bottomTiles.getChildren().addFirst(start);
 
 
         // logo + infoTile
@@ -171,10 +171,10 @@ public class Bord extends BorderPane {
         center.setAlignment(Pos.CENTER);
 
         // set all parts
-        setBottom(bottom);
-        setLeft(left);
-        setTop(top);
-        setRight(right);
+        setBottom(bottomTiles);
+        setLeft(leftTiles);
+        setTop(topTiles);
+        setRight(rightTiles);
         setCenter(center);
     }
 }

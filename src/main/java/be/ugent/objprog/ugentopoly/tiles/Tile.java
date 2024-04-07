@@ -41,7 +41,7 @@ public abstract class Tile {
 
     public void createTile() throws IOException {
         Properties props = new Properties();
-        props.load(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.deel1.properties"));
+        props.load(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.properties"));
 
         // name text
         nameStr = props.getProperty(id);

@@ -76,11 +76,11 @@ public class CornerTile extends Tile {
         if (id.equals("tile.start"))
             return "Ontvang €" + start + " bij passeren";
         if (id.equals("tile.jail"))
-            return "Gooi met beide dobbelstenen hetzelfde aantal ogen om uit de gevangenis te geraken";
+            return "Gooi met beide dobbelstenen hetzelfde aantal ogen om uit de overpoort te geraken";
         if (id.equals("tile.freeparking"))
             return "Ontvang alles uit de bonuspot";
         if (id.equals("tile.gotojail"))
-            return "Ga direct naar de gevangenis!";
+            return "Ga direct naar de overpoort! Passeer niet langs start";
 
         System.err.println("Noah, gij prutser!!");
         return null;

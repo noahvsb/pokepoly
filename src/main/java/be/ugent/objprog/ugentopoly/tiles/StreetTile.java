@@ -42,6 +42,11 @@ public class StreetTile extends Tile {
         vbox.setAlignment(Pos.BOTTOM_CENTER);
         vbox.setSpacing(55);
 
+        /*
+            de stripe is een HBox, met de bedoeling om er zo makkelijk de huisjes op te plaatsen
+            (dit is niet nodig voor dit project, maar als ik later nog zou willen verder werken hieraan,
+            is dit wel al handig meegenomen)
+         */
         return new Stripe(colour, orientation ? 25 : 65, orientation ? 65 : 25);
     }
 
