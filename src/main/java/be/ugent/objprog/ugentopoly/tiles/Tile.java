@@ -34,7 +34,7 @@ public abstract class Tile {
 
     protected HBox hbox;
     protected VBox vbox;
-    protected HBox playerbox;
+    protected HBox playerBox;
 
     protected InfoTile infoTile;
 
@@ -50,7 +50,7 @@ public abstract class Tile {
         // boxes
         hbox = new HBox(createName());
         vbox = new VBox(createName());
-        playerbox = new HBox(-20);
+        playerBox = new HBox(-20);
 
         hbox.setPrefSize(width, height);
         hbox.setMaxSize(width, height);
@@ -66,8 +66,8 @@ public abstract class Tile {
         vbox.setAlignment(Pos.CENTER);
         vbox.setStyle(NORMAL_STYLE);
 
-        playerbox.setAlignment(Pos.CENTER);
-        playerbox.setOnMouseClicked(e -> tilePressed());
+        playerBox.setAlignment(Pos.CENTER);
+        playerBox.setOnMouseClicked(e -> tilePressed());
 
         // graphic
         hbox.getChildren().add(createGraphic(true));
@@ -120,9 +120,6 @@ public abstract class Tile {
             // change box look
             hbox.setStyle(HIGHLIGHT_STYLE);
             vbox.setStyle(HIGHLIGHT_STYLE);
-
-            // change mouseToggle
-            mouseToggle = !mouseToggle;
         }
         // set inactive
         else {
@@ -132,10 +129,9 @@ public abstract class Tile {
             // change box look
             hbox.setStyle(NORMAL_STYLE);
             vbox.setStyle(NORMAL_STYLE);
-
-            // change mouse toggle
-            mouseToggle = !mouseToggle;
         }
+        // change mouse toggle
+        mouseToggle = !mouseToggle;
     }
 
     public abstract void setupInfoTile();
@@ -153,7 +149,7 @@ public abstract class Tile {
     }
 
     public StackPane getTileWithHBox() {
-        return new StackPane(hbox, playerbox);
+        return new StackPane(hbox, playerBox);
     }
 
     public HBox getHBox() {
@@ -161,14 +157,14 @@ public abstract class Tile {
     }
 
     public StackPane getTileWithVBox() {
-        return new StackPane(vbox, playerbox);
+        return new StackPane(vbox, playerBox);
     }
 
     public VBox getVBox() {
         return vbox;
     }
 
-    public HBox getPlayerbox() {
-        return playerbox;
+    public HBox getPlayerBox() {
+        return playerBox;
     }
 }

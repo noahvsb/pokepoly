@@ -5,15 +5,15 @@ import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 public class InfoTile extends VBox {
-    private double w = 200;
-    private double h = 300;
+    private static final double WIDTH = 200;
+    private static final double HEIGHT = 300;
     private Tile currentActive;
 
     public InfoTile() {
         setVisible(false);
-        setPrefSize(w, h);
-        setMinSize(w, h);
-        setMaxSize(w, h);
+        setPrefSize(WIDTH, HEIGHT);
+        setMinSize(WIDTH, HEIGHT);
+        setMaxSize(WIDTH, HEIGHT);
         setStyle("-fx-background-color: white; -fx-background-radius: 7; -fx-border-width: 1; -fx-border-color: black; -fx-border-insets: 5");
 
         currentActive = null;

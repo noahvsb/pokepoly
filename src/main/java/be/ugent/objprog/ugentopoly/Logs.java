@@ -57,7 +57,7 @@ public class Logs extends VBox {
             pos -= 40;
 
         spelers[beurt].setPos(pos);
-        bord.getTiles()[pos].getPlayerbox().getChildren().add(spelers[beurt].getIcon());
+        bord.getTiles()[pos].getPlayerBox().getChildren().add(spelers[beurt].getIcon());
 
         // if roll was a double, roll again
         if (result[0] == result[1])

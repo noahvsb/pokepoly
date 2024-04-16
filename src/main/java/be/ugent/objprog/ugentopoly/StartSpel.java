@@ -7,16 +7,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class StartSpel extends VBox {
 
@@ -83,7 +80,7 @@ public class StartSpel extends VBox {
         for (Speler speler : spelersArr)
             if (speler != null) {
                 speler.setPos(0);
-                startTile.getPlayerbox().getChildren().add(speler.getIcon());
+                startTile.getPlayerBox().getChildren().add(speler.getIcon());
             }
 
         logs.setSpelers(spelersArr);

@@ -1,11 +1,7 @@
 package be.ugent.objprog.ugentopoly;
 
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
-
-import java.util.Objects;
 
 public class Speler {
     // general info
