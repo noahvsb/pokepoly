@@ -1,27 +1,32 @@
 package be.ugent.objprog.ugentopoly;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddSpeler extends VBox {
 
     private StartSpel startSpel;
 
     private String name;
-    private String icon;
+    private ImageView icon;
+    private int iconIndex;
 
     private TextField nameField;
     private ComboBox<String> pawnComboBox;
-    private Button button;
+    private Button voegToeButton;
 
-    public AddSpeler(int width, int height, StartSpel startSpel) {
+    private static final StringConverter<IconAndString> CONVERTER = new IconConverter();
+
+    public AddSpeler(int width, int height, StartSpel startSpel, List<Integer> usedIconIndexes) {
         setPrefSize(width, height);
         setMinSize(width, height);
         setMaxSize(width, height);
@@ -34,7 +39,7 @@ public class AddSpeler extends VBox {
 
         nameField = new TextField();
         nameField.setFont(new Font(20));
-        nameField.setOnAction(e -> nameFieldUsed());
+        nameField.setOnKeyTyped(e -> nameFieldUsed());
 
         HBox nameBox = new HBox(20, name, nameField);
         nameBox.setAlignment(Pos.CENTER);
@@ -43,40 +48,41 @@ public class AddSpeler extends VBox {
         Text pawn = new Text("Pion: ");
         pawn.setFont(new Font(20));
 
-        pawnComboBox = new ComboBox<>();
-        pawnComboBox.getItems().addAll("Wina", "VTK", "Chemica", "Filologica", "geologica", "VBK", "VEK", "VLK");
+        pawnComboBox = new PawnComboBox(usedIconIndexes);
         pawnComboBox.setOnAction(e -> comboBoxUsed());
 
         HBox pawnBox = new HBox(100, pawn, pawnComboBox);
         pawnBox.setAlignment(Pos.CENTER);
 
-        // button
-        button = new Button("Voeg toe");
-        button.setFont(new Font(20));
-        button.setOnAction(e -> addSpeler());
-        button.setDisable(true);
+        // buttons
+        voegToeButton = new Button("Voeg toe");
+        voegToeButton.setFont(new Font(20));
+        voegToeButton.setOnAction(e -> startSpel.addSpeler(new Speler(this.name, this.icon, this.iconIndex), false));
+        voegToeButton.setDisable(true);
 
-        // all
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setFont(new Font(20));
+        cancelButton.setOnAction(e -> startSpel.addSpeler(null, true));
+
+        HBox buttons = new HBox(20, cancelButton, voegToeButton);
+        buttons.setAlignment(Pos.CENTER);
+
+        // put them together
         setSpacing(35);
         setAlignment(Pos.CENTER);
-        getChildren().addAll(nameBox, pawnBox, button);
-    }
-
-    public void addSpeler() {
-        startSpel.addSpeler(new Speler(name, icon));
+        getChildren().addAll(nameBox, pawnBox, buttons);
     }
 
     public void nameFieldUsed() {
         name = nameField.getText();
 
-        if (icon != null)
-            button.setDisable(false);
+        voegToeButton.setDisable(icon == null || name.isEmpty());
     }
 
     public void comboBoxUsed() {
-        icon = "token" + (pawnComboBox.getSelectionModel().getSelectedIndex() + 1);
+        iconIndex = pawnComboBox.getSelectionModel().getSelectedIndex();
+        icon = CONVERTER.fromString(pawnComboBox.getSelectionModel().getSelectedItem()).icon();
 
-        if (name != null)
-            button.setDisable(false);
+        voegToeButton.setDisable(name == null || name.isEmpty());
     }
 }

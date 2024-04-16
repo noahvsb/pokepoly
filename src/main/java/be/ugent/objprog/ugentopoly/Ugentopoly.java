@@ -1,9 +1,9 @@
 package be.ugent.objprog.ugentopoly;
 
-import be.ugent.objprog.dice.Dice;
+import be.ugent.objprog.dice.DicePanel;
 
-import be.ugent.objprog.ugentopoly.tiles.Stripe;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -11,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 import org.jdom2.JDOMException;
 
 import java.io.IOException;
@@ -24,30 +25,25 @@ public class Ugentopoly extends Application {
         //main
         Bord bord = new Bord();
 
-        VBox logs = new VBox();
-        logs.setPrefSize(260, 845);
-        logs.setMinSize(260, 845);
-        logs.setMaxSize(260, 845);
-        logs.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: lightgray");
+        //logs
+        //dobbelstenen
+        final DicePanel dicePanel = new DicePanel();
+
+        Button btn = new Button();
+        btn.setText("ROL");
+        btn.setFont(new Font(15));
+        btn.setOnAction(event -> dicePanel.roll(result -> System.out.println("Resultaat: " + result)));
+        btn.setPrefSize(100, 50);
+
+        VBox dice = new VBox();
+        dice.getChildren().addAll(btn, dicePanel);
+        dice.setAlignment(Pos.CENTER);
+
+        VBox logs = new Logs(dice);
 
         HBox main = new HBox(bord, logs);
 
         Scene mainScene = new Scene(main, 1105, 845);
-
-
-        //dobbelstenen
-        final Dice dice = new Dice();
-
-        Button btn = new Button();
-        btn.setText("ROL");
-        btn.setFont(new Font(40));
-        btn.setOnAction(event -> dice.roll(t -> System.out.println("Resultaat: " + dice.getLastRoll())));
-        btn.setPrefSize(200, 100);
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-
-        Scene rolScene = new Scene(root, 250, 150);
 
         //spel starten
         StartSpel startSpel = new StartSpel(500, 325);
@@ -59,18 +55,6 @@ public class Ugentopoly extends Application {
         mainStage.setTitle("Ugentopoly");
         mainStage.setScene(mainScene);
         mainStage.show();
-
-        //dobbelstenen
-        /*
-            Stage rolStage = new Stage();
-            rolStage.setTitle("Dobbelstenen");
-            rolStage.setOnCloseRequest(e -> dice.close());
-            rolStage.setScene(rolScene);
-            rolStage.show();
-
-            mainStage.setOnCloseRequest(e -> rolStage.close());
-         */
-
 
         //spel starten
         Stage startSpelStage = new Stage();

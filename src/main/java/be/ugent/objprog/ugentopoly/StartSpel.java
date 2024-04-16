@@ -10,9 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReferenceArray;
+
 public class StartSpel extends VBox {
 
     private Speler[] spelersArr;
+    private List<Integer> usedIconIndexes;
 
     private VBox spelersVBox;
     private Button addSpelerButton;
@@ -27,12 +32,13 @@ public class StartSpel extends VBox {
         setMaxSize(width, height);
 
         spelersArr = new Speler[4];
+        usedIconIndexes = new ArrayList<>();
 
         spelersVBox = new VBox(20, new Label("<Speler 1>"), new Label("<Speler 2>"), new Label("<Speler 3>"), new Label("<Speler 4>"));
         for (Node label : spelersVBox.getChildren())
             ((Label) label).setFont(new Font(20));
 
-        addSpelerScene = new Scene(new AddSpeler(400, 300, this), 400, 300);
+        addSpelerScene = new Scene(new AddSpeler(400, 300, this, usedIconIndexes), 400, 300);
 
         addSpelerStage = new Stage();
         addSpelerStage.setTitle("Speler toevoegen");
@@ -58,30 +64,35 @@ public class StartSpel extends VBox {
         // TODO
     }
 
-    public void addSpeler(Speler speler) {
-        addSpelerStage.close();
-        addSpelerScene.setRoot(new AddSpeler(400, 300, this));
+    public void addSpeler(Speler speler, boolean cancel) {
+        if (!cancel) {
+            usedIconIndexes.add(speler.getIconIndex());
 
-        int i = 0;
-        boolean stop = false;
-        while (i < spelersArr.length && !stop) {
-            if (spelersArr[i] == null) {
-                spelersArr[i] = speler;
+            int i = 0;
+            boolean stop = false;
+            while (i < spelersArr.length && !stop) {
+                if (spelersArr[i] == null) {
+                    spelersArr[i] = speler;
 
-                spelersVBox.getChildren().set(i, speler.getLabel());
+                    spelersVBox.getChildren().set(i, speler.getLabel());
+                    ((Label) spelersVBox.getChildren().get(i)).setFont(new Font(20));
 
-                stop = true;
+                    stop = true;
+                }
+                i++;
             }
-            i++;
+
+            if (i == 1) {
+                startSpelButton.setDisable(false);
+            }
+
+            if (i == 4) {
+                addSpelerButton.setDisable(true);
+            }
         }
 
-        if (i == 1) {
-            startSpelButton.setDisable(false);
-        }
-
-        if (i == 4) {
-            addSpelerButton.setDisable(true);
-        }
+        addSpelerStage.close();
+        addSpelerScene.setRoot(new AddSpeler(400, 300, this, usedIconIndexes));
     }
 
 }

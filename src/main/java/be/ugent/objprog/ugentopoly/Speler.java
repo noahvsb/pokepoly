@@ -10,23 +10,26 @@ import java.util.Objects;
 public class Speler {
 
     private Label label;
-
     private String name;
     private ImageView icon;
-    public Speler(String name, String icon) {
+    private int iconIndex;
+    public Speler(String name, ImageView icon, int iconIndex) {
         this.name = name;
 
-        Image iconImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("assets/" + icon + ".png")));
-
-        this.icon = new ImageView(iconImage);
+        this.icon = icon;
         this.icon.setFitWidth(25);
         this.icon.setFitHeight(30);
 
+        this.iconIndex = iconIndex;
+
         label = new Label(name, this.icon);
-        label.setFont(new Font(20));
     }
 
     public Label getLabel() {
         return label;
+    }
+
+    public int getIconIndex() {
+        return iconIndex;
     }
 }
