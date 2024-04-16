@@ -50,7 +50,7 @@ public abstract class Tile {
         // boxes
         hbox = new HBox(createName());
         vbox = new VBox(createName());
-        playerbox = new HBox(-25);
+        playerbox = new HBox(-20);
 
         hbox.setPrefSize(width, height);
         hbox.setMaxSize(width, height);

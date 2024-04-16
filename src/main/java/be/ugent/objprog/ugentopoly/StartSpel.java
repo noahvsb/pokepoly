@@ -22,6 +22,7 @@ public class StartSpel extends VBox {
 
     private Bord bord;
     private Logs logs;
+    private StageController stageController;
 
     private Speler[] spelersArr;
     private List<Integer> usedIconIndexes;
@@ -33,9 +34,10 @@ public class StartSpel extends VBox {
     private Scene addSpelerScene;
     private Stage addSpelerStage;
 
-    public StartSpel(int width, int height, Bord bord, Logs logs) {
+    public StartSpel(int width, int height, Bord bord, Logs logs, StageController stageController) {
         this.bord = bord;
         this.logs = logs;
+        this.stageController = stageController;
 
         setPrefSize(width, height);
         setMinSize(width, height);
@@ -55,6 +57,8 @@ public class StartSpel extends VBox {
         addSpelerStage = new Stage();
         addSpelerStage.setTitle("Speler toevoegen");
         addSpelerStage.setScene(addSpelerScene);
+
+        stageController.addStages(addSpelerStage);
 
         // buttons
         addSpelerButton = new Button("Speler toevoegen");
@@ -84,8 +88,7 @@ public class StartSpel extends VBox {
 
         logs.setSpelers(spelersArr);
 
-        // close start stage
-        // TODO
+        stageController.closeStage("Start spel");
     }
 
     public void addSpeler(Speler speler, boolean cancel) {

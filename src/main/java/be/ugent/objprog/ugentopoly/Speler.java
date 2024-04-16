@@ -14,8 +14,8 @@ public class Speler {
     private ImageView icon;
     private int iconIndex;
 
-    private static final double DEFAULT_WIDTH = 50;
-    private static final double DEFAULT_HEIGHT = 60;
+    private static final double DEFAULT_WIDTH = 30;
+    private static final double DEFAULT_HEIGHT = 40;
 
     // gameplay
     private int pos;
@@ -30,8 +30,8 @@ public class Speler {
         this.iconIndex = iconIndex;
 
         ImageView iconCopy = new ImageView(icon.getImage());
-        iconCopy.setFitHeight(30);
-        iconCopy.setFitWidth(25);
+        iconCopy.setFitHeight(28);
+        iconCopy.setFitWidth(21);
         label = new Label(name, iconCopy);
     }
 

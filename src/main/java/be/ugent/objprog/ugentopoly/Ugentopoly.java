@@ -19,6 +19,7 @@ import java.io.IOException;
 public class Ugentopoly extends Application {
     @Override
     public void start(Stage mainStage) throws IOException, JDOMException {
+        StageController stageController = new StageController();
 
         // SCENES
 
@@ -46,7 +47,7 @@ public class Ugentopoly extends Application {
         Scene mainScene = new Scene(main, 1105, 845);
 
         //spel starten
-        StartSpel startSpel = new StartSpel(500, 325, bord, logs);
+        StartSpel startSpel = new StartSpel(500, 325, bord, logs, stageController);
         Scene startSpelScene = new Scene(startSpel, 500, 325);
 
         // STAGES
@@ -63,6 +64,7 @@ public class Ugentopoly extends Application {
         startSpelStage.show();
 
         mainStage.setOnCloseRequest(e -> startSpelStage.close());
+        stageController.addStages(mainStage, startSpelStage);
 
     }
 

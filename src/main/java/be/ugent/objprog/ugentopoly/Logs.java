@@ -8,7 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Logs extends VBox {
 
@@ -39,7 +40,8 @@ public class Logs extends VBox {
     }
 
     public void rolled() {
-        final int[] result = {2, 2};
+        final int[] result = {new Random().nextInt(6) + 1, new Random().nextInt(6) + 1};
+        System.out.print(Arrays.toString(result));
 
         // set result to roll result
         // TODO
@@ -56,6 +58,10 @@ public class Logs extends VBox {
 
         spelers[beurt].setPos(pos);
         bord.getTiles()[pos].getPlayerbox().getChildren().add(spelers[beurt].getIcon());
+
+        // if roll was a double, roll again
+        if (result[0] == result[1])
+            rolled(); // TODO
 
         beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
         spelerBeurt.getChildren().set(spelerBeurt.getChildren().size() - 1,
