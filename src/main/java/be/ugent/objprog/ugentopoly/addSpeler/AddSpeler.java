@@ -1,5 +1,7 @@
-package be.ugent.objprog.ugentopoly;
+package be.ugent.objprog.ugentopoly.addSpeler;
 
+import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.StartSpel;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -9,7 +11,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddSpeler extends VBox {

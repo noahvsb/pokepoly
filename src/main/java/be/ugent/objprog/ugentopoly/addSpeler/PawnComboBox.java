@@ -1,4 +1,4 @@
-package be.ugent.objprog.ugentopoly;
+package be.ugent.objprog.ugentopoly.addSpeler;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;

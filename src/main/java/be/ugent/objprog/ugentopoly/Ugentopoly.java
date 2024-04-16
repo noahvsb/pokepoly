@@ -23,6 +23,7 @@ public class Ugentopoly extends Application {
         // SCENES
 
         //main
+        //bord
         Bord bord = new Bord();
 
         //logs
@@ -32,21 +33,20 @@ public class Ugentopoly extends Application {
         Button btn = new Button();
         btn.setText("ROL");
         btn.setFont(new Font(15));
-        btn.setOnAction(event -> dicePanel.roll(result -> System.out.println("Resultaat: " + result)));
         btn.setPrefSize(100, 50);
 
         VBox dice = new VBox();
         dice.getChildren().addAll(btn, dicePanel);
         dice.setAlignment(Pos.CENTER);
 
-        VBox logs = new Logs(dice);
+        Logs logs = new Logs(dice, bord);
 
         HBox main = new HBox(bord, logs);
 
         Scene mainScene = new Scene(main, 1105, 845);
 
         //spel starten
-        StartSpel startSpel = new StartSpel(500, 325);
+        StartSpel startSpel = new StartSpel(500, 325, bord, logs);
         Scene startSpelScene = new Scene(startSpel, 500, 325);
 
         // STAGES

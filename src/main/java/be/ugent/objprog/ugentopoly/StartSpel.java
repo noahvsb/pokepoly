@@ -1,20 +1,27 @@
 package be.ugent.objprog.ugentopoly;
 
+import be.ugent.objprog.ugentopoly.addSpeler.AddSpeler;
+import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.Objects;
 
 public class StartSpel extends VBox {
+
+    private Bord bord;
+    private Logs logs;
 
     private Speler[] spelersArr;
     private List<Integer> usedIconIndexes;
@@ -26,11 +33,15 @@ public class StartSpel extends VBox {
     private Scene addSpelerScene;
     private Stage addSpelerStage;
 
-    public StartSpel(int width, int height) {
+    public StartSpel(int width, int height, Bord bord, Logs logs) {
+        this.bord = bord;
+        this.logs = logs;
+
         setPrefSize(width, height);
         setMinSize(width, height);
         setMaxSize(width, height);
 
+        // spelersArr and -VBox
         spelersArr = new Speler[4];
         usedIconIndexes = new ArrayList<>();
 
@@ -38,12 +49,14 @@ public class StartSpel extends VBox {
         for (Node label : spelersVBox.getChildren())
             ((Label) label).setFont(new Font(20));
 
+        // addSpelersStage
         addSpelerScene = new Scene(new AddSpeler(400, 300, this, usedIconIndexes), 400, 300);
 
         addSpelerStage = new Stage();
         addSpelerStage.setTitle("Speler toevoegen");
         addSpelerStage.setScene(addSpelerScene);
 
+        // buttons
         addSpelerButton = new Button("Speler toevoegen");
         addSpelerButton.setOnAction(e -> addSpelerStage.show());
         addSpelerButton.setFont(new Font(20));
@@ -61,6 +74,17 @@ public class StartSpel extends VBox {
     }
 
     public void startSpel() {
+        Tile startTile = bord.getTiles()[0];
+
+        for (Speler speler : spelersArr)
+            if (speler != null) {
+                speler.setPos(0);
+                startTile.getPlayerbox().getChildren().add(speler.getIcon());
+            }
+
+        logs.setSpelers(spelersArr);
+
+        // close start stage
         // TODO
     }
 
@@ -82,7 +106,7 @@ public class StartSpel extends VBox {
                 i++;
             }
 
-            if (i == 1) {
+            if (i == 2) {
                 startSpelButton.setDisable(false);
             }
 

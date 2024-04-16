@@ -127,18 +127,17 @@ public class Bord extends BorderPane {
 
             // left
             if (i < 10) {
-                leftTiles.getChildren().addFirst(t.getHBox());
+                leftTiles.getChildren().addFirst(t.getTileWithHBox());
             }
 
             // top
             else if (i < 21) {
-                VBox v = t.getVBox();
-                topTiles.getChildren().add(v);
+                topTiles.getChildren().add(t.getTileWithVBox());
             }
 
             // right
             else if (i < 30) {
-                rightTiles.getChildren().add(t.getHBox());
+                rightTiles.getChildren().add(t.getTileWithHBox());
             }
 
             // bottom
@@ -149,13 +148,12 @@ public class Bord extends BorderPane {
                     v.getChildren().getFirst().setRotate(180);
                     v.getChildren().getLast().setRotate(180);
                 }
-                bottomTiles.getChildren().addFirst(v);
+                bottomTiles.getChildren().addFirst(t.getTileWithVBox());
             }
         }
 
         // adding starttile to bottom
-        VBox start = tiles[0].getVBox();
-        bottomTiles.getChildren().addFirst(start);
+        bottomTiles.getChildren().addFirst(tiles[0].getTileWithVBox());
 
 
         // logo + infoTile
@@ -176,5 +174,9 @@ public class Bord extends BorderPane {
         setTop(topTiles);
         setRight(rightTiles);
         setCenter(center);
+    }
+
+    public Tile[] getTiles() {
+        return tiles;
     }
 }

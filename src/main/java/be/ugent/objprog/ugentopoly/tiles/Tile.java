@@ -34,6 +34,7 @@ public abstract class Tile {
 
     protected HBox hbox;
     protected VBox vbox;
+    protected HBox playerbox;
 
     protected InfoTile infoTile;
 
@@ -49,13 +50,13 @@ public abstract class Tile {
         // boxes
         hbox = new HBox(createName());
         vbox = new VBox(createName());
+        playerbox = new HBox(-25);
 
         hbox.setPrefSize(width, height);
         hbox.setMaxSize(width, height);
         hbox.setMinSize(width, height);
         hbox.setSpacing(12);
         hbox.setAlignment(Pos.CENTER);
-        hbox.setOnMouseClicked(e -> tilePressed());
         hbox.setStyle(NORMAL_STYLE);
 
         vbox.setPrefSize(height, width);
@@ -63,8 +64,10 @@ public abstract class Tile {
         vbox.setMinSize(height, width);
         vbox.setSpacing(12);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setOnMouseClicked(e -> tilePressed());
         vbox.setStyle(NORMAL_STYLE);
+
+        playerbox.setAlignment(Pos.CENTER);
+        playerbox.setOnMouseClicked(e -> tilePressed());
 
         // graphic
         hbox.getChildren().add(createGraphic(true));
@@ -149,11 +152,23 @@ public abstract class Tile {
         return "/be/ugent/objprog/ugentopoly/assets/" + imageName + ".png";
     }
 
+    public StackPane getTileWithHBox() {
+        return new StackPane(hbox, playerbox);
+    }
+
     public HBox getHBox() {
         return hbox;
     }
 
+    public StackPane getTileWithVBox() {
+        return new StackPane(vbox, playerbox);
+    }
+
     public VBox getVBox() {
         return vbox;
+    }
+
+    public HBox getPlayerbox() {
+        return playerbox;
     }
 }

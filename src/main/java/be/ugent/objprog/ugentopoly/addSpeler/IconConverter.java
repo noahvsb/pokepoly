@@ -1,6 +1,5 @@
-package be.ugent.objprog.ugentopoly;
+package be.ugent.objprog.ugentopoly.addSpeler;
 
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.StringConverter;
@@ -26,7 +25,7 @@ public class IconConverter extends StringConverter<IconAndString> {
                 new ImageView(
                         new Image(Objects.requireNonNull(
                                 getClass().getResourceAsStream(
-                                        "assets/token" + nameToTokenNr.get(string) + ".png"))));
+                                        "/be/ugent/objprog/ugentopoly/assets/token" + nameToTokenNr.get(string) + ".png"))));
 
         return new IconAndString(icon, string);
     }
