@@ -8,64 +8,83 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Logs extends VBox {
 
     private Bord bord;
     private VBox dice;
+    private DicePanel dicePanel;
+    private Button rolButton;
     private Speler[] spelers;
     private int spelersAmount;
     private HBox spelerBeurt;
     private int beurt;
 
-    public Logs(VBox dice, Bord bord) {
+    private double width;
+    private double height;
+
+    public Logs(double width, double height, VBox dice, Bord bord) {
         this.dice = dice;
         this.bord = bord;
 
-        setPrefSize(260, 845);
-        setMinSize(260, 845);
-        setMaxSize(260, 845);
+        this.width = width;
+        this.height = height;
+
+        setPrefSize(width, height);
+        setMinSize(width, height);
+        setMaxSize(width, height);
 
         setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: lightgray");
 
         setAlignment(Pos.BOTTOM_CENTER);
         setSpacing(25);
 
-        Button btn = (Button) dice.getChildren().getFirst(); // first child == button
+        dicePanel = (DicePanel) dice.getChildren().getLast(); // last child == DicePanel
 
-        btn.setOnMouseClicked(e -> rolled());
-        btn.setDisable(true);
+        rolButton = (Button) dice.getChildren().getFirst(); // first child == Button
+        rolButton.setOnAction(e -> {
+            rolButton.setDisable(true);
+            dicePanel.roll(this::handleRoll);
+        });
+        rolButton.setDisable(true);
     }
 
-    public void rolled() {
-        final int[] result = {new Random().nextInt(6) + 1, new Random().nextInt(6) + 1};
-        System.out.print(Arrays.toString(result));
-
-        // set result to roll result
-        // TODO
-        ((DicePanel) dice.getChildren().getLast()).roll(System.out::println); // last child == DicePanel
-
-        // wait until roll has finished
-        // TODO
-
+    public void handleRoll(List<Integer> result) {
+        // change position
         int pos = spelers[beurt].getPos();
-        for (int i : result)
+        for (int i : result) {
             pos += i;
-        while (pos >= 40)
-            pos -= 40;
+            pos -= pos >= 40 ? 40 : 0;
+        }
 
         spelers[beurt].setPos(pos);
         bord.getTiles()[pos].getPlayerBox().getChildren().add(spelers[beurt].getIcon());
 
-        // if roll was a double, roll again
-        if (result[0] == result[1])
-            rolled(); // TODO
+        // do the tile action
+        // TODO
 
-        beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
-        spelerBeurt.getChildren().set(spelerBeurt.getChildren().size() - 1,
-                spelers[beurt].getLabel());
+        // update beurt if not a double roll
+        if (!result.getFirst().equals(result.getLast())) {
+            beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
+
+            Text t = new Text("Aan de beurt: ");
+            t.setFont(new Font(15));
+
+            spelerBeurt.getChildren().clear();
+            spelerBeurt.getChildren().addAll(t, spelers[beurt].getLabel());
+        } else {
+            // laat duidelijk weten dat de speler dubbel heeft gegooid
+            Text t = new Text("heeft dubbel gegooid!");
+            t.setFont(new Font(15));
+
+            spelerBeurt.getChildren().clear();
+            spelerBeurt.getChildren().addAll(spelers[beurt].getLabel(), t);
+        }
+
+        // enable rolButton
+        rolButton.setDisable(false);
     }
 
     public void setSpelers(Speler[] spelers) {
@@ -81,6 +100,7 @@ public class Logs extends VBox {
         spelerBeurt = new HBox(t, spelers[beurt].getLabel());
         spelerBeurt.setAlignment(Pos.CENTER);
         spelerBeurt.setSpacing(10);
+        spelerBeurt.setMaxWidth(width - 10);
 
         getChildren().addAll(spelerBeurt, dice);
 

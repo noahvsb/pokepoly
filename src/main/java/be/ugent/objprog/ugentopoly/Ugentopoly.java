@@ -39,7 +39,7 @@ public class Ugentopoly extends Application {
         dice.getChildren().addAll(btn, dicePanel);
         dice.setAlignment(Pos.CENTER);
 
-        Logs logs = new Logs(dice, bord);
+        Logs logs = new Logs(260, 845, dice, bord);
 
         HBox main = new HBox(bord, logs);
 
