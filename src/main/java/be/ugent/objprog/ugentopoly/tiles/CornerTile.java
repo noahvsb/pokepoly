@@ -1,5 +1,6 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -10,9 +11,9 @@ import javafx.scene.text.TextAlignment;
 import java.io.IOException;
 import java.util.Objects;
 
-public class CornerTile extends Tile {
+public abstract class CornerTile extends Tile {
 
-    public CornerTile(String id, String imageName, InfoTile infoTile) throws IOException {
+    public CornerTile(String id, String imageName, InfoTile infoTile, StageController stageController) throws IOException {
         this.id = id;
 
         this.width = N * 2;
@@ -21,6 +22,7 @@ public class CornerTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
+        this.stageController = stageController;
 
         createTile();
     }
@@ -29,8 +31,8 @@ public class CornerTile extends Tile {
     public ImageView createGraphic(boolean orientation) {
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
-        imageView.setFitWidth(Math.max(width, height) / 2.8);
-        imageView.setFitHeight(Math.max(width, height) / 2.0);
+        imageView.setFitWidth(Math.max(width, height) / getImageWidthDivider());
+        imageView.setFitHeight(Math.max(width, height) / getImageHeightDivider());
 
         // zelfde opmerking als bij StreetTile
         hbox.setSpacing(10);
@@ -52,7 +54,13 @@ public class CornerTile extends Tile {
         infoTile.setup(40, this, createGraphic(true), title, description);
     }
 
-    public String getDescription() {
-        return null;
+    public abstract String getDescription();
+
+    public double getImageWidthDivider() {
+        return 2.8;
+    }
+
+    public double getImageHeightDivider() {
+        return 2.0;
     }
 }

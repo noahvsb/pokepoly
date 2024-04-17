@@ -1,5 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.StageController;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -14,7 +16,7 @@ public class UtilityTile extends Tile {
     private int util;
     private String owner;
 
-    public UtilityTile(String id, int util, int cost, InfoTile infoTile) throws IOException {
+    public UtilityTile(String id, int util, int cost, InfoTile infoTile, StageController stageController) throws IOException {
         this.id = id;
         this.util = util;
         imageName = "utility" + util;
@@ -27,6 +29,7 @@ public class UtilityTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
+        this.stageController = stageController;
 
         createTile();
     }
@@ -65,5 +68,10 @@ public class UtilityTile extends Tile {
         currentOwner.setTextAlignment(TextAlignment.CENTER);
 
         infoTile.setup(20, this, imageView, huur1, huur2, costPrice, currentOwner);
+    }
+
+    @Override
+    public Node[] getTileActionNodes() {
+        return new Node[0];
     }
 }

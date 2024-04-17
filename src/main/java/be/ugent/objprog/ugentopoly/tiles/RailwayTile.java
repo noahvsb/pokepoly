@@ -1,5 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.StageController;
+import javafx.scene.Node;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -13,7 +15,7 @@ public class RailwayTile extends Tile {
     private int rent;
     private String owner;
 
-    public RailwayTile(String id, int cost, int rent, InfoTile infoTile) throws IOException {
+    public RailwayTile(String id, int cost, int rent, InfoTile infoTile, StageController stageController) throws IOException {
         this.id = id;
         imageName = "railway";
 
@@ -26,6 +28,7 @@ public class RailwayTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
+        this.stageController = stageController;
 
         createTile();
     }
@@ -55,5 +58,10 @@ public class RailwayTile extends Tile {
         currentOwner.setTextAlignment(TextAlignment.CENTER);
 
         infoTile.setup(13, this, createGraphic(true), title, huur1, huur2, huur3, huur4, costPrice, currentOwner);
+    }
+
+    @Override
+    public Node[] getTileActionNodes() {
+        return new Node[0];
     }
 }

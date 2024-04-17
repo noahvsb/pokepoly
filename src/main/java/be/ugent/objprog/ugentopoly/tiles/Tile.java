@@ -1,13 +1,17 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.StageController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -37,6 +41,7 @@ public abstract class Tile {
     protected HBox playerBox;
 
     protected InfoTile infoTile;
+    protected StageController stageController;
 
     protected boolean mouseToggle;
 
@@ -139,6 +144,26 @@ public abstract class Tile {
     public void changeMouseToggle() {
         mouseToggle = !mouseToggle;
     }
+
+    public void handleTileAction(Speler speler) {
+        TileAction tileAction = new TileAction(400, 200, this);
+
+        Scene tileActionScene = new Scene(tileAction, 400, 200);
+
+        Stage tileActionStage = new Stage();
+        tileActionStage.setTitle("Actie");
+        tileActionStage.setScene(tileActionScene);
+        tileActionStage.setY(200);
+        tileActionStage.show();
+
+        stageController.addStages(tileActionStage);
+
+        // show infoTile
+        mouseToggle = true;
+        tilePressed();
+    }
+
+    public abstract Node[] getTileActionNodes();
 
     public String getId() {
         return id;

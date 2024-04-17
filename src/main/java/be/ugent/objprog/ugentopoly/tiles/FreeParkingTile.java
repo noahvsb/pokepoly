@@ -1,5 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.StageController;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -10,23 +12,9 @@ public class FreeParkingTile extends CornerTile {
 
     private int currentPot;
 
-    public FreeParkingTile(String id, String imageName, InfoTile infoTile) throws IOException {
-        super(id, imageName, infoTile);
+    public FreeParkingTile(String id, String imageName, InfoTile infoTile, StageController stageController) throws IOException {
+        super(id, imageName, infoTile, stageController);
         currentPot = 0;
-    }
-
-    @Override
-    public ImageView createGraphic(boolean orientation) {
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
-        imageView.setFitWidth(Math.max(width, height) / 2.0); // only difference between super
-        imageView.setFitHeight(Math.max(width, height) / 2.0);
-
-        // zelfde opmerking als bij StreetTile
-        hbox.setSpacing(10);
-        vbox.setSpacing(10);
-
-        return imageView;
     }
 
     @Override
@@ -34,7 +22,17 @@ public class FreeParkingTile extends CornerTile {
         return "Ontvang alles uit de bonuspot";
     }
 
+    @Override
+    public double getImageWidthDivider() {
+        return 2.0;
+    }
+
     public void addToCurrentPot(int amount) {
         currentPot += amount;
+    }
+
+    @Override
+    public Node[] getTileActionNodes() {
+        return new Node[0];
     }
 }

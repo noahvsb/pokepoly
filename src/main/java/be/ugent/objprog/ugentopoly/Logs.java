@@ -63,7 +63,10 @@ public class Logs extends VBox {
         bord.getTiles()[pos].getPlayerBox().getChildren().add(spelers[beurt].getIcon());
 
         // do the tile action
-        // TODO
+        bord.getTiles()[pos].handleTileAction(spelers[beurt]);
+
+        // update logs
+        update();
 
         // update beurt if not a double roll
         if (!result.getFirst().equals(result.getLast())) {
@@ -106,5 +109,9 @@ public class Logs extends VBox {
 
         // enable rol button
         dice.getChildren().getFirst().setDisable(false);
+    }
+
+    public void update() {
+        // TODO
     }
 }

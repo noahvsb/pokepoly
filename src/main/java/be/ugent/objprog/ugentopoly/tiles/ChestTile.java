@@ -1,5 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.StageController;
+import javafx.scene.Node;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -8,7 +10,7 @@ import java.io.IOException;
 
 public class ChestTile extends Tile {
 
-    public ChestTile(String id, InfoTile infoTile) throws IOException {
+    public ChestTile(String id, InfoTile infoTile, StageController stageController) throws IOException {
         this.id = id;
         imageName = "chest";
 
@@ -17,6 +19,7 @@ public class ChestTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
+        this.stageController = stageController;
 
         createTile();
     }
@@ -29,5 +32,10 @@ public class ChestTile extends Tile {
         description.setWrappingWidth(180);
 
         infoTile.setup(100, this, createGraphic(true), description);
+    }
+
+    @Override
+    public Node[] getTileActionNodes() {
+        return new Node[0];
     }
 }

@@ -26,7 +26,7 @@ public class Bord extends BorderPane {
     private HBox topTiles;
     private HBox bottomTiles;
 
-    public Bord() throws IOException, JDOMException {
+    public Bord(StageController stageController) throws IOException, JDOMException {
         // reading xml-file using JDOM
         Document doc = new SAXBuilder().build(getClass().getResourceAsStream("ugentopoly.xml"));
         Element root = doc.getRootElement();
@@ -61,7 +61,7 @@ public class Bord extends BorderPane {
                 String colour = area.getAttributeValue("color");
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles[pos] = new StreetTile(id, colour, cost, infoTile,
+                tiles[pos] = new StreetTile(id, colour, cost, infoTile, stageController,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
@@ -72,47 +72,47 @@ public class Bord extends BorderPane {
 
             // Chest
             if (type.equals("CHEST"))
-                tiles[pos] = new ChestTile(id, infoTile);
+                tiles[pos] = new ChestTile(id, infoTile, stageController);
 
             // Chance
             if (type.equals("CHANCE"))
-                tiles[pos] = new ChanceTile(id, infoTile);
+                tiles[pos] = new ChanceTile(id, infoTile, stageController);
 
             // Tax
             if (type.equals("TAX")) {
                 int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles[pos] = new TaxTile(id, amount, infoTile);
+                tiles[pos] = new TaxTile(id, amount, infoTile, stageController);
             }
 
             // Railway
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
                 int rent = Integer.parseInt(tile.getAttributeValue("rent"));
-                tiles[pos] = new RailwayTile(id, cost, rent, infoTile);
+                tiles[pos] = new RailwayTile(id, cost, rent, infoTile, stageController);
             }
 
             // Utility
             if (type.equals("UTILITY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles[pos] = new UtilityTile(id, util, cost, infoTile);
+                tiles[pos] = new UtilityTile(id, util, cost, infoTile, stageController);
                 util++;
             }
 
             // Go to jail
             if (type.equals("GO_TO_JAIL"))
-                tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile);
+                tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile, stageController);
 
             // Start
             if (type.equals("START"))
-                tiles[pos] = new StartTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")));
+                tiles[pos] = new StartTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")), stageController);
 
             // Jail
             if (type.equals("JAIL"))
-                tiles[pos] = new JailTile(id, "jail", infoTile);
+                tiles[pos] = new JailTile(id, "jail", infoTile, stageController);
 
             // Free parking
             if (type.equals("FREE_PARKING"))
-                tiles[pos] = new FreeParkingTile(id, "free_parking",  infoTile);
+                tiles[pos] = new FreeParkingTile(id, "free_parking",  infoTile, stageController);
         }
 
         // adding tiles to left, top, right, bottom
