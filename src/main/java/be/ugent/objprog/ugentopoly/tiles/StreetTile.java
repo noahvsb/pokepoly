@@ -74,6 +74,7 @@ public class StreetTile extends Tile {
         // current owner
         Text currentOwner = new Text("Huidige eigenaar\n" + owner);
         currentOwner.setFont(new Font(13));
+        currentOwner.setTextAlignment(TextAlignment.CENTER);
 
         infoTile.setup(Pos.TOP_CENTER, 30, this, new Stripe(colour, 200, 50), title, rent, price, currentOwner);
     }

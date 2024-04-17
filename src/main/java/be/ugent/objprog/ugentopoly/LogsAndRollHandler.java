@@ -8,10 +8,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Logs extends VBox {
+public class LogsAndRollHandler extends VBox {
 
     private Bord bord;
     private VBox dice;
@@ -25,7 +24,7 @@ public class Logs extends VBox {
     private double width;
     private double height;
 
-    public Logs(double width, double height, VBox dice, Bord bord) {
+    public LogsAndRollHandler(double width, double height, VBox dice, Bord bord) {
         this.dice = dice;
         this.bord = bord;
 

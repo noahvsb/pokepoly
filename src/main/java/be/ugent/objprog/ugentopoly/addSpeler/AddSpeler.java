@@ -52,7 +52,7 @@ public class AddSpeler extends VBox {
         pawnComboBox = new PawnComboBox(usedIconIndexes);
         pawnComboBox.setOnAction(e -> comboBoxUsed());
 
-        HBox pawnBox = new HBox(100, pawn, pawnComboBox);
+        HBox pawnBox = new HBox(20, pawn, pawnComboBox);
         pawnBox.setAlignment(Pos.CENTER);
 
         // buttons

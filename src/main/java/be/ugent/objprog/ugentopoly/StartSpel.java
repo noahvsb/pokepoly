@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class StartSpel extends VBox {
 
     private Bord bord;
-    private Logs logs;
+    private LogsAndRollHandler logsAndRollHandler;
     private StageController stageController;
 
     private Speler[] spelersArr;
@@ -31,9 +32,9 @@ public class StartSpel extends VBox {
     private Scene addSpelerScene;
     private Stage addSpelerStage;
 
-    public StartSpel(int width, int height, Bord bord, Logs logs, StageController stageController) {
+    public StartSpel(int width, int height, Bord bord, LogsAndRollHandler logsAndRollHandler, StageController stageController) {
         this.bord = bord;
-        this.logs = logs;
+        this.logsAndRollHandler = logsAndRollHandler;
         this.stageController = stageController;
 
         setPrefSize(width, height);
@@ -47,6 +48,7 @@ public class StartSpel extends VBox {
         spelersVBox = new VBox(20, new Label("<Speler 1>"), new Label("<Speler 2>"), new Label("<Speler 3>"), new Label("<Speler 4>"));
         for (Node label : spelersVBox.getChildren())
             ((Label) label).setFont(new Font(20));
+        spelersVBox.setAlignment(Pos.CENTER);
 
         // addSpelersStage
         addSpelerScene = new Scene(new AddSpeler(400, 300, this, usedIconIndexes), 400, 300);
@@ -54,6 +56,7 @@ public class StartSpel extends VBox {
         addSpelerStage = new Stage();
         addSpelerStage.setTitle("Speler toevoegen");
         addSpelerStage.setScene(addSpelerScene);
+        addSpelerStage.initStyle(StageStyle.UTILITY);
 
         stageController.addStages(addSpelerStage);
 
@@ -72,6 +75,7 @@ public class StartSpel extends VBox {
 
         getChildren().addAll(spelersVBox, buttons);
         setSpacing(75);
+        setAlignment(Pos.CENTER);
     }
 
     public void startSpel() {
@@ -84,7 +88,7 @@ public class StartSpel extends VBox {
                 startTile.getPlayerBox().getChildren().add(speler.getIcon());
             }
 
-        logs.setSpelers(spelersArr);
+        logsAndRollHandler.setSpelers(spelersArr);
 
         stageController.closeStage("Start spel");
     }

@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javafx.stage.StageStyle;
 import org.jdom2.JDOMException;
 
 import java.io.IOException;
@@ -39,14 +40,14 @@ public class Ugentopoly extends Application {
         dice.getChildren().addAll(btn, dicePanel);
         dice.setAlignment(Pos.CENTER);
 
-        Logs logs = new Logs(260, 845, dice, bord);
+        LogsAndRollHandler logsAndRollHandler = new LogsAndRollHandler(260, 845, dice, bord);
 
-        HBox main = new HBox(bord, logs);
+        HBox main = new HBox(bord, logsAndRollHandler);
 
         Scene mainScene = new Scene(main, 1105, 845);
 
         //spel starten
-        StartSpel startSpel = new StartSpel(500, 325, bord, logs, stageController);
+        StartSpel startSpel = new StartSpel(500, 325, bord, logsAndRollHandler, stageController);
         Scene startSpelScene = new Scene(startSpel, 500, 325);
 
         // STAGES
@@ -54,12 +55,14 @@ public class Ugentopoly extends Application {
         //main
         mainStage.setTitle("Ugentopoly");
         mainStage.setScene(mainScene);
+        mainStage.resizableProperty().setValue(false);
         mainStage.show();
 
         //spel starten
         Stage startSpelStage = new Stage();
         startSpelStage.setTitle("Start spel");
         startSpelStage.setScene(startSpelScene);
+        startSpelStage.initStyle(StageStyle.UNDECORATED);
         startSpelStage.show();
 
         mainStage.setOnCloseRequest(e -> startSpelStage.close());
