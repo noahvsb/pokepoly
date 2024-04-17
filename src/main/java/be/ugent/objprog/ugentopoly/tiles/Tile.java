@@ -1,10 +1,8 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.StageController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -13,11 +11,9 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Properties;
 
 public abstract class Tile {
@@ -29,8 +25,8 @@ public abstract class Tile {
 
     protected static final double BORDER_WIDTH = 1;
 
-    protected static final String NORMAL_STYLE = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: white";
-    protected static final String HIGHLIGHT_STYLE = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: #E3F1FF";
+    protected String normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: white";
+    protected String highlightStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-border-insets: 1; -fx-background-color: white";
 
     // other variables
     protected String id;
@@ -64,14 +60,14 @@ public abstract class Tile {
         hbox.setMinSize(width, height);
         hbox.setSpacing(12);
         hbox.setAlignment(Pos.CENTER);
-        hbox.setStyle(NORMAL_STYLE);
+        hbox.setStyle(normalStyle);
 
         vbox.setPrefSize(height, width);
         vbox.setMaxSize(height, width);
         vbox.setMinSize(height, width);
         vbox.setSpacing(12);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setStyle(NORMAL_STYLE);
+        vbox.setStyle(normalStyle);
 
         playerBox.setAlignment(Pos.CENTER);
         playerBox.setOnMouseClicked(e -> tilePressed());
@@ -113,8 +109,8 @@ public abstract class Tile {
         // set active
         if (mouseToggle) {
             if (currentActive != null) {
-                currentActive.getHBox().setStyle(NORMAL_STYLE);
-                currentActive.getVBox().setStyle(NORMAL_STYLE);
+                currentActive.getHBox().setStyle(normalStyle);
+                currentActive.getVBox().setStyle(normalStyle);
 
                 currentActive.changeMouseToggle();
 
@@ -125,8 +121,8 @@ public abstract class Tile {
             setupInfoTile();
 
             // change box look
-            hbox.setStyle(HIGHLIGHT_STYLE);
-            vbox.setStyle(HIGHLIGHT_STYLE);
+            hbox.setStyle(highlightStyle);
+            vbox.setStyle(highlightStyle);
         }
         // set inactive
         else {
@@ -134,8 +130,8 @@ public abstract class Tile {
             infoTile.reset();
 
             // change box look
-            hbox.setStyle(NORMAL_STYLE);
-            vbox.setStyle(NORMAL_STYLE);
+            hbox.setStyle(normalStyle);
+            vbox.setStyle(normalStyle);
         }
         // change mouse toggle
         mouseToggle = !mouseToggle;

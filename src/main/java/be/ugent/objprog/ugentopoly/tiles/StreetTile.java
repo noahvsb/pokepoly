@@ -98,16 +98,24 @@ public class StreetTile extends Tile {
     @Override
     public void responseWasOk(Speler speler) {
         if (owner.equals("<te koop>"))
-            buyProperty();
+            buyProperty(speler);
         else if (!owner.equals(speler.getName()))
-            payRent();
+            payRent(speler);
     }
 
-    public void buyProperty() {
-        // TODO
+    public void buyProperty(Speler speler) {
+        // update styles
+        String newColour = speler.getColourString().equals("red") ? "pink" : "light" + speler.getColourString();
+
+        normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: " + newColour;
+        highlightStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-border-insets: 1; -fx-background-color: " + newColour;
+        hbox.setStyle(normalStyle);
+        vbox.setStyle(normalStyle);
+
+        // TODO: everything else
     }
 
-    public void payRent() {
+    public void payRent(Speler speler) {
         // TODO
     }
 }

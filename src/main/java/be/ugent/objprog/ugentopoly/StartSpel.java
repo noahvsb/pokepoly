@@ -24,6 +24,7 @@ public class StartSpel extends VBox {
 
     private Speler[] spelersArr;
     private List<Integer> usedIconIndexes;
+    private List<Integer> usedColourIndexes;
 
     private VBox spelersVBox;
     private Button addSpelerButton;
@@ -41,9 +42,14 @@ public class StartSpel extends VBox {
         setMinSize(width, height);
         setMaxSize(width, height);
 
+        setStyle("-fx-background-color: lightblue; -fx-border-color: white");
+
+        // already used indexes
+        usedIconIndexes = new ArrayList<>();
+        usedColourIndexes = new ArrayList<>();
+
         // spelersArr and -VBox
         spelersArr = new Speler[4];
-        usedIconIndexes = new ArrayList<>();
 
         spelersVBox = new VBox(20, new Label("<Speler 1>"), new Label("<Speler 2>"), new Label("<Speler 3>"), new Label("<Speler 4>"));
         for (Node label : spelersVBox.getChildren())
@@ -51,7 +57,7 @@ public class StartSpel extends VBox {
         spelersVBox.setAlignment(Pos.CENTER);
 
         // addSpelersStage
-        addSpelerScene = new Scene(new AddSpeler(400, 300, this, usedIconIndexes), 400, 300);
+        addSpelerScene = new Scene(new AddSpeler(400, 250, this, usedIconIndexes, usedColourIndexes), 400, 250);
 
         addSpelerStage = new Stage();
         addSpelerStage.setTitle("Speler toevoegen");
@@ -62,7 +68,10 @@ public class StartSpel extends VBox {
 
         // buttons
         addSpelerButton = new Button("Speler toevoegen");
-        addSpelerButton.setOnAction(e -> addSpelerStage.show());
+        addSpelerButton.setOnAction(e -> {
+            addSpelerStage.close();
+            addSpelerStage.show();
+        });
         addSpelerButton.setFont(new Font(20));
 
         startSpelButton = new Button("Start spel");
@@ -96,6 +105,7 @@ public class StartSpel extends VBox {
     public void addSpeler(Speler speler, boolean cancel) {
         if (!cancel) {
             usedIconIndexes.add(speler.getIconIndex());
+            usedColourIndexes.add(speler.getColourIndex());
 
             int i = 0;
             boolean stop = false;
@@ -121,7 +131,7 @@ public class StartSpel extends VBox {
         }
 
         addSpelerStage.close();
-        addSpelerScene.setRoot(new AddSpeler(400, 300, this, usedIconIndexes));
+        addSpelerScene.setRoot(new AddSpeler(400, 300, this, usedIconIndexes, usedColourIndexes));
     }
 
 }

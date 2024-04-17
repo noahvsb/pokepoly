@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
@@ -19,23 +20,28 @@ public class AddSpeler extends VBox {
 
     private String name;
     private ImageView icon;
+    private String colour;
     private int iconIndex;
+    private int colourIndex;
 
     private TextField nameField;
     private ComboBox<String> pawnComboBox;
+    private ComboBox<String> colourComboBox;
     private Button voegToeButton;
 
     private static final StringConverter<IconAndString> CONVERTER = new IconConverter();
 
-    public AddSpeler(int width, int height, StartSpel startSpel, List<Integer> usedIconIndexes) {
+    public AddSpeler(int width, int height, StartSpel startSpel, List<Integer> usedIconIndexes, List<Integer> usedColourIndexes) {
         setPrefSize(width, height);
         setMinSize(width, height);
         setMaxSize(width, height);
 
+        setStyle("-fx-background-color: lightgray; -fx-border-color: white");
+
         this.startSpel = startSpel;
 
         // name
-        Text name = new Text("Naam: ");
+        Text name = new Text("Naam:");
         name.setFont(new Font(20));
 
         nameField = new TextField();
@@ -46,19 +52,29 @@ public class AddSpeler extends VBox {
         nameBox.setAlignment(Pos.CENTER);
 
         // pawn
-        Text pawn = new Text("Pion: ");
+        Text pawn = new Text("Pion:");
         pawn.setFont(new Font(20));
 
         pawnComboBox = new PawnComboBox(usedIconIndexes);
-        pawnComboBox.setOnAction(e -> comboBoxUsed());
+        pawnComboBox.setOnAction(e -> pawnComboBoxUsed());
 
         HBox pawnBox = new HBox(20, pawn, pawnComboBox);
         pawnBox.setAlignment(Pos.CENTER);
 
+        // colour
+        Text colour = new Text("Kleur:");
+        colour.setFont(new Font(20));
+
+        colourComboBox = new ColourComboBox(usedColourIndexes);
+        colourComboBox.setOnAction(e -> colourComboBoxUsed());
+
+        HBox colourBox = new HBox(20, colour, colourComboBox);
+        colourBox.setAlignment(Pos.CENTER);
+
         // buttons
         voegToeButton = new Button("Voeg toe");
         voegToeButton.setFont(new Font(20));
-        voegToeButton.setOnAction(e -> startSpel.addSpeler(new Speler(this.name, this.icon, this.iconIndex), false));
+        voegToeButton.setOnAction(e -> startSpel.addSpeler(new Speler(this.name, this.icon, this.colour, this.iconIndex, this.colourIndex), false));
         voegToeButton.setDisable(true);
 
         Button cancelButton = new Button("Annuleer");
@@ -69,21 +85,28 @@ public class AddSpeler extends VBox {
         buttons.setAlignment(Pos.CENTER);
 
         // put them together
-        setSpacing(35);
+        setSpacing(30);
         setAlignment(Pos.CENTER);
-        getChildren().addAll(nameBox, pawnBox, buttons);
+        getChildren().addAll(nameBox, pawnBox, colourBox, buttons);
     }
 
     public void nameFieldUsed() {
         name = nameField.getText();
 
-        voegToeButton.setDisable(icon == null || name.isEmpty());
+        voegToeButton.setDisable(name.isEmpty() || icon == null || colour == null);
     }
 
-    public void comboBoxUsed() {
+    public void pawnComboBoxUsed() {
         iconIndex = pawnComboBox.getSelectionModel().getSelectedIndex();
         icon = CONVERTER.fromString(pawnComboBox.getSelectionModel().getSelectedItem()).icon();
 
-        voegToeButton.setDisable(name == null || name.isEmpty());
+        voegToeButton.setDisable(name == null || name.isEmpty() || colour == null);
+    }
+
+    public void colourComboBoxUsed() {
+        colourIndex = colourComboBox.getSelectionModel().getSelectedIndex();
+        colour = colourComboBox.getSelectionModel().getSelectedItem();
+
+        voegToeButton.setDisable(icon == null || name == null || name.isEmpty());
     }
 }
