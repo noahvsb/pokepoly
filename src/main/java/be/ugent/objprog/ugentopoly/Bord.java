@@ -100,19 +100,19 @@ public class Bord extends BorderPane {
 
             // Go to jail
             if (type.equals("GO_TO_JAIL"))
-                tiles[pos] = new CornerTile(id, "go_to_jail", infoTile);
+                tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile);
 
             // Start
             if (type.equals("START"))
-                tiles[pos] = new CornerTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")));
+                tiles[pos] = new StartTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")));
 
             // Jail
             if (type.equals("JAIL"))
-                tiles[pos] = new CornerTile(id, "jail", infoTile);
+                tiles[pos] = new JailTile(id, "jail", infoTile);
 
             // Free parking
             if (type.equals("FREE_PARKING"))
-                tiles[pos] = new CornerTile(id, "free_parking",  infoTile);
+                tiles[pos] = new FreeParkingTile(id, "free_parking",  infoTile);
         }
 
         // adding tiles to left, top, right, bottom
