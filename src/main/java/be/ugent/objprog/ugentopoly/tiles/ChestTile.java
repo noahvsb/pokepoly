@@ -1,7 +1,9 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -10,7 +12,7 @@ import java.io.IOException;
 
 public class ChestTile extends Tile {
 
-    public ChestTile(String id, InfoTile infoTile, StageController stageController) throws IOException {
+    public ChestTile(String id, InfoTile infoTile) throws IOException {
         this.id = id;
         imageName = "chest";
 
@@ -19,7 +21,6 @@ public class ChestTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
-        this.stageController = stageController;
 
         createTile();
     }
@@ -35,7 +36,17 @@ public class ChestTile extends Tile {
     }
 
     @Override
-    public Node[] getTileActionNodes() {
-        return new Node[0];
+    public Alert.AlertType getAlertType(Speler speler) {
+        return Alert.AlertType.INFORMATION;
+    }
+
+    @Override
+    public String getAlertDescription(Speler speler) {
+        return "Neem een Algemeen Fonds-kaart";
+    }
+
+    @Override
+    public void responseWasOk(Speler speler) {
+        // TODO
     }
 }

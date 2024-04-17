@@ -1,7 +1,10 @@
 package be.ugent.objprog.ugentopoly;
 
+import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+
+import java.util.List;
 
 public class Speler {
     // general info
@@ -15,6 +18,9 @@ public class Speler {
 
     // gameplay
     private int pos;
+    private int balance;
+    private List<Tile> eigendommen;
+    private int lastRoll;
 
     public Speler(String name, ImageView icon, int iconIndex) {
         this.name = name;
@@ -32,7 +38,9 @@ public class Speler {
     }
 
     public Label getLabel() {
-        return label;
+        Label newLabel = new Label(label.getText());
+        newLabel.setGraphic(label.getGraphic());
+        return newLabel;
     }
 
     public String getName() {
@@ -53,5 +61,25 @@ public class Speler {
 
     public void setPos(int pos) {
         this.pos = pos;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public void addBalance(int amount) {
+        balance += amount;
+    }
+
+    public void setLastRoll(int lastRoll) {
+        this.lastRoll = lastRoll;
+    }
+
+    public int getLastRoll() {
+        return lastRoll;
     }
 }

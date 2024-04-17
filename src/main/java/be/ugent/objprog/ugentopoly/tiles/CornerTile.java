@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public abstract class CornerTile extends Tile {
 
-    public CornerTile(String id, String imageName, InfoTile infoTile, StageController stageController) throws IOException {
+    public CornerTile(String id, String imageName, InfoTile infoTile) throws IOException {
         this.id = id;
 
         this.width = N * 2;
@@ -22,7 +22,6 @@ public abstract class CornerTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
-        this.stageController = stageController;
 
         createTile();
     }

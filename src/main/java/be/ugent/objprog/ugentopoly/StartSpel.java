@@ -79,6 +79,7 @@ public class StartSpel extends VBox {
 
         for (Speler speler : spelersArr)
             if (speler != null) {
+                speler.setBalance(bord.getStartBalance());
                 speler.setPos(0);
                 startTile.getPlayerBox().getChildren().add(speler.getIcon());
             }

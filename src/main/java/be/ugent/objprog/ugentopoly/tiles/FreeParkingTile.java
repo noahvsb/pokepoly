@@ -1,25 +1,22 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
-import be.ugent.objprog.ugentopoly.StageController;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import be.ugent.objprog.ugentopoly.Speler;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class FreeParkingTile extends CornerTile {
 
-    private int currentPot;
+    private int bonuspot;
 
-    public FreeParkingTile(String id, String imageName, InfoTile infoTile, StageController stageController) throws IOException {
-        super(id, imageName, infoTile, stageController);
-        currentPot = 0;
+    public FreeParkingTile(String id, String imageName, InfoTile infoTile) throws IOException {
+        super(id, imageName, infoTile);
+        bonuspot = 0;
     }
 
     @Override
     public String getDescription() {
-        return "Ontvang alles uit de bonuspot";
+        return "Ontvang €" + bonuspot + " (alles) uit de bonuspot";
     }
 
     @Override
@@ -28,11 +25,21 @@ public class FreeParkingTile extends CornerTile {
     }
 
     public void addToCurrentPot(int amount) {
-        currentPot += amount;
+        bonuspot += amount;
     }
 
     @Override
-    public Node[] getTileActionNodes() {
-        return new Node[0];
+    public Alert.AlertType getAlertType(Speler speler) {
+        return Alert.AlertType.INFORMATION;
+    }
+
+    @Override
+    public String getAlertDescription(Speler speler) {
+        return "U ontvang €" + bonuspot + " uit de bonuspot";
+    }
+
+    @Override
+    public void responseWasOk(Speler speler) {
+        // TODO
     }
 }

@@ -5,6 +5,8 @@ import be.ugent.objprog.ugentopoly.StageController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -15,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Properties;
 
 public abstract class Tile {
@@ -41,7 +44,6 @@ public abstract class Tile {
     protected HBox playerBox;
 
     protected InfoTile infoTile;
-    protected StageController stageController;
 
     protected boolean mouseToggle;
 
@@ -146,24 +148,26 @@ public abstract class Tile {
     }
 
     public void handleTileAction(Speler speler) {
-        TileAction tileAction = new TileAction(400, 200, this);
-
-        Scene tileActionScene = new Scene(tileAction, 400, 200);
-
-        Stage tileActionStage = new Stage();
-        tileActionStage.setTitle("Actie");
-        tileActionStage.setScene(tileActionScene);
-        tileActionStage.setY(200);
-        tileActionStage.show();
-
-        stageController.addStages(tileActionStage);
+        Alert alert = new Alert(getAlertType(speler));
+        alert.setTitle(alert.getAlertType().equals(Alert.AlertType.CONFIRMATION) ? "Aankoop" : "Melding");
+        alert.setHeaderText(getAlertDescription(speler));
 
         // show infoTile
         mouseToggle = true;
         tilePressed();
+
+        alert.showAndWait().ifPresent(response -> {
+            tilePressed();
+            if (response == ButtonType.OK)
+                responseWasOk(speler);
+        });
     }
 
-    public abstract Node[] getTileActionNodes();
+    public abstract Alert.AlertType getAlertType(Speler speler);
+
+    public abstract String getAlertDescription(Speler speler);
+
+    public abstract void responseWasOk(Speler speler);
 
     public String getId() {
         return id;

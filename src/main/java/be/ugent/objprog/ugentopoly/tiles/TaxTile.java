@@ -1,7 +1,9 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -11,7 +13,7 @@ import java.io.IOException;
 public class TaxTile extends Tile {
     private int cost;
 
-    public TaxTile(String id, int cost, InfoTile infoTile, StageController stageController) throws IOException {
+    public TaxTile(String id, int cost, InfoTile infoTile) throws IOException {
         this.id = id;
         imageName = "tax";
 
@@ -22,7 +24,6 @@ public class TaxTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
-        this.stageController = stageController;
 
         createTile();
     }
@@ -39,7 +40,17 @@ public class TaxTile extends Tile {
     }
 
     @Override
-    public Node[] getTileActionNodes() {
-        return new Node[0];
+    public Alert.AlertType getAlertType(Speler speler) {
+        return Alert.AlertType.INFORMATION;
+    }
+
+    @Override
+    public String getAlertDescription(Speler speler) {
+        return "Betaal €" + cost + " TAX";
+    }
+
+    @Override
+    public void responseWasOk(Speler speler) {
+        // TODO
     }
 }

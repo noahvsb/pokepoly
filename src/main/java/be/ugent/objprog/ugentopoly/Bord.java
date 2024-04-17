@@ -21,17 +21,21 @@ import java.util.Objects;
 public class Bord extends BorderPane {
 
     private Tile[] tiles;
+    private int startBalance;
+
     private VBox leftTiles;
     private VBox rightTiles;
     private HBox topTiles;
     private HBox bottomTiles;
 
-    public Bord(StageController stageController) throws IOException, JDOMException {
+    public Bord() throws IOException, JDOMException {
         // reading xml-file using JDOM
         Document doc = new SAXBuilder().build(getClass().getResourceAsStream("ugentopoly.xml"));
         Element root = doc.getRootElement();
 
         Element rootSettings = root.getChild("settings");
+        startBalance = Integer.parseInt(rootSettings.getAttributeValue("balance"));
+
         Element rootAreas = root.getChild("areas");
         Element rootTiles = root.getChild("tiles");
 
@@ -61,7 +65,7 @@ public class Bord extends BorderPane {
                 String colour = area.getAttributeValue("color");
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles[pos] = new StreetTile(id, colour, cost, infoTile, stageController,
+                tiles[pos] = new StreetTile(id, colour, cost, infoTile,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
@@ -72,47 +76,47 @@ public class Bord extends BorderPane {
 
             // Chest
             if (type.equals("CHEST"))
-                tiles[pos] = new ChestTile(id, infoTile, stageController);
+                tiles[pos] = new ChestTile(id, infoTile);
 
             // Chance
             if (type.equals("CHANCE"))
-                tiles[pos] = new ChanceTile(id, infoTile, stageController);
+                tiles[pos] = new ChanceTile(id, infoTile);
 
             // Tax
             if (type.equals("TAX")) {
                 int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles[pos] = new TaxTile(id, amount, infoTile, stageController);
+                tiles[pos] = new TaxTile(id, amount, infoTile);
             }
 
             // Railway
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
                 int rent = Integer.parseInt(tile.getAttributeValue("rent"));
-                tiles[pos] = new RailwayTile(id, cost, rent, infoTile, stageController);
+                tiles[pos] = new RailwayTile(id, cost, rent, infoTile);
             }
 
             // Utility
             if (type.equals("UTILITY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles[pos] = new UtilityTile(id, util, cost, infoTile, stageController);
+                tiles[pos] = new UtilityTile(id, util, cost, infoTile);
                 util++;
             }
 
             // Go to jail
             if (type.equals("GO_TO_JAIL"))
-                tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile, stageController);
+                tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile);
 
             // Start
             if (type.equals("START"))
-                tiles[pos] = new StartTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")), stageController);
+                tiles[pos] = new StartTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")));
 
             // Jail
             if (type.equals("JAIL"))
-                tiles[pos] = new JailTile(id, "jail", infoTile, stageController);
+                tiles[pos] = new JailTile(id, "jail", infoTile);
 
             // Free parking
             if (type.equals("FREE_PARKING"))
-                tiles[pos] = new FreeParkingTile(id, "free_parking",  infoTile, stageController);
+                tiles[pos] = new FreeParkingTile(id, "free_parking",  infoTile);
         }
 
         // adding tiles to left, top, right, bottom
@@ -178,5 +182,9 @@ public class Bord extends BorderPane {
 
     public Tile[] getTiles() {
         return tiles;
+    }
+
+    public int getStartBalance() {
+        return startBalance;
     }
 }

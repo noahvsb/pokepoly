@@ -24,7 +24,7 @@ public class Ugentopoly extends Application {
 
         //main
         //bord
-        Bord bord = new Bord(stageController);
+        Bord bord = new Bord();
 
         //logs
         //dobbelstenen

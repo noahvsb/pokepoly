@@ -1,7 +1,9 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -12,7 +14,7 @@ import java.util.Objects;
 
 public class ChanceTile extends Tile {
 
-    public ChanceTile(String id, InfoTile infoTile, StageController stageController) throws IOException {
+    public ChanceTile(String id, InfoTile infoTile) throws IOException {
         this.id = id;
         imageName = "chance";
 
@@ -21,7 +23,6 @@ public class ChanceTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
-        this.stageController = stageController;
 
         createTile();
     }
@@ -49,7 +50,17 @@ public class ChanceTile extends Tile {
     }
 
     @Override
-    public Node[] getTileActionNodes() {
-        return new Node[0];
+    public Alert.AlertType getAlertType(Speler speler) {
+        return Alert.AlertType.INFORMATION;
+    }
+
+    @Override
+    public String getAlertDescription(Speler speler) {
+        return "Neem een Kans-kaart";
+    }
+
+    @Override
+    public void responseWasOk(Speler speler) {
+        // TODO
     }
 }

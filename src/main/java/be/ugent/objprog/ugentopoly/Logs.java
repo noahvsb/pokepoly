@@ -53,16 +53,23 @@ public class Logs extends VBox {
 
     public void handleRoll(List<Integer> result) {
         // change position
+        boolean langsStart = false;
         int pos = spelers[beurt].getPos();
         for (int i : result) {
             pos += i;
-            pos -= pos >= 40 ? 40 : 0;
+            if (pos >= 40) {
+                langsStart = true;
+                pos -= 40;
+            }
         }
 
+        spelers[beurt].setLastRoll(pos < spelers[beurt].getPos() ? pos + 40 - spelers[beurt].getPos() : pos - spelers[beurt].getPos());
         spelers[beurt].setPos(pos);
         bord.getTiles()[pos].getPlayerBox().getChildren().add(spelers[beurt].getIcon());
 
         // do the tile action
+        if (langsStart)
+            bord.getTiles()[0].handleTileAction(spelers[beurt]);
         bord.getTiles()[pos].handleTileAction(spelers[beurt]);
 
         // update logs

@@ -61,7 +61,7 @@ public class AddSpeler extends VBox {
         voegToeButton.setOnAction(e -> startSpel.addSpeler(new Speler(this.name, this.icon, this.iconIndex), false));
         voegToeButton.setDisable(true);
 
-        Button cancelButton = new Button("Cancel");
+        Button cancelButton = new Button("Annuleer");
         cancelButton.setFont(new Font(20));
         cancelButton.setOnAction(e -> startSpel.addSpeler(null, true));
 

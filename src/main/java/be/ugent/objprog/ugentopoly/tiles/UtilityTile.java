@@ -1,7 +1,9 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -15,8 +17,9 @@ public class UtilityTile extends Tile {
     private int cost;
     private int util;
     private String owner;
+    private boolean beideInBezit;
 
-    public UtilityTile(String id, int util, int cost, InfoTile infoTile, StageController stageController) throws IOException {
+    public UtilityTile(String id, int util, int cost, InfoTile infoTile) throws IOException {
         this.id = id;
         this.util = util;
         imageName = "utility" + util;
@@ -29,7 +32,6 @@ public class UtilityTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
-        this.stageController = stageController;
 
         createTile();
     }
@@ -71,7 +73,34 @@ public class UtilityTile extends Tile {
     }
 
     @Override
-    public Node[] getTileActionNodes() {
-        return new Node[0];
+    public Alert.AlertType getAlertType(Speler speler) {
+        if (owner.equals("<te koop>"))
+            return Alert.AlertType.CONFIRMATION;
+        return Alert.AlertType.INFORMATION;
+    }
+
+    @Override
+    public String getAlertDescription(Speler speler) {
+        if (owner.equals("<te koop>"))
+            return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
+        else if (!owner.equals(speler.getName()))
+            return "U moet uw aantal gegooide ogen (" + speler.getLastRoll() + ") x €" + (beideInBezit ? "10" : "4") + " betalen aan " + owner;
+        return "Dit eigendom is in uw bezit";
+    }
+
+    @Override
+    public void responseWasOk(Speler speler) {
+        if (owner.equals("<te koop>"))
+            buyProperty();
+        else if (!owner.equals(speler.getName()))
+            payRent();
+    }
+
+    public void buyProperty() {
+        // TODO
+    }
+
+    public void payRent() {
+        // TODO
     }
 }

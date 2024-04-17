@@ -1,7 +1,9 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -15,7 +17,7 @@ public class RailwayTile extends Tile {
     private int rent;
     private String owner;
 
-    public RailwayTile(String id, int cost, int rent, InfoTile infoTile, StageController stageController) throws IOException {
+    public RailwayTile(String id, int cost, int rent, InfoTile infoTile) throws IOException {
         this.id = id;
         imageName = "railway";
 
@@ -28,7 +30,6 @@ public class RailwayTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
-        this.stageController = stageController;
 
         createTile();
     }
@@ -61,7 +62,34 @@ public class RailwayTile extends Tile {
     }
 
     @Override
-    public Node[] getTileActionNodes() {
-        return new Node[0];
+    public Alert.AlertType getAlertType(Speler speler) {
+        if (owner.equals("<te koop>"))
+            return Alert.AlertType.CONFIRMATION;
+        return Alert.AlertType.INFORMATION;
+    }
+
+    @Override
+    public String getAlertDescription(Speler speler) {
+        if (owner.equals("<te koop>"))
+            return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
+        else if (!owner.equals(speler.getName()))
+            return "U moet €" + rent + " betalen aan " + owner;
+        return "Dit eigendom is in uw bezit";
+    }
+
+    @Override
+    public void responseWasOk(Speler speler) {
+        if (owner.equals("<te koop>"))
+            buyProperty();
+        else if (!owner.equals(speler.getName()))
+            payRent();
+    }
+
+    public void buyProperty() {
+        // TODO
+    }
+
+    public void payRent() {
+        // TODO
     }
 }

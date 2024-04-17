@@ -1,7 +1,9 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 
@@ -9,8 +11,8 @@ public class StartTile extends CornerTile {
 
     private int start;
 
-    public StartTile(String id, String imageName, InfoTile infoTile, int start, StageController stageController) throws IOException {
-        super(id, imageName, infoTile, stageController);
+    public StartTile(String id, String imageName, InfoTile infoTile, int start) throws IOException {
+        super(id, imageName, infoTile);
 
         this.start = start;
     }
@@ -21,7 +23,17 @@ public class StartTile extends CornerTile {
     }
 
     @Override
-    public Node[] getTileActionNodes() {
-        return new Node[0];
+    public Alert.AlertType getAlertType(Speler speler) {
+        return Alert.AlertType.INFORMATION;
+    }
+
+    @Override
+    public String getAlertDescription(Speler speler) {
+        return "U passeert langs start en ontvangt €" + start;
+    }
+
+    @Override
+    public void responseWasOk(Speler speler) {
+
     }
 }
