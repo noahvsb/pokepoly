@@ -11,9 +11,13 @@ import javafx.scene.text.Text;
 import org.jdom2.Element;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class ChanceTile extends Tile {
+
+    private List<Element> deck;
 
     public ChanceTile(String id, InfoTile infoTile, Element deck) throws IOException {
         this.id = id;
@@ -24,6 +28,8 @@ public class ChanceTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
+
+        this.deck = deck.getChildren();
 
         createTile();
     }
@@ -72,6 +78,8 @@ public class ChanceTile extends Tile {
 
     @Override
     public void responseWasOk(Speler speler) {
-        // TODO
+        Card card = new Card(deck.get(new Random().nextInt(deck.size())));
+
+        card.handleCardAction(speler);
     }
 }

@@ -4,10 +4,7 @@ import be.ugent.objprog.dice.DicePanel;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -15,6 +12,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.List;
+import java.util.Optional;
 
 public class LogsAndRollHandler extends VBox {
     private int amountOfDoubleRollsAfterEachOther;
@@ -97,7 +95,18 @@ public class LogsAndRollHandler extends VBox {
             }
             bord.getTiles()[pos].handleTileAction(spelers[beurt]);
             if (spelers[beurt].getBalance() < 0) {
-                // TODO: implement gameOver
+                // zoek winnaar
+                Speler winnaar = spelers[beurt];
+                for (Speler s : spelers)
+                    if (s != null && winnaar.getBalance() < s.getBalance())
+                        winnaar = s;
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("GAME OVER");
+                alert.setHeaderText("GAME OVER\nwinnaar: " + winnaar.getName());
+
+                alert.showAndWait().ifPresent(response -> System.exit(0));
+                // TODO: change possibly
             }
 
             // update status
