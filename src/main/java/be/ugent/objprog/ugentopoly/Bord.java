@@ -98,7 +98,7 @@ public class Bord extends BorderPane {
             // Utility
             if (type.equals("UTILITY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles[pos] = new UtilityTile(id, util, cost, infoTile);
+                tiles[pos] = new UtilityTile(id, util, cost, infoTile, this);
                 util++;
             }
 
