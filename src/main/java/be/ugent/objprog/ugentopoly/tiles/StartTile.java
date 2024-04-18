@@ -34,6 +34,6 @@ public class StartTile extends CornerTile {
 
     @Override
     public void responseWasOk(Speler speler) {
-
+        speler.updateBalance(start);
     }
 }

@@ -1,10 +1,13 @@
 package be.ugent.objprog.ugentopoly;
 
+import be.ugent.objprog.ugentopoly.tiles.StreetTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Speler {
@@ -37,17 +40,34 @@ public class Speler {
         this.iconIndex = iconIndex;
         this.colourIndex = colourIndex;
 
-        ImageView iconCopy = new ImageView(icon.getImage());
-        iconCopy.setFitHeight(28);
-        iconCopy.setFitWidth(21);
-        label = new Label(name, iconCopy);
-        label.setTextFill(Color.web(colour));
+        eigendommen = new ArrayList<>();
     }
 
     public Label getLabel() {
-        Label newLabel = new Label(label.getText(), label.getGraphic());
-        newLabel.setTextFill(Color.web(colour));
-        return newLabel;
+        ImageView iconCopy = new ImageView(icon.getImage());
+        iconCopy.setFitHeight(28);
+        iconCopy.setFitWidth(21);
+
+        Label label = new Label(name, iconCopy);
+        label.setTextFill(Color.web(colour));
+
+        return label;
+    }
+
+    public int getEigendommenOfAreaAmount(String areaId) {
+        int amount = 0;
+        for (Tile t : eigendommen)
+            if (t.getId().matches("tile.street[0-9]+") && ((StreetTile) t).getAreaId().equals(areaId))
+                amount++;
+        return amount;
+    }
+
+    public int getEigendommenOfTypeAmount(String type) {
+        int amount = 0;
+        for (Tile t : eigendommen)
+            if (t.getId().matches("tile." + type + "[0-9]+"))
+                amount++;
+        return amount;
     }
 
     public String getName() {
@@ -59,7 +79,11 @@ public class Speler {
     }
 
     public String getColourString() {
-        return this.colour;
+        return colour;
+    }
+
+    public String getLighterColourString() {
+        return colour.equals("red") ? "pink" : "light" + colour;
     }
 
     public int getIconIndex() {
@@ -86,7 +110,7 @@ public class Speler {
         this.balance = balance;
     }
 
-    public void addBalance(int amount) {
+    public void updateBalance(int amount) {
         balance += amount;
     }
 
@@ -96,5 +120,14 @@ public class Speler {
 
     public int getLastRoll() {
         return lastRoll;
+    }
+
+    public void addEigendom(Tile tile) {
+        eigendommen.add(tile);
+        eigendommen.sort(Comparator.comparing(Tile::getId));
+    }
+
+    public List<Tile> getEigendommen() {
+        return eigendommen;
     }
 }

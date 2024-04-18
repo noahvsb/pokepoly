@@ -40,6 +40,6 @@ public class FreeParkingTile extends CornerTile {
 
     @Override
     public void responseWasOk(Speler speler) {
-        // TODO
+        speler.updateBalance(bonuspot);
     }
 }

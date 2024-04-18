@@ -1,14 +1,9 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.StageController;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -18,15 +13,19 @@ import java.io.IOException;
 
 public class StreetTile extends Tile {
 
-    private String colour;
+    private Bord bord;
+    private String areaId;
+    private String areaColour;
     private int cost;
     private int[] rents;
     private int currentRent;
-    private String owner;
 
-    public StreetTile(String id, String colour, int cost, InfoTile infoTile, int... rents) throws IOException {
+    private Speler owner;
+
+    public StreetTile(String id, String areaId, String areaColour, int cost, InfoTile infoTile, Bord bord, int... rents) throws IOException {
         this.id = id;
-        this.colour = colour;
+        this.areaId = areaId;
+        this.areaColour = areaColour;
 
         this.width = N * 2;
         this.height = N;
@@ -34,10 +33,11 @@ public class StreetTile extends Tile {
         this.cost = cost;
         this.rents = rents;
         this.currentRent = rents[0];
-        owner = "<te koop>";
+        owner = null;
 
         mouseToggle = true;
         this.infoTile = infoTile;
+        this.bord = bord;
 
         createTile();
     }
@@ -57,7 +57,7 @@ public class StreetTile extends Tile {
             (dit is niet nodig voor dit project, maar als ik later nog zou willen verder werken hieraan,
             is dit wel al handig meegenomen)
          */
-        return new Stripe(colour, orientation ? 25 : 65, orientation ? 65 : 25);
+        return new Stripe(areaColour, orientation ? 25 : 65, orientation ? 65 : 25);
     }
 
     @Override
@@ -72,50 +72,72 @@ public class StreetTile extends Tile {
         price.setFont(new Font(13));
 
         // current owner
-        Text currentOwner = new Text("Huidige eigenaar\n" + owner);
+        Text currentOwner = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getName()));
         currentOwner.setFont(new Font(13));
         currentOwner.setTextAlignment(TextAlignment.CENTER);
 
-        infoTile.setup(Pos.TOP_CENTER, 30, this, new Stripe(colour, 200, 50), title, rent, price, currentOwner);
+        infoTile.setup(Pos.TOP_CENTER, 30, this, new Stripe(areaColour, 200, 50), title, rent, price, currentOwner);
     }
 
     @Override
     public Alert.AlertType getAlertType(Speler speler) {
-        if (owner.equals("<te koop>"))
+        if (owner == null && cost <= speler.getBalance())
             return Alert.AlertType.CONFIRMATION;
         return Alert.AlertType.INFORMATION;
     }
 
     @Override
     public String getAlertDescription(Speler speler) {
-        if (owner.equals("<te koop>"))
+        if (owner == null && cost <= speler.getBalance())
             return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
-        else if (!owner.equals(speler.getName()))
-            return "U moet €" + currentRent + " betalen aan " + owner;
+        else if (owner == null)
+            return "U heeft niet genoeg geld om dit eigendommen te kopen";
+        else if (!owner.equals(speler))
+            return "U moet €" + currentRent + " huur betalen aan " + owner.getName();
         return "Dit eigendom is in uw bezit";
     }
 
     @Override
     public void responseWasOk(Speler speler) {
-        if (owner.equals("<te koop>"))
+        if (owner == null && cost <= speler.getBalance())
             buyProperty(speler);
-        else if (!owner.equals(speler.getName()))
+        else if (owner != null && !owner.equals(speler))
             payRent(speler);
     }
 
     public void buyProperty(Speler speler) {
         // update styles
-        String newColour = speler.getColourString().equals("red") ? "pink" : "light" + speler.getColourString();
+        String newColour = speler.getLighterColourString();
 
         normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: " + newColour;
-        highlightStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-border-insets: 1; -fx-background-color: " + newColour;
         hbox.setStyle(normalStyle);
         vbox.setStyle(normalStyle);
 
-        // TODO: everything else
+        // set owner to speler
+        owner = speler;
+
+        // remove balance from speler and add eigendom to speler
+        speler.updateBalance(-cost);
+        speler.addEigendom(this);
+
+        // check if speler now has the all eigendommen of this areaColour and update rent if so
+        int amount = speler.getEigendommenOfAreaAmount(areaId);
+        if (((areaId.equals("area1") || areaId.equals("area8")) && amount == 2) || amount == 3)
+            for (Tile t : bord.getTiles())
+                if (t.getId().matches("tile.street[0-9]+") && ((StreetTile) t).getAreaId().equals(areaId))
+                    ((StreetTile) t).doubleRent();
     }
 
     public void payRent(Speler speler) {
-        // TODO
+        owner.updateBalance(currentRent);
+        speler.updateBalance(-currentRent);
+    }
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void doubleRent() {
+        currentRent *= 2;
     }
 }

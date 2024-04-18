@@ -1,5 +1,6 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.Node;
@@ -14,12 +15,14 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class UtilityTile extends Tile {
+    private Bord bord;
     private int cost;
     private int util;
-    private String owner;
+    private int currentFactor;
+    private Speler owner;
     private boolean beideInBezit;
 
-    public UtilityTile(String id, int util, int cost, InfoTile infoTile) throws IOException {
+    public UtilityTile(String id, int util, int cost, InfoTile infoTile, Bord bord) throws IOException {
         this.id = id;
         this.util = util;
         imageName = "utility" + util;
@@ -28,10 +31,12 @@ public class UtilityTile extends Tile {
         this.height = N;
 
         this.cost = cost;
-        owner = "<te koop>";
+        currentFactor = 4;
+        owner = null;
 
         mouseToggle = true;
         this.infoTile = infoTile;
+        this.bord = bord;
 
         createTile();
     }
@@ -56,51 +61,73 @@ public class UtilityTile extends Tile {
         imageView.setFitWidth(100);
         imageView.setFitHeight(util == 1 ? 33.333 : 50);
 
-        Text huur1 = new Text("Huur met 1:     worp x €4");
-        huur1.setFont(new Font(13));
-
-        Text huur2 = new Text("Huur met 2:   worp x €10");
-        huur2.setFont(new Font(13));
+        Text huur = new Text("Huur:     worp x €" + currentFactor);
+        huur.setFont(new Font(13));
 
         Text costPrice = new Text("Kostprijs:   €" + cost);
         costPrice.setFont(new Font(13));
 
-        Text currentOwner = new Text("Huidige eigenaar\n" + owner);
+        Text currentOwner = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getName()));
         currentOwner.setFont(new Font(13));
         currentOwner.setTextAlignment(TextAlignment.CENTER);
 
-        infoTile.setup(20, this, imageView, huur1, huur2, costPrice, currentOwner);
+        infoTile.setup(20, this, imageView, huur, costPrice, currentOwner);
     }
 
     @Override
     public Alert.AlertType getAlertType(Speler speler) {
-        if (owner.equals("<te koop>"))
+        if (owner == null && cost <= speler.getBalance())
             return Alert.AlertType.CONFIRMATION;
         return Alert.AlertType.INFORMATION;
     }
 
     @Override
     public String getAlertDescription(Speler speler) {
-        if (owner.equals("<te koop>"))
+        if (owner == null && cost <= speler.getBalance())
             return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
-        else if (!owner.equals(speler.getName()))
-            return "U moet uw aantal gegooide ogen (" + speler.getLastRoll() + ") x €" + (beideInBezit ? "10" : "4") + " betalen aan " + owner;
+        else if (owner == null)
+            return "U heeft niet genoeg geld om dit eigendommen te kopen";
+        else if (!owner.equals(speler))
+            return "U moet €" + speler.getLastRoll() * currentFactor + " huur (laatste worp x " + currentFactor + ") betalen aan " + owner.getName();
         return "Dit eigendom is in uw bezit";
     }
 
     @Override
     public void responseWasOk(Speler speler) {
-        if (owner.equals("<te koop>"))
-            buyProperty();
-        else if (!owner.equals(speler.getName()))
-            payRent();
+        if (owner == null && cost <= speler.getBalance())
+            buyProperty(speler);
+        else if (owner != null && !owner.equals(speler))
+            payRent(speler);
     }
 
-    public void buyProperty() {
-        // TODO
+    public void buyProperty(Speler speler) {
+        // update styles
+        String newColour = speler.getLighterColourString();
+
+        normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: " + newColour;
+        hbox.setStyle(normalStyle);
+        vbox.setStyle(normalStyle);
+
+        // set owner to speler
+        owner = speler;
+
+        // remove balance from speler and add eigendom to speler
+        speler.updateBalance(-cost);
+        speler.addEigendom(this);
+
+        // check if speler has other railways and update rent if so
+        if (speler.getEigendommenOfTypeAmount("utility") == 2)
+            for (Tile t : bord.getTiles())
+                if (t.getId().matches("tile.utility[0-9]+") && speler.getEigendommen().contains(t))
+                    ((UtilityTile) t).updateCurrentFactor();
     }
 
-    public void payRent() {
-        // TODO
+    private void updateCurrentFactor() {
+        currentFactor = 10;
+    }
+
+    public void payRent(Speler speler) {
+        speler.updateBalance(-(speler.getLastRoll() * currentFactor));
+        owner.updateBalance(speler.getLastRoll() * currentFactor);
     }
 }

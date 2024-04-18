@@ -51,6 +51,7 @@ public class TaxTile extends Tile {
 
     @Override
     public void responseWasOk(Speler speler) {
-        // TODO
+        speler.updateBalance(-cost);
+        // TODO: toevoegen aan bonuspot
     }
 }

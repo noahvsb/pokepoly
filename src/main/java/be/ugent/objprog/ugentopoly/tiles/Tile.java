@@ -26,7 +26,7 @@ public abstract class Tile {
     protected static final double BORDER_WIDTH = 1;
 
     protected String normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: white";
-    protected String highlightStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-border-insets: 1; -fx-background-color: white";
+    protected String highlightStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: lightgray";
 
     // other variables
     protected String id;
@@ -109,8 +109,8 @@ public abstract class Tile {
         // set active
         if (mouseToggle) {
             if (currentActive != null) {
-                currentActive.getHBox().setStyle(normalStyle);
-                currentActive.getVBox().setStyle(normalStyle);
+                currentActive.getHBox().setStyle(currentActive.getNormalStyle());
+                currentActive.getVBox().setStyle(currentActive.getNormalStyle());
 
                 currentActive.changeMouseToggle();
 
@@ -191,5 +191,13 @@ public abstract class Tile {
 
     public HBox getPlayerBox() {
         return playerBox;
+    }
+
+    public String getName() {
+        return nameStr;
+    }
+
+    public String getNormalStyle() {
+        return normalStyle;
     }
 }

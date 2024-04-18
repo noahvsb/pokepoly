@@ -65,7 +65,7 @@ public class Bord extends BorderPane {
                 String colour = area.getAttributeValue("color");
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
 
-                tiles[pos] = new StreetTile(id, colour, cost, infoTile,
+                tiles[pos] = new StreetTile(id, areaId, colour, cost, infoTile, this,
                         Integer.parseInt(tile.getAttributeValue("rent0")),
                         Integer.parseInt(tile.getAttributeValue("rent1")),
                         Integer.parseInt(tile.getAttributeValue("rent2")),
@@ -92,7 +92,7 @@ public class Bord extends BorderPane {
             if (type.equals("RAILWAY")) {
                 int cost = Integer.parseInt(tile.getAttributeValue("cost"));
                 int rent = Integer.parseInt(tile.getAttributeValue("rent"));
-                tiles[pos] = new RailwayTile(id, cost, rent, infoTile);
+                tiles[pos] = new RailwayTile(id, cost, rent, infoTile, this);
             }
 
             // Utility

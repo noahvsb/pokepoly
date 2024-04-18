@@ -1,8 +1,13 @@
 package be.ugent.objprog.ugentopoly;
 
 import be.ugent.objprog.dice.DicePanel;
+import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -13,6 +18,7 @@ import java.util.List;
 public class LogsAndRollHandler extends VBox {
 
     private Bord bord;
+    private TabPane spelerstatus;
     private VBox dice;
     private DicePanel dicePanel;
     private Button rolButton;
@@ -25,6 +31,7 @@ public class LogsAndRollHandler extends VBox {
     private double height;
 
     public LogsAndRollHandler(double width, double height, VBox dice, Bord bord) {
+        // variable assignment
         this.dice = dice;
         this.bord = bord;
 
@@ -35,11 +42,22 @@ public class LogsAndRollHandler extends VBox {
         setMinSize(width, height);
         setMaxSize(width, height);
 
+        // configurations
         setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: lightgray");
 
         setAlignment(Pos.BOTTOM_CENTER);
         setSpacing(25);
 
+        // status
+        spelerstatus = new TabPane();
+        spelerstatus.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        spelerstatus.setMaxWidth(width - 20); spelerstatus.setMaxHeight(height / 2 + spelerstatus.getTabMinHeight());
+        spelerstatus.setMinWidth(width - 20); spelerstatus.setMinHeight(height / 2 + spelerstatus.getTabMinHeight());
+
+        // logs
+        // TODO
+
+        // dice
         dicePanel = (DicePanel) dice.getChildren().getLast(); // last child == DicePanel
 
         rolButton = (Button) dice.getChildren().getFirst(); // first child == Button
@@ -66,13 +84,16 @@ public class LogsAndRollHandler extends VBox {
         spelers[beurt].setPos(pos);
         bord.getTiles()[pos].getPlayerBox().getChildren().add(spelers[beurt].getIcon());
 
+        // update status
+        updateSpelerStatus();
+
         // do the tile action
         if (langsStart)
             bord.getTiles()[0].handleTileAction(spelers[beurt]);
         bord.getTiles()[pos].handleTileAction(spelers[beurt]);
 
-        // update logs
-        update();
+        // update status
+        updateSpelerStatus();
 
         // update beurt if not a double roll
         if (!result.getFirst().equals(result.getLast())) {
@@ -101,9 +122,14 @@ public class LogsAndRollHandler extends VBox {
 
         spelersAmount = 0;
         for (Speler speler : spelers)
-            if (speler != null)
+            if (speler != null) {
                 spelersAmount++;
 
+                // spelerStatus
+                spelerstatus.getTabs().add(new Tab(speler.getName(), getTabContent(speler)));
+            }
+
+        // spelersbeurt
         Text t = new Text("Aan de beurt: ");
         t.setFont(new Font(15));
         spelerBeurt = new HBox(t, spelers[beurt].getLabel());
@@ -111,13 +137,46 @@ public class LogsAndRollHandler extends VBox {
         spelerBeurt.setSpacing(10);
         spelerBeurt.setMaxWidth(width - 10);
 
-        getChildren().addAll(spelerBeurt, dice);
+        // add everything to the logs
+        getChildren().addAll(spelerstatus, spelerBeurt, dice);
 
         // enable rol button
         dice.getChildren().getFirst().setDisable(false);
     }
 
-    public void update() {
-        // TODO
+    public void updateSpelerStatus() {
+        for (int i = 0; i < spelersAmount; i++)
+            spelerstatus.getTabs().get(i).setContent(getTabContent(spelers[i]));
+    }
+
+    public Node getTabContent(Speler speler) {
+        VBox tabContent = new VBox(20);
+
+        tabContent.setAlignment(Pos.TOP_LEFT);
+        tabContent.setStyle("-fx-background-color: white");
+
+        Text balance = new Text("Balance: €" + speler.getBalance());
+        balance.setFont(new Font(15));
+
+        Text positie = new Text("Positie: " + bord.getTiles()[speler.getPos()].getName() + " (" + speler.getPos() + ")");
+        positie.setFont(new Font(15));
+        positie.setWrappingWidth(width - 25);
+
+        VBox eigendommen = new VBox();
+        eigendommen.setMaxSize(width - 40, height / 4);
+        eigendommen.setMinSize(width - 40, height / 4);
+        eigendommen.setStyle("-fx-background-color: white; -fx-border-width: 1; -fx-border-color: black");
+
+        for (Tile t : speler.getEigendommen()) {
+            Label eigendom = new Label(t.getName());
+            eigendom.setFont(new Font(15));
+            // TODO: toon ook graphic
+
+            eigendommen.getChildren().add(eigendom);
+        }
+
+        tabContent.getChildren().addAll(speler.getLabel(), balance, positie, eigendommen);
+
+        return tabContent;
     }
 }
