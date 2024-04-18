@@ -39,7 +39,7 @@ public class FreeParkingTile extends CornerTile {
     }
 
     @Override
-    public void responseWasOk(Speler speler) {
+    public void responseWasOk(Speler speler, Speler[] spelers) {
         speler.updateBalance(bonuspot);
     }
 }

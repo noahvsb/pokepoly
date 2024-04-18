@@ -12,7 +12,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.List;
-import java.util.Optional;
 
 public class LogsAndRollHandler extends VBox {
     private int amountOfDoubleRollsAfterEachOther;
@@ -88,12 +87,12 @@ public class LogsAndRollHandler extends VBox {
             updateSpelerStatus();
 
             // do the tile action
-            if (langsStart) {
-                bord.getTiles()[0].handleTileAction(spelers[beurt]);
+            if (langsStart && pos != 0) {
+                bord.getTiles()[0].handleTileAction(spelers[beurt], spelers);
                 // update status
                 updateSpelerStatus();
             }
-            bord.getTiles()[pos].handleTileAction(spelers[beurt]);
+            bord.getTiles()[pos].handleTileAction(spelers[beurt], spelers);
             if (spelers[beurt].getBalance() < 0) {
                 // zoek winnaar
                 Speler winnaar = spelers[beurt];
@@ -108,7 +107,6 @@ public class LogsAndRollHandler extends VBox {
                 alert.showAndWait().ifPresent(response -> System.exit(0));
                 // TODO: change possibly
             }
-
             // update status
             updateSpelerStatus();
         }
@@ -126,7 +124,7 @@ public class LogsAndRollHandler extends VBox {
         } else if (!spelers[beurt].isInJail()) {
             amountOfDoubleRollsAfterEachOther++;
             if (amountOfDoubleRollsAfterEachOther >= 3)
-                bord.getTiles()[30].handleTileAction(spelers[beurt]);
+                bord.getTiles()[30].handleTileAction(spelers[beurt], spelers);
 
             // laat duidelijk weten dat de speler dubbel heeft gegooid
             Text t = new Text("heeft dubbel gegooid!");
@@ -195,21 +193,35 @@ public class LogsAndRollHandler extends VBox {
             inJail.setFont(Font.font("System", FontWeight.BOLD, 15));
         }
 
-        VBox eigendommen = new VBox();
-        eigendommen.setMaxSize(width - 40, height / 4);
-        eigendommen.setMinSize(width - 40, height / 4);
-        eigendommen.setStyle("-fx-background-color: white; -fx-border-width: 1; -fx-border-color: black");
+        // optionele GetOutOfJailCards text
+        Text getOutOfJailCards = new Text();
+        if (speler.getAmountOfGetOutOfJailCards() > 0) {
+            getOutOfJailCards.setText("Aantal kaarten om onmiddellijk de overpoort te verlaten: " +
+                    speler.getAmountOfGetOutOfJailCards());
+            getOutOfJailCards.setWrappingWidth(width - 25);
+            getOutOfJailCards.setFont(Font.font("System", FontWeight.BOLD, 11));
+        }
+
+        ScrollPane eigendommen = new ScrollPane();
+        eigendommen.setMaxSize(width - 20, height / 4);
+        eigendommen.setMinSize(width - 20, height / 4);
+        eigendommen.setStyle("-fx-border-color: black; -fx-border-width: 1");
+
+        VBox eigendommenVBox = new VBox();
+        eigendommen.setContent(eigendommenVBox);
 
         for (Tile t : speler.getEigendommen()) {
             Label eigendom = new Label(t.getName(), t.createGraphic(15));
             eigendom.setFont(new Font(15));
 
-            eigendommen.getChildren().add(eigendom);
+            eigendommenVBox.getChildren().add(eigendom);
         }
 
         tabContent.getChildren().addAll(speler.getLabel(), balance, positie);
         if (speler.isInJail())
             tabContent.getChildren().add(inJail);
+        else if (speler.getAmountOfGetOutOfJailCards() > 0)
+            tabContent.getChildren().add(getOutOfJailCards);
         tabContent.getChildren().add(eigendommen);
 
         return tabContent;

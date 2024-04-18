@@ -56,7 +56,7 @@ public class TaxTile extends Tile {
     }
 
     @Override
-    public void responseWasOk(Speler speler) {
+    public void responseWasOk(Speler speler, Speler[] spelers) {
         if (freeParkingTile == null)
             for (Tile t : bord.getTiles())
                 if (t.getId().matches("tile.freeparking"))

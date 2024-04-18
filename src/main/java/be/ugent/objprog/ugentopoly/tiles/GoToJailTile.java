@@ -32,13 +32,15 @@ public class GoToJailTile extends CornerTile {
     }
 
     @Override
-    public void responseWasOk(Speler speler) {
+    public void responseWasOk(Speler speler, Speler[] spelers) {
         speler.setInJail(true);
         speler.setPos(10);
         bord.getTiles()[10].getPlayerBox().getChildren().add(speler.getIcon());
 
         // check for GetOutOfJailCards and use one if possible
-        if (speler.getAmountOfGetOutOfJailCardsAndUseOneIfPossible() > 0)
+        if (speler.getAmountOfGetOutOfJailCards() > 0) {
+            speler.useAGetOutOfJailCard();
             speler.setInJail(false);
+        }
     }
 }

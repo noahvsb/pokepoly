@@ -108,7 +108,7 @@ public class StreetTile extends Tile {
     }
 
     @Override
-    public void responseWasOk(Speler speler) {
+    public void responseWasOk(Speler speler, Speler[] spelers) {
         if (owner == null && cost <= speler.getBalance())
             buyProperty(speler);
         else if (owner != null && !owner.equals(speler))

@@ -79,11 +79,11 @@ public class Bord extends BorderPane {
 
             // Chest
             if (type.equals("CHEST"))
-                tiles[pos] = new ChestTile(id, infoTile);
+                tiles[pos] = new ChestTile(id, infoTile, this, deckChest);
 
             // Chance
             if (type.equals("CHANCE"))
-                tiles[pos] = new ChanceTile(id, infoTile, deckChance);
+                tiles[pos] = new ChanceTile(id, infoTile, this, deckChance);
 
             // Tax
             if (type.equals("TAX")) {

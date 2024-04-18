@@ -144,11 +144,15 @@ public class Speler {
         return inJail;
     }
 
-    public int getAmountOfGetOutOfJailCardsAndUseOneIfPossible() {
-        if (amountOfGetOutOfJailCards > 0) {
-            amountOfGetOutOfJailCards--;
-            return amountOfGetOutOfJailCards + 1;
-        }
+    public void addGetOutOfJailCard() {
+        amountOfGetOutOfJailCards++;
+    }
+
+    public int getAmountOfGetOutOfJailCards() {
         return amountOfGetOutOfJailCards;
+    }
+
+    public void useAGetOutOfJailCard() {
+        amountOfGetOutOfJailCards--;
     }
 }

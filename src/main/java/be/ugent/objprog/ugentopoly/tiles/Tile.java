@@ -152,7 +152,7 @@ public abstract class Tile {
         mouseToggle = !mouseToggle;
     }
 
-    public void handleTileAction(Speler speler) {
+    public void handleTileAction(Speler speler, Speler[] spelers) {
         Alert alert = new Alert(getAlertType(speler));
         alert.setTitle(alert.getAlertType().equals(Alert.AlertType.CONFIRMATION) ? "Aankoop" : "Melding");
         alert.setHeaderText(getAlertDescription(speler));
@@ -164,7 +164,7 @@ public abstract class Tile {
         alert.showAndWait().ifPresent(response -> {
             tilePressed();
             if (response == ButtonType.OK)
-                responseWasOk(speler);
+                responseWasOk(speler, spelers);
         });
     }
 
@@ -172,7 +172,7 @@ public abstract class Tile {
 
     public abstract String getAlertDescription(Speler speler);
 
-    public abstract void responseWasOk(Speler speler);
+    public abstract void responseWasOk(Speler speler, Speler[] spelers);
 
     public String getId() {
         return id;

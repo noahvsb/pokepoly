@@ -30,7 +30,7 @@ public class JailTile extends CornerTile {
     }
 
     @Override
-    public void responseWasOk(Speler speler) {
+    public void responseWasOk(Speler speler, Speler[] spelers) {
         // doe niets
     }
 }

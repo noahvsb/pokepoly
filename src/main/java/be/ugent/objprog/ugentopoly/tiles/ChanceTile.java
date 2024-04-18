@@ -1,8 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
+import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.StageController;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,9 +16,10 @@ import java.util.Random;
 
 public class ChanceTile extends Tile {
 
+    private Bord bord;
     private List<Element> deck;
 
-    public ChanceTile(String id, InfoTile infoTile, Element deck) throws IOException {
+    public ChanceTile(String id, InfoTile infoTile, Bord bord, Element deck) throws IOException {
         this.id = id;
         imageName = "chance";
 
@@ -28,6 +28,7 @@ public class ChanceTile extends Tile {
 
         mouseToggle = true;
         this.infoTile = infoTile;
+        this.bord = bord;
 
         this.deck = deck.getChildren();
 
@@ -77,9 +78,9 @@ public class ChanceTile extends Tile {
     }
 
     @Override
-    public void responseWasOk(Speler speler) {
-        Card card = new Card(deck.get(new Random().nextInt(deck.size())));
+    public void responseWasOk(Speler speler, Speler[] spelers) {
+        Card card = new Card(deck.get(new Random().nextInt(deck.size())), bord);
 
-        card.handleCardAction(speler);
+        card.handleCardAction(speler, spelers);
     }
 }
