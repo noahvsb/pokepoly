@@ -56,6 +56,16 @@ public class UtilityTile extends Tile {
     }
 
     @Override
+    public ImageView createGraphic(double height) {
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
+        imageView.setFitWidth(height);
+        imageView.setFitHeight(height / (util == 1 ? 3 : 2));
+
+        return imageView;
+    }
+
+    @Override
     public void setupInfoTile() {
         ImageView imageView = createGraphic(true);
         imageView.setFitWidth(100);
@@ -86,7 +96,7 @@ public class UtilityTile extends Tile {
         if (owner == null && cost <= speler.getBalance())
             return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
         else if (owner == null)
-            return "U heeft niet genoeg geld om dit eigendommen te kopen";
+            return "U heeft niet genoeg geld om dit eigendom te kopen";
         else if (!owner.equals(speler))
             return "U moet €" + speler.getLastRoll() * currentFactor + " huur (laatste worp x " + currentFactor + ") betalen aan " + owner.getName();
         return "Dit eigendom is in uw bezit";

@@ -27,6 +27,8 @@ public class Speler {
     private int balance;
     private List<Tile> eigendommen;
     private int lastRoll;
+    private int amountOfGetOutOfJailCards;
+    private boolean inJail;
 
     public Speler(String name, ImageView icon, String colour, int iconIndex, int colourIndex) {
         this.name = name;
@@ -41,6 +43,9 @@ public class Speler {
         this.colourIndex = colourIndex;
 
         eigendommen = new ArrayList<>();
+
+        amountOfGetOutOfJailCards = 0;
+        inJail = false;
     }
 
     public Label getLabel() {
@@ -129,5 +134,21 @@ public class Speler {
 
     public List<Tile> getEigendommen() {
         return eigendommen;
+    }
+
+    public void setInJail(boolean inJail) {
+        this.inJail = inJail;
+    }
+
+    public boolean isInJail() {
+        return inJail;
+    }
+
+    public int getAmountOfGetOutOfJailCardsAndUseOneIfPossible() {
+        if (amountOfGetOutOfJailCards > 0) {
+            amountOfGetOutOfJailCards--;
+            return amountOfGetOutOfJailCards + 1;
+        }
+        return amountOfGetOutOfJailCards;
     }
 }

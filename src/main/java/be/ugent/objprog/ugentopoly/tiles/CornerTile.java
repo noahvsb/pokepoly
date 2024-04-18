@@ -41,6 +41,16 @@ public abstract class CornerTile extends Tile {
     }
 
     @Override
+    public ImageView createGraphic(double height) {
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
+        imageView.setFitWidth(height);
+        imageView.setFitHeight(height * getImageHeightDivider()/getImageWidthDivider());
+
+        return imageView;
+    }
+
+    @Override
     public void setupInfoTile() {
         Text title = new Text(nameStr);
         title.setFont(Font.font("System", FontWeight.BOLD, 13));

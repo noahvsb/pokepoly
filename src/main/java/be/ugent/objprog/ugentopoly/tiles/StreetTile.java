@@ -60,12 +60,22 @@ public class StreetTile extends Tile {
         return new Stripe(areaColour, orientation ? 25 : 65, orientation ? 65 : 25);
     }
 
+    public Stripe createGraphic(double height) {
+        hbox.setAlignment(Pos.CENTER_RIGHT);
+        hbox.setSpacing(35);
+
+        vbox.setAlignment(Pos.BOTTOM_CENTER);
+        vbox.setSpacing(55);
+
+        return new Stripe(areaColour, height, height);
+    }
+
     @Override
     public void setupInfoTile() {
         Text title = new Text(nameStr);
         title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
-        Text rent = new Text("Huur:           €" + currentRent);
+        Text rent = new Text("Huur:          €" + currentRent);
         rent.setFont(new Font(13));
 
         Text price = new Text("Kostprijs:     €" + cost);
@@ -91,7 +101,7 @@ public class StreetTile extends Tile {
         if (owner == null && cost <= speler.getBalance())
             return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
         else if (owner == null)
-            return "U heeft niet genoeg geld om dit eigendommen te kopen";
+            return "U heeft niet genoeg geld om dit eigendom te kopen";
         else if (!owner.equals(speler))
             return "U moet €" + currentRent + " huur betalen aan " + owner.getName();
         return "Dit eigendom is in uw bezit";

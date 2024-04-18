@@ -39,6 +39,9 @@ public class Bord extends BorderPane {
         Element rootAreas = root.getChild("areas");
         Element rootTiles = root.getChild("tiles");
 
+        Element deckChance = root.getChild("deck");
+        Element deckChest = root.getChildren().getLast();
+
         // tiles
         InfoTile infoTile = new InfoTile();
         tiles = new Tile[40];
@@ -80,12 +83,12 @@ public class Bord extends BorderPane {
 
             // Chance
             if (type.equals("CHANCE"))
-                tiles[pos] = new ChanceTile(id, infoTile);
+                tiles[pos] = new ChanceTile(id, infoTile, deckChance);
 
             // Tax
             if (type.equals("TAX")) {
                 int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles[pos] = new TaxTile(id, amount, infoTile);
+                tiles[pos] = new TaxTile(id, amount, infoTile, this);
             }
 
             // Railway
@@ -104,7 +107,7 @@ public class Bord extends BorderPane {
 
             // Go to jail
             if (type.equals("GO_TO_JAIL"))
-                tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile);
+                tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile, this);
 
             // Start
             if (type.equals("START"))

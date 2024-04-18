@@ -8,13 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import org.jdom2.Element;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class ChanceTile extends Tile {
 
-    public ChanceTile(String id, InfoTile infoTile) throws IOException {
+    public ChanceTile(String id, InfoTile infoTile, Element deck) throws IOException {
         this.id = id;
         imageName = "chance";
 
@@ -37,6 +38,16 @@ public class ChanceTile extends Tile {
         // zelfde opmerking als bij StreetTile
         hbox.setSpacing(hbox.getSpacing());
         vbox.setSpacing(vbox.getSpacing());
+
+        return imageView;
+    }
+
+    @Override
+    public ImageView createGraphic(double height) {
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
+        imageView.setFitWidth(height);
+        imageView.setFitHeight(height * 2/3);
 
         return imageView;
     }

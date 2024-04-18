@@ -11,14 +11,15 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.List;
 
 public class LogsAndRollHandler extends VBox {
-
+    private int amountOfDoubleRollsAfterEachOther;
     private Bord bord;
-    private TabPane spelerstatus;
+    private TabPane spelerStatus;
     private VBox dice;
     private DicePanel dicePanel;
     private Button rolButton;
@@ -49,13 +50,13 @@ public class LogsAndRollHandler extends VBox {
         setSpacing(25);
 
         // status
-        spelerstatus = new TabPane();
-        spelerstatus.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        spelerstatus.setMaxWidth(width - 20); spelerstatus.setMaxHeight(height / 2 + spelerstatus.getTabMinHeight());
-        spelerstatus.setMinWidth(width - 20); spelerstatus.setMinHeight(height / 2 + spelerstatus.getTabMinHeight());
+        spelerStatus = new TabPane();
+        spelerStatus.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        spelerStatus.setMaxWidth(width - 20); spelerStatus.setMaxHeight(height / 2 + spelerStatus.getTabMinHeight());
+        spelerStatus.setMinWidth(width - 20); spelerStatus.setMinHeight(height / 2 + spelerStatus.getTabMinHeight());
 
         // logs
-        // TODO
+        // TODO: implements logs
 
         // dice
         dicePanel = (DicePanel) dice.getChildren().getLast(); // last child == DicePanel
@@ -69,34 +70,43 @@ public class LogsAndRollHandler extends VBox {
     }
 
     public void handleRoll(List<Integer> result) {
-        // change position
-        boolean langsStart = false;
-        int pos = spelers[beurt].getPos();
-        for (int i : result) {
-            pos += i;
-            if (pos >= 40) {
-                langsStart = true;
-                pos -= 40;
+        if (!spelers[beurt].isInJail()){
+            // change position
+            boolean langsStart = false;
+            int pos = spelers[beurt].getPos();
+            for (int i : result) {
+                pos += i;
+                if (pos >= 40) {
+                    langsStart = true;
+                    pos -= 40;
+                }
             }
+
+            spelers[beurt].setLastRoll(pos < spelers[beurt].getPos() ? pos + 40 - spelers[beurt].getPos() : pos - spelers[beurt].getPos());
+            spelers[beurt].setPos(pos);
+            bord.getTiles()[pos].getPlayerBox().getChildren().add(spelers[beurt].getIcon());
+
+            // update status
+            updateSpelerStatus();
+
+            // do the tile action
+            if (langsStart) {
+                bord.getTiles()[0].handleTileAction(spelers[beurt]);
+                // update status
+                updateSpelerStatus();
+            }
+            bord.getTiles()[pos].handleTileAction(spelers[beurt]);
+            if (spelers[beurt].getBalance() < 0) {
+                // TODO: implement gameOver
+            }
+
+            // update status
+            updateSpelerStatus();
         }
-
-        spelers[beurt].setLastRoll(pos < spelers[beurt].getPos() ? pos + 40 - spelers[beurt].getPos() : pos - spelers[beurt].getPos());
-        spelers[beurt].setPos(pos);
-        bord.getTiles()[pos].getPlayerBox().getChildren().add(spelers[beurt].getIcon());
-
-        // update status
-        updateSpelerStatus();
-
-        // do the tile action
-        if (langsStart)
-            bord.getTiles()[0].handleTileAction(spelers[beurt]);
-        bord.getTiles()[pos].handleTileAction(spelers[beurt]);
-
-        // update status
-        updateSpelerStatus();
 
         // update beurt if not a double roll
         if (!result.getFirst().equals(result.getLast())) {
+            amountOfDoubleRollsAfterEachOther = 0;
             beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
 
             Text t = new Text("Aan de beurt: ");
@@ -104,13 +114,20 @@ public class LogsAndRollHandler extends VBox {
 
             spelerBeurt.getChildren().clear();
             spelerBeurt.getChildren().addAll(t, spelers[beurt].getLabel());
-        } else {
+        } else if (!spelers[beurt].isInJail()) {
+            amountOfDoubleRollsAfterEachOther++;
+            if (amountOfDoubleRollsAfterEachOther >= 3)
+                bord.getTiles()[30].handleTileAction(spelers[beurt]);
+
             // laat duidelijk weten dat de speler dubbel heeft gegooid
             Text t = new Text("heeft dubbel gegooid!");
             t.setFont(new Font(15));
 
             spelerBeurt.getChildren().clear();
             spelerBeurt.getChildren().addAll(spelers[beurt].getLabel(), t);
+        } else {
+            spelers[beurt].setInJail(false);
+            handleRoll(result);
         }
 
         // enable rolButton
@@ -126,7 +143,7 @@ public class LogsAndRollHandler extends VBox {
                 spelersAmount++;
 
                 // spelerStatus
-                spelerstatus.getTabs().add(new Tab(speler.getName(), getTabContent(speler)));
+                spelerStatus.getTabs().add(new Tab(speler.getName(), getTabContent(speler)));
             }
 
         // spelersbeurt
@@ -138,7 +155,7 @@ public class LogsAndRollHandler extends VBox {
         spelerBeurt.setMaxWidth(width - 10);
 
         // add everything to the logs
-        getChildren().addAll(spelerstatus, spelerBeurt, dice);
+        getChildren().addAll(spelerStatus, spelerBeurt, dice);
 
         // enable rol button
         dice.getChildren().getFirst().setDisable(false);
@@ -146,7 +163,7 @@ public class LogsAndRollHandler extends VBox {
 
     public void updateSpelerStatus() {
         for (int i = 0; i < spelersAmount; i++)
-            spelerstatus.getTabs().get(i).setContent(getTabContent(spelers[i]));
+            spelerStatus.getTabs().get(i).setContent(getTabContent(spelers[i]));
     }
 
     public Node getTabContent(Speler speler) {
@@ -162,20 +179,29 @@ public class LogsAndRollHandler extends VBox {
         positie.setFont(new Font(15));
         positie.setWrappingWidth(width - 25);
 
+        // optionele inJail text
+        Text inJail = new Text();
+        if (speler.isInJail()) {
+            inJail.setText("Speler zit in de overpoort");
+            inJail.setFont(Font.font("System", FontWeight.BOLD, 15));
+        }
+
         VBox eigendommen = new VBox();
         eigendommen.setMaxSize(width - 40, height / 4);
         eigendommen.setMinSize(width - 40, height / 4);
         eigendommen.setStyle("-fx-background-color: white; -fx-border-width: 1; -fx-border-color: black");
 
         for (Tile t : speler.getEigendommen()) {
-            Label eigendom = new Label(t.getName());
+            Label eigendom = new Label(t.getName(), t.createGraphic(15));
             eigendom.setFont(new Font(15));
-            // TODO: toon ook graphic
 
             eigendommen.getChildren().add(eigendom);
         }
 
-        tabContent.getChildren().addAll(speler.getLabel(), balance, positie, eigendommen);
+        tabContent.getChildren().addAll(speler.getLabel(), balance, positie);
+        if (speler.isInJail())
+            tabContent.getChildren().add(inJail);
+        tabContent.getChildren().add(eigendommen);
 
         return tabContent;
     }

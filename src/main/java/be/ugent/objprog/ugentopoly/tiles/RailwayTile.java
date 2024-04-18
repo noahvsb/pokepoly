@@ -69,7 +69,7 @@ public class RailwayTile extends Tile {
         if (owner == null && cost <= speler.getBalance())
             return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
         else if (owner == null)
-            return "U heeft niet genoeg geld om dit eigendommen te kopen";
+            return "U heeft niet genoeg geld om dit eigendom te kopen";
         else if (!owner.equals(speler))
             return "U moet €" + currentRent + " huur betalen aan " + owner.getName();
         return "Dit eigendom is in uw bezit";

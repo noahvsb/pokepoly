@@ -103,6 +103,15 @@ public abstract class Tile {
         return imageView;
     }
 
+    public Node createGraphic(double height) {
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
+        imageView.setFitWidth(height);
+        imageView.setFitHeight(height);
+
+        return imageView;
+    }
+
     public void tilePressed() {
         Tile currentActive = infoTile.getCurrentActive();
 
