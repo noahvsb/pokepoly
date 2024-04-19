@@ -75,7 +75,7 @@ public class StreetTile extends Tile {
         price.setFont(new Font(13));
 
         // current owner
-        Text currentOwner = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getName()));
+        Text currentOwner = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getShortendName()));
         currentOwner.setFont(new Font(13));
         currentOwner.setTextAlignment(TextAlignment.CENTER);
 
@@ -94,10 +94,10 @@ public class StreetTile extends Tile {
         if (owner == null && cost <= speler.getBalance()) // buy?
             return "Wilt u " + name + " kopen voor €" + cost + "?";
         else if (owner == null) // can't buy
-            return "U heeft niet genoeg geld om dit eigendom te kopen";
+            return "U heeft niet genoeg geld om deze bezitting te kopen";
         else if (!owner.equals(speler)) // rent
-            return "U moet €" + currentRent + " huur betalen aan " + owner.getName();
-        return "Dit eigendom is in uw bezit"; // yours
+            return "U moet €" + currentRent + " huur betalen aan " + owner.getShortendName();
+        return "Deze bezitting is in uw bezit"; // yours
     }
 
     @Override

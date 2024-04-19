@@ -16,6 +16,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class Bord extends BorderPane {
@@ -25,7 +26,7 @@ public class Bord extends BorderPane {
 
     private InfoTile infoTile;
     private Tile[] tiles;
-    private Element[] decks;
+    private List<Element> decks;
 
     private VBox leftTiles;
     private VBox rightTiles;
@@ -44,7 +45,7 @@ public class Bord extends BorderPane {
         // tiles
         infoTile = new InfoTile();
         tiles = new Tile[40];
-        decks  = new Element[]{root.getChild("deck"), root.getChildren().getLast()};
+        decks  = root.getChildren("deck");
 
         addTilesToArray();
 
@@ -102,12 +103,16 @@ public class Bord extends BorderPane {
             }
 
             // Chance
-            if (type.equals("CHANCE"))
-                tiles[pos] = new ChanceTile(id, infoTile, this, decks[0]);
+            if (type.equals("CHANCE")) {
+                Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst();
+                tiles[pos] = new ChanceTile(id, infoTile, this, deck);
+            }
 
             // Chest
-            if (type.equals("CHEST"))
-                tiles[pos] = new ChestTile(id, infoTile, this, decks[1]);
+            if (type.equals("CHEST")) {
+                Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst();
+                tiles[pos] = new ChestTile(id, infoTile, this, deck);
+            }
 
             // Tax
             if (type.equals("TAX")) {

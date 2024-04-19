@@ -26,7 +26,7 @@ public class JailTile extends CornerTile {
 
     @Override
     public String getAlertDescription(Speler speler) {
-        return "Op bezoek";
+        return speler.isInJail() ? "U heeft geen dubbel gegooid, blijven zitten dus" : "Op bezoek";
     }
 
     @Override

@@ -40,5 +40,12 @@ public class GoToJailTile extends CornerTile {
             speler.useGetOutOfJailCard();
             speler.setInJail(false);
         }
+
+        // show an alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(speler.isInJail() ? "spijtig" : "hoera");
+        alert.setHeaderText(speler.isInJail()
+                ? "Gooi vanaf volgende beurt dubbel om uit de overpoort te geraken"
+                : "U heeft een verlaat-overpoort-kaart gebruikt, geen overpoort deze keer");
     }
 }

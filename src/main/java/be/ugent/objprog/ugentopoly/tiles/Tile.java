@@ -74,7 +74,8 @@ public abstract class Tile {
         name.setFont(new Font(FONT_SIZE));
         name.setTextAlignment(TextAlignment.CENTER);
 
-        // aangezien er hier maar 2 uitzondering zijn, vond ik het nog doenbaar voor deze cheese
+        // ik ben niet content genoeg met de setWrappingWidth oplossing voor deze 2 gevallen,
+        // de woorden worden niet volgens de norm gesplitst
         if (name.getText().equals("Hoveniersberg"))
             name.setText("Hoveniers-\nberg");
         else if (name.getText().equals("Boekentoren"))

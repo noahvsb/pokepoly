@@ -113,7 +113,6 @@ public class GeneralInfoAndRollHandler extends VBox {
                 alert.setHeaderText("GAME OVER\nwinnaar: " + winnaar.getName());
 
                 alert.showAndWait().ifPresent(response -> System.exit(0));
-                // TODO: change possibly
             }
             // update status
             updateSpelerStatus();
@@ -129,6 +128,9 @@ public class GeneralInfoAndRollHandler extends VBox {
 
             spelerBeurt.getChildren().clear();
             spelerBeurt.getChildren().addAll(t, spelers[beurt].getLabel());
+
+            if (spelers[beurt].isInJail())
+                bord.getTiles()[10].handleTileAction(spelers[beurt], spelers);
         } else if (!spelers[beurt].isInJail()) {
             amountOfDoubleRollsAfterEachOther++;
             if (amountOfDoubleRollsAfterEachOther >= 3)
@@ -184,7 +186,7 @@ public class GeneralInfoAndRollHandler extends VBox {
     public Node getTabContent(Speler speler) {
         VBox tabContent = new VBox(20);
         tabContent.setAlignment(Pos.CENTER);
-        tabContent.setStyle("-fx-background-color: white");
+        tabContent.setStyle("-fx-background-color: E3F1FF");
 
         // balance text
         Text balance = new Text("Rekeningsstand: €" + speler.getBalance());
@@ -206,9 +208,8 @@ public class GeneralInfoAndRollHandler extends VBox {
         // optionele GetOutOfJailCards text
         Text getOutOfJailCards = new Text();
         if (speler.getAmountOfGetOutOfJailCards() > 0) {
-            getOutOfJailCards.setText("Aantal kaarten om onmiddellijk de overpoort te verlaten: " +
+            getOutOfJailCards.setText("Verlaat-overpoort-kaarten: " +
                     speler.getAmountOfGetOutOfJailCards());
-            getOutOfJailCards.setWrappingWidth(width - 25);
             getOutOfJailCards.setFont(Font.font("System", FontWeight.BOLD, 11));
         }
 

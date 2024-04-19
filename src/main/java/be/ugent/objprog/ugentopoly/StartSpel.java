@@ -114,7 +114,8 @@ public class StartSpel extends VBox {
             i++;
         }
 
-        startSpelButton.setDisable(i == 1 || i == 4);
+        startSpelButton.setDisable(i == 1);
+        addSpelerButton.setDisable(i == 4);
 
         addSpelerStage.close();
         addSpelerScene.setRoot(new AddSpeler(400, 300, this, usedIconIndexes, usedColourIndexes));

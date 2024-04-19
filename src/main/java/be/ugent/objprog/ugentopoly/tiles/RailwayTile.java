@@ -48,7 +48,7 @@ public class RailwayTile extends Tile {
         Text costPrice = new Text("Kostprijs:   €" + cost);
         costPrice.setFont(new Font(13));
 
-        Text currentOwner = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getName()));
+        Text currentOwner = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getShortendName()));
         currentOwner.setFont(new Font(13));
         currentOwner.setTextAlignment(TextAlignment.CENTER);
 
@@ -67,10 +67,10 @@ public class RailwayTile extends Tile {
         if (owner == null && cost <= speler.getBalance())
             return "Wilt u " + name + " kopen voor €" + cost + "?";
         else if (owner == null)
-            return "U heeft niet genoeg geld om dit eigendom te kopen";
+            return "U heeft niet genoeg geld om deze bezitting te kopen";
         else if (!owner.equals(speler))
-            return "U moet €" + currentRent + " huur betalen aan " + owner.getName();
-        return "Dit eigendom is in uw bezit";
+            return "U moet €" + currentRent + " huur betalen aan " + owner.getShortendName();
+        return "Deze bezitting is in uw bezit";
     }
 
     @Override
