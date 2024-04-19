@@ -2,8 +2,6 @@ package be.ugent.objprog.ugentopoly.tiles;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.StageController;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -96,12 +94,12 @@ public class RailwayTile extends Tile {
 
         // remove balance from speler and add eigendom to speler
         speler.updateBalance(-cost);
-        speler.addEigendom(this);
+        speler.addBezitting(this);
 
         // check if speler has other railways and update rent if so
-        int factor = speler.getEigendommenOfTypeAmount("railway");
+        int factor = speler.getAmountOfBezittingenOfType("railway");
         for (Tile t : bord.getTiles())
-            if (t.getId().matches("tile.railway[0-9]+") && speler.getEigendommen().contains(t))
+            if (t.getId().matches("tile.railway[0-9]+") && speler.getBezittingen().contains(t))
                 ((RailwayTile) t).updateCurrentRent(factor);
 
     }

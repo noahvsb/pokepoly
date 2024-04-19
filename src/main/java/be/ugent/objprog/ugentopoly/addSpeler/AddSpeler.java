@@ -15,9 +15,6 @@ import javafx.util.StringConverter;
 import java.util.List;
 
 public class AddSpeler extends VBox {
-
-    private StartSpel startSpel;
-
     private String name;
     private ImageView icon;
     private String colour;
@@ -32,13 +29,12 @@ public class AddSpeler extends VBox {
     private static final StringConverter<IconAndString> CONVERTER = new IconConverter();
 
     public AddSpeler(int width, int height, StartSpel startSpel, List<Integer> usedIconIndexes, List<Integer> usedColourIndexes) {
-        setPrefSize(width, height);
+        // configurations
         setMinSize(width, height);
         setMaxSize(width, height);
-
         setStyle("-fx-background-color: lightgray; -fx-border-color: white");
-
-        this.startSpel = startSpel;
+        setSpacing(30);
+        setAlignment(Pos.CENTER);
 
         // name
         Text name = new Text("Naam:");
@@ -74,19 +70,17 @@ public class AddSpeler extends VBox {
         // buttons
         voegToeButton = new Button("Voeg toe");
         voegToeButton.setFont(new Font(20));
-        voegToeButton.setOnAction(e -> startSpel.addSpeler(new Speler(this.name, this.icon, this.colour, this.iconIndex, this.colourIndex), false));
+        voegToeButton.setOnAction(e -> startSpel.addSpeler(new Speler(this.name, this.icon, this.colour, this.iconIndex, this.colourIndex)));
         voegToeButton.setDisable(true);
 
         Button cancelButton = new Button("Annuleer");
         cancelButton.setFont(new Font(20));
-        cancelButton.setOnAction(e -> startSpel.addSpeler(null, true));
+        cancelButton.setOnAction(e -> startSpel.cancelAddSpeler());
 
         HBox buttons = new HBox(20, cancelButton, voegToeButton);
         buttons.setAlignment(Pos.CENTER);
 
-        // put them together
-        setSpacing(30);
-        setAlignment(Pos.CENTER);
+        // add all
         getChildren().addAll(nameBox, pawnBox, colourBox, buttons);
     }
 

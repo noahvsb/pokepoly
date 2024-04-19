@@ -10,40 +10,41 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.util.List;
 
-public class LogsAndRollHandler extends VBox {
-    private int amountOfDoubleRollsAfterEachOther;
+public class GeneralInfoAndRollHandler extends VBox {
     private Bord bord;
+
     private TabPane spelerStatus;
+
     private VBox dice;
     private DicePanel dicePanel;
     private Button rolButton;
+
     private Speler[] spelers;
     private int spelersAmount;
     private HBox spelerBeurt;
     private int beurt;
 
+    private int amountOfDoubleRollsAfterEachOther;
+
     private double width;
     private double height;
 
-    public LogsAndRollHandler(double width, double height, VBox dice, Bord bord) {
+    public GeneralInfoAndRollHandler(double width, double height, Bord bord) {
         // variable assignment
-        this.dice = dice;
         this.bord = bord;
 
         this.width = width;
         this.height = height;
 
-        setPrefSize(width, height);
+        // configurations
         setMinSize(width, height);
         setMaxSize(width, height);
-
-        // configurations
         setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: lightgray");
-
-        setAlignment(Pos.BOTTOM_CENTER);
+        setAlignment(Pos.CENTER);
         setSpacing(25);
 
         // status
@@ -56,14 +57,21 @@ public class LogsAndRollHandler extends VBox {
         // TODO: implements logs
 
         // dice
-        dicePanel = (DicePanel) dice.getChildren().getLast(); // last child == DicePanel
+        dicePanel = new DicePanel();
 
-        rolButton = (Button) dice.getChildren().getFirst(); // first child == Button
+        rolButton = new Button();
+        rolButton.setText("ROL");
+        rolButton.setFont(new Font(15));
+        rolButton.setPrefSize(100, 50);
         rolButton.setOnAction(e -> {
             rolButton.setDisable(true);
             dicePanel.roll(this::handleRoll);
         });
         rolButton.setDisable(true);
+
+        dice = new VBox();
+        dice.getChildren().addAll(rolButton, dicePanel);
+        dice.setAlignment(Pos.CENTER);
     }
 
     public void handleRoll(List<Integer> result) {
@@ -175,16 +183,18 @@ public class LogsAndRollHandler extends VBox {
 
     public Node getTabContent(Speler speler) {
         VBox tabContent = new VBox(20);
-
-        tabContent.setAlignment(Pos.TOP_LEFT);
+        tabContent.setAlignment(Pos.CENTER);
         tabContent.setStyle("-fx-background-color: white");
 
-        Text balance = new Text("Balance: €" + speler.getBalance());
+        // balance text
+        Text balance = new Text("Rekeningsstand: €" + speler.getBalance());
         balance.setFont(new Font(15));
 
-        Text positie = new Text("Positie: " + bord.getTiles()[speler.getPos()].getName() + " (" + speler.getPos() + ")");
-        positie.setFont(new Font(15));
-        positie.setWrappingWidth(width - 25);
+        // position text
+        Text position = new Text("Positie: " + bord.getTiles()[speler.getPos()].getName() + " (" + speler.getPos() + ")");
+        position.setFont(new Font(15));
+        position.setWrappingWidth(width - 25);
+        position.setTextAlignment(TextAlignment.CENTER);
 
         // optionele inJail text
         Text inJail = new Text();
@@ -202,27 +212,29 @@ public class LogsAndRollHandler extends VBox {
             getOutOfJailCards.setFont(Font.font("System", FontWeight.BOLD, 11));
         }
 
-        ScrollPane eigendommen = new ScrollPane();
-        eigendommen.setMaxSize(width - 20, height / 4);
-        eigendommen.setMinSize(width - 20, height / 4);
-        eigendommen.setStyle("-fx-border-color: black; -fx-border-width: 1");
+        // bezittingen scrollPane
+        ScrollPane bezittingen = new ScrollPane();
+        bezittingen.setMaxSize(width - 20, height / 4);
+        bezittingen.setMinSize(width - 20, height / 4);
+        bezittingen.setStyle("-fx-border-color: black; -fx-border-width: 1");
 
-        VBox eigendommenVBox = new VBox();
-        eigendommen.setContent(eigendommenVBox);
+        VBox bezittingenVBox = new VBox();
+        bezittingen.setContent(bezittingenVBox);
 
-        for (Tile t : speler.getEigendommen()) {
-            Label eigendom = new Label(t.getName(), t.createGraphic(15));
-            eigendom.setFont(new Font(15));
+        for (Tile t : speler.getBezittingen()) {
+            Label bezitting = new Label(t.getName(), t.createGraphic(15));
+            bezitting.setFont(new Font(15));
 
-            eigendommenVBox.getChildren().add(eigendom);
+            bezittingenVBox.getChildren().add(bezitting);
         }
 
-        tabContent.getChildren().addAll(speler.getLabel(), balance, positie);
+        // addAll
+        tabContent.getChildren().addAll(speler.getLabel(), balance, position);
         if (speler.isInJail())
             tabContent.getChildren().add(inJail);
         else if (speler.getAmountOfGetOutOfJailCards() > 0)
             tabContent.getChildren().add(getOutOfJailCards);
-        tabContent.getChildren().add(eigendommen);
+        tabContent.getChildren().add(bezittingen);
 
         return tabContent;
     }

@@ -128,10 +128,10 @@ public class StreetTile extends Tile {
 
         // remove balance from speler and add eigendom to speler
         speler.updateBalance(-cost);
-        speler.addEigendom(this);
+        speler.addBezitting(this);
 
         // check if speler now has the all eigendommen of this areaColour and update rent if so
-        int amount = speler.getEigendommenOfAreaAmount(areaId);
+        int amount = speler.getAmountOfBezittingenInArea(areaId);
         if (((areaId.equals("area1") || areaId.equals("area8")) && amount == 2) || amount == 3)
             for (Tile t : bord.getTiles())
                 if (t.getId().matches("tile.street[0-9]+") && ((StreetTile) t).getAreaId().equals(areaId))

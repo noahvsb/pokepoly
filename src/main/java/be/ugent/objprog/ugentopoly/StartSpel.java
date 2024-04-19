@@ -1,7 +1,6 @@
 package be.ugent.objprog.ugentopoly;
 
 import be.ugent.objprog.ugentopoly.addSpeler.AddSpeler;
-import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -19,7 +18,7 @@ import java.util.List;
 public class StartSpel extends VBox {
 
     private Bord bord;
-    private LogsAndRollHandler logsAndRollHandler;
+    private GeneralInfoAndRollHandler generalInfoAndRollHandler;
     private StageController stageController;
 
     private Speler[] spelersArr;
@@ -33,16 +32,18 @@ public class StartSpel extends VBox {
     private Scene addSpelerScene;
     private Stage addSpelerStage;
 
-    public StartSpel(int width, int height, Bord bord, LogsAndRollHandler logsAndRollHandler, StageController stageController) {
+    public StartSpel(int width, int height, Bord bord, GeneralInfoAndRollHandler generalInfoAndRollHandler, StageController stageController) {
+        // variables
         this.bord = bord;
-        this.logsAndRollHandler = logsAndRollHandler;
+        this.generalInfoAndRollHandler = generalInfoAndRollHandler;
         this.stageController = stageController;
 
-        setPrefSize(width, height);
+        // configurations
         setMinSize(width, height);
         setMaxSize(width, height);
-
         setStyle("-fx-background-color: lightblue; -fx-border-color: white");
+        setSpacing(75);
+        setAlignment(Pos.CENTER);
 
         // already used indexes
         usedIconIndexes = new ArrayList<>();
@@ -68,68 +69,58 @@ public class StartSpel extends VBox {
 
         // buttons
         addSpelerButton = new Button("Speler toevoegen");
-        addSpelerButton.setOnAction(e -> {
-            addSpelerStage.close();
-            addSpelerStage.show();
-        });
+        addSpelerButton.setOnAction(e -> {addSpelerStage.close();addSpelerStage.show();});
         addSpelerButton.setFont(new Font(20));
 
         startSpelButton = new Button("Start spel");
-        startSpelButton.setOnAction(e -> startSpel());
+        startSpelButton.setOnAction(e -> start());
         startSpelButton.setFont(new Font(20));
         startSpelButton.setDisable(true);
 
         HBox buttons = new HBox(100, addSpelerButton, startSpelButton);
         buttons.setAlignment(Pos.CENTER);
 
+        // add all
         getChildren().addAll(spelersVBox, buttons);
-        setSpacing(75);
-        setAlignment(Pos.CENTER);
     }
 
-    public void startSpel() {
-        Tile startTile = bord.getTiles()[0];
-
+    public void start() {
         for (Speler speler : spelersArr)
             if (speler != null) {
                 speler.setBalance(bord.getStartBalance());
                 speler.setPos(0);
-                startTile.getPlayerBox().getChildren().add(speler.getIcon());
+                bord.getTiles()[0].getPlayerBox().getChildren().add(speler.getIcon());
             }
 
-        logsAndRollHandler.setSpelers(spelersArr);
+        generalInfoAndRollHandler.setSpelers(spelersArr);
 
         stageController.closeStage("Start spel");
     }
 
-    public void addSpeler(Speler speler, boolean cancel) {
-        if (!cancel) {
-            usedIconIndexes.add(speler.getIconIndex());
-            usedColourIndexes.add(speler.getColourIndex());
+    public void addSpeler(Speler speler) {
+        usedIconIndexes.add(speler.getIconIndex());
+        usedColourIndexes.add(speler.getColourIndex());
 
-            int i = 0;
-            boolean stop = false;
-            while (i < spelersArr.length && !stop) {
-                if (spelersArr[i] == null) {
-                    spelersArr[i] = speler;
+        int i = 0;
+        boolean stop = false;
+        while (i < spelersArr.length && !stop) {
+            if (spelersArr[i] == null) {
+                spelersArr[i] = speler;
 
-                    spelersVBox.getChildren().set(i, speler.getLabel());
-                    ((Label) spelersVBox.getChildren().get(i)).setFont(new Font(20));
+                spelersVBox.getChildren().set(i, speler.getLabel(20));
 
-                    stop = true;
-                }
-                i++;
+                stop = true;
             }
-
-            if (i == 2) {
-                startSpelButton.setDisable(false);
-            }
-
-            if (i == 4) {
-                addSpelerButton.setDisable(true);
-            }
+            i++;
         }
 
+        startSpelButton.setDisable(i == 1 || i == 4);
+
+        addSpelerStage.close();
+        addSpelerScene.setRoot(new AddSpeler(400, 300, this, usedIconIndexes, usedColourIndexes));
+    }
+
+    public void cancelAddSpeler() {
         addSpelerStage.close();
         addSpelerScene.setRoot(new AddSpeler(400, 300, this, usedIconIndexes, usedColourIndexes));
     }

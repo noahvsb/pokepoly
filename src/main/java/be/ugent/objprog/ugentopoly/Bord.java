@@ -19,36 +19,60 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Bord extends BorderPane {
+    private Element rootSettings;
+    private Element rootAreas;
+    private Element rootTiles;
 
+    private InfoTile infoTile;
     private Tile[] tiles;
-    private int startBalance;
+    private Element[] decks;
 
     private VBox leftTiles;
     private VBox rightTiles;
     private HBox topTiles;
     private HBox bottomTiles;
 
-    public Bord() throws IOException, JDOMException {
+    public Bord() throws JDOMException, IOException {
         // reading xml-file using JDOM
         Document doc = new SAXBuilder().build(getClass().getResourceAsStream("ugentopoly.xml"));
         Element root = doc.getRootElement();
 
-        Element rootSettings = root.getChild("settings");
-        startBalance = Integer.parseInt(rootSettings.getAttributeValue("balance"));
-
-        Element rootAreas = root.getChild("areas");
-        Element rootTiles = root.getChild("tiles");
-
-        Element deckChance = root.getChild("deck");
-        Element deckChest = root.getChildren().getLast();
+        rootSettings = root.getChild("settings");
+        rootAreas = root.getChild("areas");
+        rootTiles = root.getChild("tiles");
 
         // tiles
-        InfoTile infoTile = new InfoTile();
+        infoTile = new InfoTile();
         tiles = new Tile[40];
+        decks  = new Element[]{root.getChild("deck"), root.getChildren().getLast()};
 
+        addTilesToArray();
+
+        // adding tiles to left, top, right, bottom
+        addTiles();
+
+        // adding logo and infoTile to center
+        ImageView logo = new ImageView();
+        logo.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/logo.png")).toExternalForm()));
+        logo.setFitWidth(500); logo.setFitHeight(100);
+        logo.setRotate(45);
+
+        StackPane center = new StackPane(logo, infoTile);
+        center.setPrefSize(585, 585);
+        center.setStyle("-fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 1");
+        center.setAlignment(Pos.CENTER);
+
+        // set all parts
+        setBottom(bottomTiles);
+        setLeft(leftTiles);
+        setTop(topTiles);
+        setRight(rightTiles);
+        setCenter(center);
+    }
+
+    private void addTilesToArray() throws IOException {
         int util = 1;
 
-        // instantiate tiles
         for (int i = 0; i < 40; i++) {
             Element tile = rootTiles.getChildren().get(i);
             String type = tile.getAttributeValue("type");
@@ -77,13 +101,13 @@ public class Bord extends BorderPane {
                         Integer.parseInt(tile.getAttributeValue("rent5")));
             }
 
-            // Chest
-            if (type.equals("CHEST"))
-                tiles[pos] = new ChestTile(id, infoTile, this, deckChest);
-
             // Chance
             if (type.equals("CHANCE"))
-                tiles[pos] = new ChanceTile(id, infoTile, this, deckChance);
+                tiles[pos] = new ChanceTile(id, infoTile, this, decks[0]);
+
+            // Chest
+            if (type.equals("CHEST"))
+                tiles[pos] = new ChestTile(id, infoTile, this, decks[1]);
 
             // Tax
             if (type.equals("TAX")) {
@@ -121,32 +145,26 @@ public class Bord extends BorderPane {
             if (type.equals("FREE_PARKING"))
                 tiles[pos] = new FreeParkingTile(id, "free_parking",  infoTile);
         }
+    }
 
-        // adding tiles to left, top, right, bottom
+    private void addTiles() {
         leftTiles = new VBox();
         topTiles = new HBox();
-        rightTiles = new VBox();
-        rightTiles.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        rightTiles = new VBox(); rightTiles.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         bottomTiles = new HBox();
 
         for (int i = 1; i < tiles.length; i++) {
             Tile t = tiles[i];
 
             // left
-            if (i < 10) {
+            if (i < 10)
                 leftTiles.getChildren().addFirst(t.getTileWithHBox());
-            }
-
             // top
-            else if (i < 21) {
+            else if (i < 21)
                 topTiles.getChildren().add(t.getTileWithVBox());
-            }
-
             // right
-            else if (i < 30) {
+            else if (i < 30)
                 rightTiles.getChildren().add(t.getTileWithHBox());
-            }
-
             // bottom
             else {
                 VBox v = t.getVBox();
@@ -161,26 +179,6 @@ public class Bord extends BorderPane {
 
         // adding starttile to bottom
         bottomTiles.getChildren().addFirst(tiles[0].getTileWithVBox());
-
-
-        // logo + infoTile
-        ImageView logo = new ImageView();
-        logo.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/logo.png")).toExternalForm()));
-        logo.setFitWidth(500);
-        logo.setFitHeight(100);
-        logo.setRotate(45);
-
-        StackPane center = new StackPane(logo, infoTile);
-        center.setPrefSize(585, 585);
-        center.setStyle("-fx-background-color: lightgreen; -fx-border-color: black; -fx-border-width: 1");
-        center.setAlignment(Pos.CENTER);
-
-        // set all parts
-        setBottom(bottomTiles);
-        setLeft(leftTiles);
-        setTop(topTiles);
-        setRight(rightTiles);
-        setCenter(center);
     }
 
     public Tile[] getTiles() {
@@ -188,6 +186,6 @@ public class Bord extends BorderPane {
     }
 
     public int getStartBalance() {
-        return startBalance;
+        return Integer.parseInt(rootSettings.getAttributeValue("balance"));
     }
 }

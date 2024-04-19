@@ -5,6 +5,7 @@ import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,10 +13,10 @@ import java.util.List;
 
 public class Speler {
     // general info
-    private Label label;
     private String name;
     private ImageView icon;
     private String colour;
+
     private int iconIndex;
     private int colourIndex;
 
@@ -25,8 +26,10 @@ public class Speler {
     // gameplay
     private int pos;
     private int balance;
-    private List<Tile> eigendommen;
+    private List<Tile> bezittingen;
+
     private int lastRoll;
+
     private int amountOfGetOutOfJailCards;
     private boolean inJail;
 
@@ -42,7 +45,7 @@ public class Speler {
         this.iconIndex = iconIndex;
         this.colourIndex = colourIndex;
 
-        eigendommen = new ArrayList<>();
+        bezittingen = new ArrayList<>();
 
         amountOfGetOutOfJailCards = 0;
         inJail = false;
@@ -59,50 +62,57 @@ public class Speler {
         return label;
     }
 
-    public int getEigendommenOfAreaAmount(String areaId) {
-        int amount = 0;
-        for (Tile t : eigendommen)
-            if (t.getId().matches("tile.street[0-9]+") && ((StreetTile) t).getAreaId().equals(areaId))
-                amount++;
-        return amount;
-    }
+    public Label getLabel(double fontSize) {
+        Label label = this.getLabel();
+        label.setFont(new Font(fontSize));
 
-    public int getEigendommenOfTypeAmount(String type) {
-        int amount = 0;
-        for (Tile t : eigendommen)
-            if (t.getId().matches("tile." + type + "[0-9]+"))
-                amount++;
-        return amount;
+        return label;
     }
 
     public String getName() {
         return name;
     }
-
     public ImageView getIcon() {
         return icon;
     }
-
     public String getColourString() {
         return colour;
     }
-
     public String getLighterColourString() {
         return colour.equals("red") ? "pink" : "light" + colour;
     }
-
     public int getIconIndex() {
         return iconIndex;
     }
-
     public int getColourIndex() {
         return colourIndex;
+    }
+
+    public void addBezitting(Tile tile) {
+        bezittingen.add(tile);
+        bezittingen.sort(Comparator.comparing(Tile::getId));
+    }
+    public List<Tile> getBezittingen() {
+        return bezittingen;
+    }
+    public int getAmountOfBezittingenInArea(String areaId) {
+        int amount = 0;
+        for (Tile t : bezittingen)
+            if (t.getId().matches("tile.street[0-9]+") && ((StreetTile) t).getAreaId().equals(areaId))
+                amount++;
+        return amount;
+    }
+    public int getAmountOfBezittingenOfType(String type) {
+        int amount = 0;
+        for (Tile t : bezittingen)
+            if (t.getId().matches("tile." + type + "[0-9]+"))
+                amount++;
+        return amount;
     }
 
     public int getPos() {
         return pos;
     }
-
     public void setPos(int pos) {
         this.pos = pos;
     }
@@ -110,11 +120,9 @@ public class Speler {
     public int getBalance() {
         return balance;
     }
-
     public void setBalance(int balance) {
         this.balance = balance;
     }
-
     public void updateBalance(int amount) {
         balance += amount;
     }
@@ -122,37 +130,23 @@ public class Speler {
     public void setLastRoll(int lastRoll) {
         this.lastRoll = lastRoll;
     }
-
     public int getLastRoll() {
         return lastRoll;
-    }
-
-    public void addEigendom(Tile tile) {
-        eigendommen.add(tile);
-        eigendommen.sort(Comparator.comparing(Tile::getId));
-    }
-
-    public List<Tile> getEigendommen() {
-        return eigendommen;
     }
 
     public void setInJail(boolean inJail) {
         this.inJail = inJail;
     }
-
     public boolean isInJail() {
         return inJail;
     }
-
     public void addGetOutOfJailCard() {
         amountOfGetOutOfJailCards++;
     }
-
     public int getAmountOfGetOutOfJailCards() {
         return amountOfGetOutOfJailCards;
     }
-
-    public void useAGetOutOfJailCard() {
+    public void useGetOutOfJailCard() {
         amountOfGetOutOfJailCards--;
     }
 }

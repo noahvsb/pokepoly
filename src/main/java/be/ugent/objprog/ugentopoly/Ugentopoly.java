@@ -1,14 +1,8 @@
 package be.ugent.objprog.ugentopoly;
 
-import be.ugent.objprog.dice.DicePanel;
-
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import javafx.stage.StageStyle;
@@ -24,30 +18,14 @@ public class Ugentopoly extends Application {
         // SCENES
 
         //main
-        //bord
         Bord bord = new Bord();
-
-        //logs
-        //dobbelstenen
-        final DicePanel dicePanel = new DicePanel();
-
-        Button btn = new Button();
-        btn.setText("ROL");
-        btn.setFont(new Font(15));
-        btn.setPrefSize(100, 50);
-
-        VBox dice = new VBox();
-        dice.getChildren().addAll(btn, dicePanel);
-        dice.setAlignment(Pos.CENTER);
-
-        LogsAndRollHandler logsAndRollHandler = new LogsAndRollHandler(260, 845, dice, bord);
-
-        HBox main = new HBox(bord, logsAndRollHandler);
+        GeneralInfoAndRollHandler generalInfoAndRollHandler = new GeneralInfoAndRollHandler(260, 845, bord);
+        HBox main = new HBox(bord, generalInfoAndRollHandler);
 
         Scene mainScene = new Scene(main, 1105, 845);
 
         //spel starten
-        StartSpel startSpel = new StartSpel(500, 325, bord, logsAndRollHandler, stageController);
+        StartSpel startSpel = new StartSpel(500, 325, bord, generalInfoAndRollHandler, stageController);
         Scene startSpelScene = new Scene(startSpel, 500, 325);
 
         // STAGES
@@ -67,7 +45,6 @@ public class Ugentopoly extends Application {
 
         mainStage.setOnCloseRequest(e -> startSpelStage.close());
         stageController.addStages(mainStage, startSpelStage);
-
     }
 
     public static void main(String[] args) {
