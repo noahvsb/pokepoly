@@ -43,9 +43,8 @@ public class StreetTile extends Tile {
     }
 
     public Stripe createGraphic(boolean orientation) {
-        /* deze code hoort hier niet echt thuis, maar het is wel doordat deze graphic zo specifiek is,
-           dat de spacing lichtjes aangepast moet worden
-         */
+        /* deze code hoort hier niet echt thuis, maar het is wel doordat deze graphic specifieker is,
+           dat de alignment en spacing lichtjes aangepast moeten worden */
         hbox.setAlignment(Pos.CENTER_RIGHT);
         hbox.setSpacing(35);
 
@@ -61,18 +60,12 @@ public class StreetTile extends Tile {
     }
 
     public Stripe createGraphic(double height) {
-        hbox.setAlignment(Pos.CENTER_RIGHT);
-        hbox.setSpacing(35);
-
-        vbox.setAlignment(Pos.BOTTOM_CENTER);
-        vbox.setSpacing(55);
-
         return new Stripe(areaColour, height, height);
     }
 
     @Override
     public void setupInfoTile() {
-        Text title = new Text(nameStr);
+        Text title = new Text(name);
         title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
         Text rent = new Text("Huur:          €" + currentRent);
@@ -91,35 +84,33 @@ public class StreetTile extends Tile {
 
     @Override
     public Alert.AlertType getAlertType(Speler speler) {
-        if (owner == null && cost <= speler.getBalance())
+        if (owner == null && cost <= speler.getBalance()) // buy?
             return Alert.AlertType.CONFIRMATION;
-        return Alert.AlertType.INFORMATION;
+        return Alert.AlertType.INFORMATION; // other
     }
 
     @Override
     public String getAlertDescription(Speler speler) {
-        if (owner == null && cost <= speler.getBalance())
-            return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
-        else if (owner == null)
+        if (owner == null && cost <= speler.getBalance()) // buy?
+            return "Wilt u " + name + " kopen voor €" + cost + "?";
+        else if (owner == null) // can't buy
             return "U heeft niet genoeg geld om dit eigendom te kopen";
-        else if (!owner.equals(speler))
+        else if (!owner.equals(speler)) // rent
             return "U moet €" + currentRent + " huur betalen aan " + owner.getName();
-        return "Dit eigendom is in uw bezit";
+        return "Dit eigendom is in uw bezit"; // yours
     }
 
     @Override
     public void responseWasOk(Speler speler, Speler[] spelers) {
-        if (owner == null && cost <= speler.getBalance())
+        if (owner == null && cost <= speler.getBalance()) // buy
             buyProperty(speler);
-        else if (owner != null && !owner.equals(speler))
+        else if (owner != null && !owner.equals(speler)) // rent
             payRent(speler);
     }
 
     public void buyProperty(Speler speler) {
         // update styles
-        String newColour = speler.getLighterColourString();
-
-        normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: " + newColour;
+        normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: " + speler.getLighterColourString();
         hbox.setStyle(normalStyle);
         vbox.setStyle(normalStyle);
 

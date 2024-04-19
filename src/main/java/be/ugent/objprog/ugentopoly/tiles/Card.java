@@ -67,39 +67,38 @@ public class Card {
     }
 
     private String getAlertHeaderText() {
+        String headerText = null;
         switch (type) {
-            case "JAIL" -> {
-                return "Verlaat de overpoort zonder te betalen";
-            }
+            case "JAIL" -> headerText = "Verlaat de overpoort zonder te betalen";
             case "MOVE" -> {
                 int pos = Integer.parseInt(card.getAttributeValue("position"));
                 boolean collect = Boolean.parseBoolean(card.getAttributeValue("collect"));
 
-                return "Ga" + (collect ? " " : " direct ") + "naar " + bord.getTiles()[pos].getName() +
+                headerText = "Ga" + (collect ? " " : " direct ") + "naar " + bord.getTiles()[pos].getName() +
                         " (" + pos + ")";
             }
             case "MOVEREL" -> {
                 int relative = Integer.parseInt(card.getAttributeValue("relative"));
 
                 if (relative >= 0)
-                    return "Ga " + relative + " stappen verder";
+                    headerText = "Ga " + relative + " stappen verder";
                 else
-                    return "Ga " + -relative + " stappen terug";
+                    headerText =  "Ga " + -relative + " stappen terug";
             }
             case "MONEY" -> {
                 int money = Integer.parseInt(card.getAttributeValue("amount"));
 
                 if (money >= 0)
-                    return "U ontvangt €" + money;
+                    headerText = "U ontvangt €" + money;
                 else
-                    return "U moet €" + -money + " betalen";
+                    headerText = "U moet €" + -money + " betalen";
             }
             case "PLAYERS_MONEY" -> {
                 int money = Integer.parseInt(card.getAttributeValue("amount"));
 
-                return "Elke andere speler betaalt u €" + money;
+                headerText = "Elke andere speler betaalt u €" + money;
             }
         }
-        return null;
+        return headerText;
     }
 }

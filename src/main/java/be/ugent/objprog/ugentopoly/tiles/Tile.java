@@ -20,52 +20,42 @@ public abstract class Tile {
 
     // final variables
     protected static final double FONT_SIZE = 11;
-
-    protected static final int N = 65;
-
+    protected static final int N = 65; // used for WIDTH and HEIGHT
     protected static final double BORDER_WIDTH = 1;
-
-    protected String normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: white";
-    protected String highlightStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: lightgray";
 
     // other variables
     protected String id;
-    protected String nameStr;
+    protected String name;
     protected String imageName;
-    protected int width;
-    protected int height;
+    protected double width;
+    protected double height;
 
     protected HBox hbox;
     protected VBox vbox;
     protected HBox playerBox;
+    protected String normalStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: white";
+    protected String highlightStyle = "-fx-border-color: black; -fx-border-width: " + BORDER_WIDTH + "; -fx-background-color: lightgray";
 
     protected InfoTile infoTile;
-
-    protected boolean mouseToggle;
+    protected boolean mouseToggle; // for showing or closing the tile
 
     public void createTile() throws IOException {
         Properties props = new Properties();
         props.load(getClass().getResourceAsStream("/be/ugent/objprog/ugentopoly/ugentopoly.properties"));
 
         // name text
-        nameStr = props.getProperty(id);
+        name = props.getProperty(id);
 
         // boxes
-        hbox = new HBox(createName());
-        vbox = new VBox(createName());
-        playerBox = new HBox(-20);
+        hbox = new HBox(12, createName());
+        vbox = new VBox(12, createName());
+        playerBox = new HBox(-20); // negative spacing, because there is not enough space to display all 4 icons on one tile
 
-        hbox.setPrefSize(width, height);
-        hbox.setMaxSize(width, height);
-        hbox.setMinSize(width, height);
-        hbox.setSpacing(12);
+        hbox.setMaxSize(width, height); hbox.setMinSize(width, height);
         hbox.setAlignment(Pos.CENTER);
         hbox.setStyle(normalStyle);
 
-        vbox.setPrefSize(height, width);
-        vbox.setMaxSize(height, width);
-        vbox.setMinSize(height, width);
-        vbox.setSpacing(12);
+        vbox.setMaxSize(height, width); vbox.setMinSize(height, width);
         vbox.setAlignment(Pos.CENTER);
         vbox.setStyle(normalStyle);
 
@@ -79,8 +69,7 @@ public abstract class Tile {
     }
 
     public Text createName() {
-        Text name = new Text();
-        name.setText(nameStr);
+        Text name = new Text(this.name);
         name.setWrappingWidth(60);
         name.setFont(new Font(FONT_SIZE));
         name.setTextAlignment(TextAlignment.CENTER);
@@ -88,7 +77,7 @@ public abstract class Tile {
         // aangezien er hier maar 2 uitzondering zijn, vond ik het nog doenbaar voor deze cheese
         if (name.getText().equals("Hoveniersberg"))
             name.setText("Hoveniers-\nberg");
-        if (name.getText().equals("Boekentoren"))
+        else if (name.getText().equals("Boekentoren"))
             name.setText("Boeken-\ntoren");
 
         return name;
@@ -104,8 +93,7 @@ public abstract class Tile {
     }
 
     public Node createGraphic(double height) {
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
+        ImageView imageView = (ImageView) createGraphic(true);
         imageView.setFitWidth(height);
         imageView.setFitHeight(height);
 
@@ -113,10 +101,10 @@ public abstract class Tile {
     }
 
     public void tilePressed() {
-        Tile currentActive = infoTile.getCurrentActive();
-
         // set active
         if (mouseToggle) {
+            // if info of another tile is currently being displayed, reset it
+            Tile currentActive = infoTile.getCurrentActive();
             if (currentActive != null) {
                 currentActive.getHBox().setStyle(currentActive.getNormalStyle());
                 currentActive.getVBox().setStyle(currentActive.getNormalStyle());
@@ -125,22 +113,21 @@ public abstract class Tile {
 
                 infoTile.reset();
             }
-
-            // display info
-            setupInfoTile();
-
             // change box look
             hbox.setStyle(highlightStyle);
             vbox.setStyle(highlightStyle);
+
+            // display info
+            setupInfoTile();
         }
         // set inactive
         else {
-            // reset infoTile
-            infoTile.reset();
-
             // change box look
             hbox.setStyle(normalStyle);
             vbox.setStyle(normalStyle);
+
+            // reset infoTile
+            infoTile.reset();
         }
         // change mouse toggle
         mouseToggle = !mouseToggle;
@@ -177,36 +164,29 @@ public abstract class Tile {
     public String getId() {
         return id;
     }
-
+    public String getName() {
+        return name;
+    }
     public String getImagePath() {
         return "/be/ugent/objprog/ugentopoly/assets/" + imageName + ".png";
+    }
+    public String getNormalStyle() {
+        return normalStyle;
     }
 
     public StackPane getTileWithHBox() {
         return new StackPane(hbox, playerBox);
     }
-
     public HBox getHBox() {
         return hbox;
     }
-
     public StackPane getTileWithVBox() {
         return new StackPane(vbox, playerBox);
     }
-
     public VBox getVBox() {
         return vbox;
     }
-
     public HBox getPlayerBox() {
         return playerBox;
-    }
-
-    public String getName() {
-        return nameStr;
-    }
-
-    public String getNormalStyle() {
-        return normalStyle;
     }
 }

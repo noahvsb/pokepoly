@@ -1,6 +1,5 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
-import be.ugent.objprog.ugentopoly.StageController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -52,7 +51,7 @@ public abstract class CornerTile extends Tile {
 
     @Override
     public void setupInfoTile() {
-        Text title = new Text(nameStr);
+        Text title = new Text(name);
         title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
         Text description = new Text(getDescription());

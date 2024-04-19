@@ -92,7 +92,7 @@ public class UtilityTile extends Tile {
     @Override
     public String getAlertDescription(Speler speler) {
         if (owner == null && cost <= speler.getBalance())
-            return "Wilt u " + nameStr + " kopen voor €" + cost + "?";
+            return "Wilt u " + name + " kopen voor €" + cost + "?";
         else if (owner == null)
             return "U heeft niet genoeg geld om dit eigendom te kopen";
         else if (!owner.equals(speler))
