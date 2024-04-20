@@ -1,6 +1,15 @@
 package be.ugent.objprog.ugentopoly;
 
 import be.ugent.objprog.ugentopoly.tiles.*;
+import be.ugent.objprog.ugentopoly.tiles.card.ChanceTile;
+import be.ugent.objprog.ugentopoly.tiles.card.ChestTile;
+import be.ugent.objprog.ugentopoly.tiles.corner.FreeParkingTile;
+import be.ugent.objprog.ugentopoly.tiles.corner.GoToJailTile;
+import be.ugent.objprog.ugentopoly.tiles.corner.JailTile;
+import be.ugent.objprog.ugentopoly.tiles.corner.StartTile;
+import be.ugent.objprog.ugentopoly.tiles.possession.RailwayTile;
+import be.ugent.objprog.ugentopoly.tiles.possession.StreetTile;
+import be.ugent.objprog.ugentopoly.tiles.possession.UtilityTile;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;

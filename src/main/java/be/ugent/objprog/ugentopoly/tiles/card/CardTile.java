@@ -1,9 +1,9 @@
-package be.ugent.objprog.ugentopoly.tiles;
+package be.ugent.objprog.ugentopoly.tiles.card;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.StageController;
-import javafx.scene.Node;
+import be.ugent.objprog.ugentopoly.tiles.InfoTile;
+import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -14,21 +14,19 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-public class ChestTile extends Tile {
+public abstract class CardTile extends Tile {
     private Bord bord;
     private List<Element> deck;
 
-    public ChestTile(String id, InfoTile infoTile, Bord bord, Element deck) throws IOException {
+    public CardTile(String id, String imageName, InfoTile infoTile, Bord bord, Element deck) throws IOException {
         this.id = id;
-        imageName = "chest";
-
+        this.imageName = imageName;
         this.width = N * 2;
         this.height = N;
 
         mouseToggle = true;
         this.infoTile = infoTile;
         this.bord = bord;
-
         this.deck = deck.getChildren();
 
         createTile();
@@ -36,10 +34,10 @@ public class ChestTile extends Tile {
 
     @Override
     public void setupInfoTile() {
-        Text description = new Text("Neem een Algemeen Fonds-kaart");
-        description.setTextAlignment(TextAlignment.CENTER);
+        Text description = new Text(getAlertDescription(null));
         description.setFont(new Font(15));
         description.setWrappingWidth(180);
+        description.setTextAlignment(TextAlignment.CENTER);
 
         infoTile.setup(100, this, createGraphic(true), description);
     }
@@ -48,12 +46,6 @@ public class ChestTile extends Tile {
     public Alert.AlertType getAlertType(Speler speler) {
         return Alert.AlertType.INFORMATION;
     }
-
-    @Override
-    public String getAlertDescription(Speler speler) {
-        return "Neem een Algemeen Fonds-kaart";
-    }
-
     @Override
     public void responseWasOk(Speler speler, Speler[] spelers) {
         Card card = new Card(deck.get(new Random().nextInt(deck.size())), bord);

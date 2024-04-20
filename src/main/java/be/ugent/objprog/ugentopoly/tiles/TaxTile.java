@@ -2,6 +2,7 @@ package be.ugent.objprog.ugentopoly.tiles;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.tiles.corner.FreeParkingTile;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -17,7 +18,6 @@ public class TaxTile extends Tile {
     public TaxTile(String id, int cost, InfoTile infoTile, Bord bord) throws IOException {
         this.id = id;
         imageName = "tax";
-
         width = N * 2;
         height = N;
 
@@ -26,7 +26,6 @@ public class TaxTile extends Tile {
         mouseToggle = true;
         this.infoTile = infoTile;
         this.bord = bord;
-
         freeParkingTile = null;
 
         createTile();
@@ -47,18 +46,14 @@ public class TaxTile extends Tile {
     public Alert.AlertType getAlertType(Speler speler) {
         return Alert.AlertType.INFORMATION;
     }
-
     @Override
     public String getAlertDescription(Speler speler) {
         return "Betaal €" + cost + " TAX";
     }
-
     @Override
     public void responseWasOk(Speler speler, Speler[] spelers) {
         if (freeParkingTile == null)
-            for (Tile t : bord.getTiles())
-                if (t.getId().matches("tile.freeparking"))
-                    freeParkingTile = (FreeParkingTile) t;
+            freeParkingTile = (FreeParkingTile) bord.getTiles()[20];
 
         speler.updateBalance(-cost);
         freeParkingTile.addToCurrentPot(cost);

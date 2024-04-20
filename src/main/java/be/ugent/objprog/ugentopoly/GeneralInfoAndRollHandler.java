@@ -1,7 +1,7 @@
 package be.ugent.objprog.ugentopoly;
 
 import be.ugent.objprog.dice.DicePanel;
-import be.ugent.objprog.ugentopoly.tiles.Tile;
+import be.ugent.objprog.ugentopoly.tiles.possession.PossessionTile;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -222,7 +222,7 @@ public class GeneralInfoAndRollHandler extends VBox {
         VBox bezittingenVBox = new VBox();
         bezittingen.setContent(bezittingenVBox);
 
-        for (Tile t : speler.getBezittingen()) {
+        for (PossessionTile t : speler.getBezittingen()) {
             Label bezitting = new Label(t.getName(), t.createGraphic(15));
             bezitting.setFont(new Font(15));
 

@@ -1,4 +1,4 @@
-package be.ugent.objprog.ugentopoly.tiles;
+package be.ugent.objprog.ugentopoly.tiles.card;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
@@ -8,11 +8,10 @@ import org.jdom2.Element;
 public class Card {
     private Bord bord;
     private Element card;
-    private String type;
+
     public Card(Element card, Bord bord) {
         this.bord = bord;
         this.card = card;
-        type = card.getAttributeValue("type");
     }
 
     public void handleCardAction(Speler speler, Speler[] spelers) {
@@ -20,34 +19,36 @@ public class Card {
         alert.setTitle("Kaart");
         alert.setHeaderText(getAlertHeaderText());
 
-        alert.showAndWait().ifPresent(response -> executeAction(speler, spelers));
+        alert.showAndWait().ifPresent(r -> executeAction(speler, spelers));
     }
 
     private void executeAction(Speler speler, Speler[] spelers) {
-        switch (type) {
+        switch (card.getAttributeValue("type")) {
             case "JAIL" -> speler.addGetOutOfJailCard();
             case "MOVE" -> {
                 int pos = Integer.parseInt(card.getAttributeValue("position"));
                 boolean collect = Boolean.parseBoolean(card.getAttributeValue("collect"));
-
                 int prevPos = speler.getPos();
+
                 speler.setPos(pos);
                 bord.getTiles()[pos].getPlayerBox().getChildren().add(speler.getIcon());
 
                 if (collect && prevPos > pos)
                     bord.getTiles()[0].handleTileAction(speler, spelers);
+
                 bord.getTiles()[pos].handleTileAction(speler, spelers);
             }
             case "MOVEREL" -> {
                 int relative = Integer.parseInt(card.getAttributeValue("relative"));
-
                 int prevPos = speler.getPos();
                 int pos = (prevPos + relative < 0 ? prevPos + relative + 40 : prevPos + relative);
+
                 speler.setPos(pos);
                 bord.getTiles()[pos].getPlayerBox().getChildren().add(speler.getIcon());
 
                 if (relative > 0 && prevPos > pos)
                     bord.getTiles()[0].handleTileAction(speler, spelers);
+
                 bord.getTiles()[pos].handleTileAction(speler, spelers);
             }
             case "MONEY" -> speler.updateBalance(Integer.parseInt(card.getAttributeValue("amount")));
@@ -68,7 +69,8 @@ public class Card {
 
     private String getAlertHeaderText() {
         String headerText = null;
-        switch (type) {
+
+        switch (card.getAttributeValue("type")) {
             case "JAIL" -> headerText = "Verlaat de overpoort zonder te betalen";
             case "MOVE" -> {
                 int pos = Integer.parseInt(card.getAttributeValue("position"));

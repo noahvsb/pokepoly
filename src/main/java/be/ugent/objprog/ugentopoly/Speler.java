@@ -1,6 +1,7 @@
 package be.ugent.objprog.ugentopoly;
 
-import be.ugent.objprog.ugentopoly.tiles.StreetTile;
+import be.ugent.objprog.ugentopoly.tiles.possession.PossessionTile;
+import be.ugent.objprog.ugentopoly.tiles.possession.StreetTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -26,7 +27,7 @@ public class Speler {
     // gameplay
     private int pos;
     private int balance;
-    private List<Tile> bezittingen;
+    private List<PossessionTile> bezittingen;
 
     private int lastRoll;
 
@@ -93,11 +94,11 @@ public class Speler {
         return colourIndex;
     }
 
-    public void addBezitting(Tile tile) {
+    public void addBezitting(PossessionTile tile) {
         bezittingen.add(tile);
         bezittingen.sort(Comparator.comparing(Tile::getId));
     }
-    public List<Tile> getBezittingen() {
+    public List<PossessionTile> getBezittingen() {
         return bezittingen;
     }
     public int getAmountOfBezittingenInArea(String areaId) {

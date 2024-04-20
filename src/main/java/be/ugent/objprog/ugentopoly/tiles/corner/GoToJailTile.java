@@ -1,16 +1,17 @@
-package be.ugent.objprog.ugentopoly.tiles;
+package be.ugent.objprog.ugentopoly.tiles.corner;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
 
 public class GoToJailTile extends CornerTile {
     private Bord bord;
+
     public GoToJailTile(String id, String imageName, InfoTile infoTile, Bord bord) throws IOException {
         super(id, imageName, infoTile);
-
         this.bord = bord;
     }
 
@@ -23,12 +24,10 @@ public class GoToJailTile extends CornerTile {
     public Alert.AlertType getAlertType(Speler speler) {
         return Alert.AlertType.INFORMATION;
     }
-
     @Override
     public String getAlertDescription(Speler speler) {
         return "Ga direct naar de overpoort!";
     }
-
     @Override
     public void responseWasOk(Speler speler, Speler[] spelers) {
         speler.setInJail(true);

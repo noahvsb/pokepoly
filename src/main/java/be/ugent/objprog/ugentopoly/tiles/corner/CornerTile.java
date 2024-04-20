@@ -1,5 +1,7 @@
-package be.ugent.objprog.ugentopoly.tiles;
+package be.ugent.objprog.ugentopoly.tiles.corner;
 
+import be.ugent.objprog.ugentopoly.tiles.InfoTile;
+import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -14,10 +16,9 @@ public abstract class CornerTile extends Tile {
 
     public CornerTile(String id, String imageName, InfoTile infoTile) throws IOException {
         this.id = id;
-
+        this.imageName = imageName;
         this.width = N * 2;
         this.height = N * 2;
-        this.imageName = imageName;
 
         mouseToggle = true;
         this.infoTile = infoTile;
@@ -40,34 +41,22 @@ public abstract class CornerTile extends Tile {
     }
 
     @Override
-    public ImageView createGraphic(double height) {
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
-        imageView.setFitWidth(height);
-        imageView.setFitHeight(height * getImageHeightDivider()/getImageWidthDivider());
-
-        return imageView;
-    }
-
-    @Override
     public void setupInfoTile() {
         Text title = new Text(name);
         title.setFont(Font.font("System", FontWeight.BOLD, 13));
 
         Text description = new Text(getDescription());
         description.setFont(new Font(13));
-        description.setTextAlignment(TextAlignment.CENTER);
         description.setWrappingWidth(180);
+        description.setTextAlignment(TextAlignment.CENTER);
 
         infoTile.setup(40, this, createGraphic(true), title, description);
     }
 
     public abstract String getDescription();
-
     public double getImageWidthDivider() {
         return 2.8;
     }
-
     public double getImageHeightDivider() {
         return 2.0;
     }

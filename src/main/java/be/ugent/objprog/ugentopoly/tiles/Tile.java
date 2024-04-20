@@ -75,7 +75,7 @@ public abstract class Tile {
         name.setTextAlignment(TextAlignment.CENTER);
 
         // ik ben niet content genoeg met de setWrappingWidth oplossing voor deze 2 gevallen,
-        // de woorden worden niet volgens de norm gesplitst
+        // want de woorden worden niet volgens de norm gesplitst
         if (name.getText().equals("Hoveniersberg"))
             name.setText("Hoveniers-\nberg");
         else if (name.getText().equals("Boekentoren"))
@@ -89,14 +89,6 @@ public abstract class Tile {
         imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
         imageView.setFitWidth(Math.max(width, height) / 3.0);
         imageView.setFitHeight(Math.max(width, height) / 3.0);
-
-        return imageView;
-    }
-
-    public Node createGraphic(double height) {
-        ImageView imageView = (ImageView) createGraphic(true);
-        imageView.setFitWidth(height);
-        imageView.setFitHeight(height);
 
         return imageView;
     }
@@ -135,7 +127,6 @@ public abstract class Tile {
     }
 
     public abstract void setupInfoTile();
-
     public void changeMouseToggle() {
         mouseToggle = !mouseToggle;
     }
@@ -157,9 +148,7 @@ public abstract class Tile {
     }
 
     public abstract Alert.AlertType getAlertType(Speler speler);
-
     public abstract String getAlertDescription(Speler speler);
-
     public abstract void responseWasOk(Speler speler, Speler[] spelers);
 
     public String getId() {

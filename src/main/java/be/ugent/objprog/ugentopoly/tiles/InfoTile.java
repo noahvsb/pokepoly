@@ -10,13 +10,13 @@ public class InfoTile extends VBox {
     private Tile currentActive;
 
     public InfoTile() {
+        currentActive = null;
+
         setVisible(false);
         setPrefSize(WIDTH, HEIGHT);
         setMinSize(WIDTH, HEIGHT);
         setMaxSize(WIDTH, HEIGHT);
         setStyle("-fx-background-color: white; -fx-background-radius: 7; -fx-border-width: 1; -fx-border-color: black; -fx-border-insets: 5");
-
-        currentActive = null;
     }
 
     // default
@@ -40,9 +40,10 @@ public class InfoTile extends VBox {
     }
 
     public void reset() {
+        this.currentActive = null;
+
         setVisible(false);
         getChildren().clear();
-        this.currentActive = null;
     }
 
     public Tile getCurrentActive() {
