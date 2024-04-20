@@ -5,10 +5,7 @@ import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.geometry.Pos;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 
@@ -51,18 +48,10 @@ public class StreetTile extends PossessionTile {
 
     @Override
     public void setupInfoTile() {
-        Text title = new Text(name);
-        title.setFont(Font.font("System", FontWeight.BOLD, 13));
-
-        Text rent = new Text("Huur:          €" + currentRent);
-        rent.setFont(new Font(13));
-
-        Text cost = new Text("Kostprijs:     €" + this.cost);
-        cost.setFont(new Font(13));
-
-        Text owner = new Text("Huidige eigenaar\n" + (this.owner == null ? "<te koop>" : this.owner.getShortendName()));
-        owner.setFont(new Font(13));
-        owner.setTextAlignment(TextAlignment.CENTER);
+        Text title = Tile.Texts.title(name);
+        Text rent = Tile.Texts.rent(currentRent);
+        Text cost = Tile.Texts.cost(this.cost);
+        Text owner = Tile.Texts.owner(this.owner);
 
         infoTile.setup(Pos.TOP_CENTER, 30, this, new Stripe(areaColour, 200, 50), title, rent, cost, owner);
     }

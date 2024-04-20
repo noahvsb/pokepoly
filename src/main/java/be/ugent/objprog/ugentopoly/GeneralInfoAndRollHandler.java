@@ -43,7 +43,7 @@ public class GeneralInfoAndRollHandler extends VBox {
         // configurations
         setMinSize(width, height);
         setMaxSize(width, height);
-        setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: lightgray");
+        setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: lightgreen");
         setAlignment(Pos.CENTER);
         setSpacing(25);
 
@@ -65,7 +65,7 @@ public class GeneralInfoAndRollHandler extends VBox {
         rolButton.setPrefSize(100, 50);
         rolButton.setOnAction(e -> {
             rolButton.setDisable(true);
-            dicePanel.roll(this::handleRoll);
+            dicePanel.roll(r -> handleRoll(r, false));
         });
         rolButton.setDisable(true);
 
@@ -74,7 +74,7 @@ public class GeneralInfoAndRollHandler extends VBox {
         dice.setAlignment(Pos.CENTER);
     }
 
-    public void handleRoll(List<Integer> result) {
+    public void handleRoll(List<Integer> result, boolean freshOutOfJail) {
         if (!spelers[beurt].isInJail()){
             // change position
             boolean langsStart = false;
@@ -131,7 +131,7 @@ public class GeneralInfoAndRollHandler extends VBox {
 
             if (spelers[beurt].isInJail())
                 bord.getTiles()[10].handleTileAction(spelers[beurt], spelers);
-        } else if (!spelers[beurt].isInJail()) {
+        } else if (!spelers[beurt].isInJail() && !freshOutOfJail) {
             amountOfDoubleRollsAfterEachOther++;
             if (amountOfDoubleRollsAfterEachOther >= 3)
                 bord.getTiles()[30].handleTileAction(spelers[beurt], spelers);
@@ -142,9 +142,9 @@ public class GeneralInfoAndRollHandler extends VBox {
 
             spelerBeurt.getChildren().clear();
             spelerBeurt.getChildren().addAll(spelers[beurt].getLabel(), t);
-        } else {
+        } else if (!freshOutOfJail) {
             spelers[beurt].setInJail(false);
-            handleRoll(result);
+            handleRoll(result, true);
         }
 
         // enable rolButton
@@ -185,7 +185,7 @@ public class GeneralInfoAndRollHandler extends VBox {
 
     public Node getTabContent(Speler speler) {
         VBox tabContent = new VBox(20);
-        tabContent.setAlignment(Pos.CENTER);
+        tabContent.setAlignment(Pos.BOTTOM_CENTER);
         tabContent.setStyle("-fx-background-color: E3F1FF");
 
         // balance text

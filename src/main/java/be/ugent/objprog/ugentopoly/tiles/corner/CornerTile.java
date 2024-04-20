@@ -4,10 +4,7 @@ import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -42,13 +39,9 @@ public abstract class CornerTile extends Tile {
 
     @Override
     public void setupInfoTile() {
-        Text title = new Text(name);
-        title.setFont(Font.font("System", FontWeight.BOLD, 13));
+        Text title = Tile.Texts.title(name);
 
-        Text description = new Text(getDescription());
-        description.setFont(new Font(13));
-        description.setWrappingWidth(180);
-        description.setTextAlignment(TextAlignment.CENTER);
+        Text description = Tile.Texts.description(getDescription());
 
         infoTile.setup(40, this, createGraphic(true), title, description);
     }

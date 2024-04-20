@@ -34,10 +34,10 @@ public class TaxTile extends Tile {
     @Override
     public void setupInfoTile() {
         Text title = new Text(name);
-        title.setFont(Font.font("System", FontWeight.BOLD, 13));
+        title.setFont(Font.font("System", FontWeight.BOLD, INFO_TILE_FONT_SIZE));
 
         Text description = new Text("te betalen: €" + cost);
-        description.setFont(new Font(13));
+        description.setFont(new Font(INFO_TILE_FONT_SIZE));
 
         infoTile.setup(50, this, createGraphic(true), title, description);
     }

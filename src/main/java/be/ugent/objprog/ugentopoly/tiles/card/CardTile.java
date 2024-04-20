@@ -5,9 +5,7 @@ import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.control.Alert;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import org.jdom2.Element;
 
 import java.io.IOException;
@@ -34,10 +32,7 @@ public abstract class CardTile extends Tile {
 
     @Override
     public void setupInfoTile() {
-        Text description = new Text(getAlertDescription(null));
-        description.setFont(new Font(15));
-        description.setWrappingWidth(180);
-        description.setTextAlignment(TextAlignment.CENTER);
+        Text description = Tile.Texts.description(getAlertDescription(null), INFO_TILE_FONT_SIZE + 2);
 
         infoTile.setup(100, this, createGraphic(true), description);
     }
@@ -48,7 +43,8 @@ public abstract class CardTile extends Tile {
     }
     @Override
     public void responseWasOk(Speler speler, Speler[] spelers) {
-        Card card = new Card(deck.get(new Random().nextInt(deck.size())), bord);
+        Element c = deck.get(new Random().nextInt(deck.size()));
+        Card card = new Card(c, bord);
 
         card.handleCardAction(speler, spelers);
     }

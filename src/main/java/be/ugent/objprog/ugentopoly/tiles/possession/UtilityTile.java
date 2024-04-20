@@ -4,12 +4,10 @@ import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -42,7 +40,7 @@ public class UtilityTile extends PossessionTile {
         return imageView;
     }
     @Override
-    public Node createGraphic(double height) {
+    public ImageView createGraphic(double height) {
         ImageView imageView = createGraphic(true);
         imageView.setFitWidth(height);
         imageView.setFitHeight(height / (util == 1 ? 3 : 2));
@@ -52,19 +50,13 @@ public class UtilityTile extends PossessionTile {
 
     @Override
     public void setupInfoTile() {
-        ImageView imageView = createGraphic(true);
-        imageView.setFitWidth(100);
-        imageView.setFitHeight(100.0 / (util == 1 ? 3 : 2));
+        ImageView imageView = createGraphic(100);
 
         Text huur = new Text("Huur:   worp x €" + currentFactor);
-        huur.setFont(new Font(13));
+        huur.setFont(new Font(INFO_TILE_FONT_SIZE));
 
-        Text cost = new Text("Kostprijs:   €" + this.cost);
-        cost.setFont(new Font(13));
-
-        Text owner = new Text("Huidige eigenaar\n" + (this.owner == null ? "<te koop>" : this.owner.getShortendName()));
-        owner.setFont(new Font(13));
-        owner.setTextAlignment(TextAlignment.CENTER);
+        Text cost = Tile.Texts.cost(this.cost);
+        Text owner = Tile.Texts.owner(this.owner);
 
         infoTile.setup(20, this, imageView, huur, cost, owner);
     }

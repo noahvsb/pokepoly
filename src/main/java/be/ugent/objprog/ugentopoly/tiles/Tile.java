@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -17,9 +18,47 @@ import java.util.Objects;
 import java.util.Properties;
 
 public abstract class Tile {
+    protected static class Texts {
+        public static Text title(String name) {
+            Text txt = new Text(name);
+            txt.setFont(Font.font("System", FontWeight.BOLD, INFO_TILE_FONT_SIZE));
+            return txt;
+        }
+        public static Text rent(int rent) {
+            Text txt = new Text("Huur:          €" + rent);
+            txt.setFont(new Font(INFO_TILE_FONT_SIZE));
+            return txt;
+        }
+        public static Text cost(int cost) {
+            Text txt = new Text("Kostprijs:     €" + cost);
+            txt.setFont(new Font(INFO_TILE_FONT_SIZE));
+            return txt;
+        }
+        public static Text owner(Speler owner) {
+            Text txt = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getShortendName()));
+            txt.setFont(new Font(INFO_TILE_FONT_SIZE));
+            txt.setTextAlignment(TextAlignment.CENTER);
+            return txt;
+        }
+        public static Text description(String desc) {
+            Text txt = new Text(desc);
+            txt.setFont(new Font(INFO_TILE_FONT_SIZE));
+            txt.setWrappingWidth(180);
+            txt.setTextAlignment(TextAlignment.CENTER);
+            return txt;
+        }
+        public static Text description(String desc, double fontSize) {
+            Text txt = new Text(desc);
+            txt.setFont(new Font(fontSize));
+            txt.setWrappingWidth(180);
+            txt.setTextAlignment(TextAlignment.CENTER);
+            return txt;
+        }
+    }
 
     // final variables
     protected static final double FONT_SIZE = 11;
+    protected static final double INFO_TILE_FONT_SIZE = 13;
     protected static final int N = 65; // used for WIDTH and HEIGHT
     protected static final double BORDER_WIDTH = 1;
 
@@ -64,14 +103,13 @@ public abstract class Tile {
 
         // graphic
         hbox.getChildren().add(createGraphic(true));
-
         vbox.getChildren().add(createGraphic(false));
     }
 
     public Text createName() {
         Text name = new Text(this.name);
-        name.setWrappingWidth(60);
         name.setFont(new Font(FONT_SIZE));
+        name.setWrappingWidth(60);
         name.setTextAlignment(TextAlignment.CENTER);
 
         // ik ben niet content genoeg met de setWrappingWidth oplossing voor deze 2 gevallen,

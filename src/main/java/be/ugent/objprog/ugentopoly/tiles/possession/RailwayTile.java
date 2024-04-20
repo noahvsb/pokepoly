@@ -4,15 +4,9 @@ import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class RailwayTile extends PossessionTile {
     private int rent;
@@ -28,20 +22,12 @@ public class RailwayTile extends PossessionTile {
 
     @Override
     public void setupInfoTile() {
-        Text title = new Text(name);
-        title.setFont(Font.font("System", FontWeight.BOLD, 13));
+        Text title = Tile.Texts.title(name);
+        Text rent = Tile.Texts.rent(currentRent);
+        Text cost = Tile.Texts.cost(this.cost);
+        Text owner = Tile.Texts.owner(this.owner);
 
-        Text huur = new Text("Huur:          €" + currentRent);
-        huur.setFont(new Font(13));
-
-        Text cost = new Text("Kostprijs:   €" + this.cost);
-        cost.setFont(new Font(13));
-
-        Text owner = new Text("Huidige eigenaar\n" + (this.owner == null ? "<te koop>" : this.owner.getShortendName()));
-        owner.setFont(new Font(13));
-        owner.setTextAlignment(TextAlignment.CENTER);
-
-        infoTile.setup(13, this, createGraphic(true), title, huur, cost, owner);
+        infoTile.setup(13, this, createGraphic(true), title, rent, cost, owner);
     }
 
     @Override
