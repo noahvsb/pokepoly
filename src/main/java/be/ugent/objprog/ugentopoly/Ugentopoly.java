@@ -1,5 +1,7 @@
 package be.ugent.objprog.ugentopoly;
 
+import be.ugent.objprog.ugentopoly.rightDisplay.RightDisplay;
+import be.ugent.objprog.ugentopoly.startSpel.StartSpel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -19,13 +21,13 @@ public class Ugentopoly extends Application {
 
         //main
         Bord bord = new Bord();
-        GeneralInfoAndRollHandler generalInfoAndRollHandler = new GeneralInfoAndRollHandler(260, 845, bord);
-        HBox main = new HBox(bord, generalInfoAndRollHandler);
+        RightDisplay rightDisplay = new RightDisplay(260, 845, bord);
+        HBox main = new HBox(bord, rightDisplay);
 
         Scene mainScene = new Scene(main, 1105, 845);
 
         //spel starten
-        StartSpel startSpel = new StartSpel(500, 325, bord, generalInfoAndRollHandler, stageController);
+        StartSpel startSpel = new StartSpel(500, 325, bord, rightDisplay, stageController);
         Scene startSpelScene = new Scene(startSpel, 500, 325);
 
         // STAGES

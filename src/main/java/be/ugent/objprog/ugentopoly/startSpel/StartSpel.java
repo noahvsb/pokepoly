@@ -1,6 +1,9 @@
-package be.ugent.objprog.ugentopoly;
+package be.ugent.objprog.ugentopoly.startSpel;
 
-import be.ugent.objprog.ugentopoly.addSpeler.AddSpeler;
+import be.ugent.objprog.ugentopoly.Bord;
+import be.ugent.objprog.ugentopoly.rightDisplay.RightDisplay;
+import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.StageController;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -18,7 +21,7 @@ import java.util.List;
 public class StartSpel extends VBox {
 
     private Bord bord;
-    private GeneralInfoAndRollHandler generalInfoAndRollHandler;
+    private RightDisplay rightDisplay;
     private StageController stageController;
 
     private Speler[] spelersArr;
@@ -32,10 +35,10 @@ public class StartSpel extends VBox {
     private Scene addSpelerScene;
     private Stage addSpelerStage;
 
-    public StartSpel(int width, int height, Bord bord, GeneralInfoAndRollHandler generalInfoAndRollHandler, StageController stageController) {
+    public StartSpel(int width, int height, Bord bord, RightDisplay rightDisplay, StageController stageController) {
         // variables
         this.bord = bord;
-        this.generalInfoAndRollHandler = generalInfoAndRollHandler;
+        this.rightDisplay = rightDisplay;
         this.stageController = stageController;
 
         // configurations
@@ -89,10 +92,10 @@ public class StartSpel extends VBox {
             if (speler != null) {
                 speler.setBalance(bord.getStartBalance());
                 speler.setPos(0);
-                bord.getTiles()[0].getPlayerBox().getChildren().add(speler.getIcon());
+                bord.setPos(speler, 0);
             }
 
-        generalInfoAndRollHandler.setSpelers(spelersArr);
+        rightDisplay.setSpelers(spelersArr);
 
         stageController.closeStage("Start spel");
     }

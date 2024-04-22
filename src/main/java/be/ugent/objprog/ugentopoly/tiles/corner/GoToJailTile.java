@@ -32,7 +32,7 @@ public class GoToJailTile extends CornerTile {
     public void responseWasOk(Speler speler, Speler[] spelers) {
         speler.setInJail(true);
         speler.setPos(10);
-        bord.getTiles()[10].getPlayerBox().getChildren().add(speler.getIcon());
+        bord.setPos(speler, 10);
 
         // check for GetOutOfJailCards and use one if possible
         if (speler.getAmountOfGetOutOfJailCards() > 0) {

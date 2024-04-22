@@ -199,6 +199,10 @@ public class Bord extends BorderPane {
         return tiles;
     }
 
+    public void setPos(Speler speler, int pos) {
+        tiles[pos].getPlayerBox().getChildren().add(speler.getIcon());
+    }
+
     public int getStartBalance() {
         return Integer.parseInt(rootSettings.getAttributeValue("balance"));
     }
