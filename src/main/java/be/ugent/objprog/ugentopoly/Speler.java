@@ -73,9 +73,9 @@ public class Speler {
     public String getName() {
         return name;
     }
-    public String getShortendName() {
-        if (name.length() > 30)
-            return name.substring(0, 27) + "...";
+    public String getShortendName(int i) {
+        if (name.length() > i)
+            return name.substring(0, i - 3) + "...";
         return name;
     }
     public ImageView getIcon() {

@@ -1,6 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles.corner;
 
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import javafx.scene.control.Alert;
 
@@ -36,7 +37,9 @@ public class FreeParkingTile extends CornerTile {
         return "U ontvang alles (€" + bonuspot + ") uit de bonuspot";
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers) {
+    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
         speler.updateBalance(bonuspot);
+        logText = speler.getShortendName(10) + " ontving €" + bonuspot + " uit de bonuspot.";
+        bonuspot = 0;
     }
 }

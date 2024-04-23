@@ -2,6 +2,7 @@ package be.ugent.objprog.ugentopoly.tiles.corner;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import javafx.scene.control.Alert;
 
@@ -29,7 +30,7 @@ public class GoToJailTile extends CornerTile {
         return "Ga direct naar de overpoort!";
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers) {
+    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
         speler.setInJail(true);
         speler.setPos(10);
         bord.setPos(speler, 10);
@@ -46,5 +47,10 @@ public class GoToJailTile extends CornerTile {
         alert.setHeaderText(speler.isInJail()
                 ? "Gooi vanaf volgende beurt dubbel om uit de overpoort te geraken"
                 : "U heeft een verlaat-overpoort-kaart gebruikt, geen overpoort deze keer");
+
+        // logs
+        logText = speler.getShortendName(10) + (speler.isInJail()
+                ? " is in de overpoort beland."
+                : " heeft een verlaat-overpoort-kaart gebruikt om aan de overpoort te ontsnappen.");
     }
 }

@@ -3,8 +3,6 @@ package be.ugent.objprog.ugentopoly.rightDisplay;
 import be.ugent.objprog.dice.DicePanel;
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.rightDisplay.RollHandler;
-import be.ugent.objprog.ugentopoly.rightDisplay.SpelerStatus;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -15,6 +13,7 @@ import javafx.scene.text.Text;
 public class RightDisplay extends VBox {
 
     private SpelerStatus spelerStatus;
+    private Logs logs;
 
     private VBox dice;
     private DicePanel dicePanel;
@@ -36,13 +35,13 @@ public class RightDisplay extends VBox {
         setMaxSize(width, height);
         setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: lightgreen");
         setAlignment(Pos.CENTER);
-        setSpacing(25);
+        setSpacing(20);
 
         // status
         spelerStatus = new SpelerStatus(this, bord, 15);
 
         // logs
-        // TODO: implements logs
+        logs = new Logs(this, 13);
 
         // dice
         dicePanel = new DicePanel();
@@ -53,7 +52,7 @@ public class RightDisplay extends VBox {
         rolButton.setPrefSize(100, 50);
         rolButton.setDisable(true);
 
-        rollHandler = new RollHandler(this, bord, spelerStatus, rolButton);
+        rollHandler = new RollHandler(this, bord, spelerStatus, logs, rolButton);
         rolButton.setOnAction(e -> {
             rolButton.setDisable(true);
             dicePanel.roll(r -> rollHandler.handleRoll(r));
@@ -79,7 +78,7 @@ public class RightDisplay extends VBox {
         spelerBeurtBox.setMaxWidth(width - 10);
 
         // add everything to the display
-        getChildren().addAll(spelerStatus, spelerBeurtBox, dice);
+        getChildren().addAll(spelerStatus, logs, spelerBeurtBox, dice);
 
         // enable rol button
         dice.getChildren().getFirst().setDisable(false);

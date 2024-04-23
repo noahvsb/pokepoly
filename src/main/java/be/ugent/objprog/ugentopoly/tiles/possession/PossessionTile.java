@@ -2,6 +2,7 @@ package be.ugent.objprog.ugentopoly.tiles.possession;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.Node;
@@ -51,15 +52,16 @@ public abstract class PossessionTile extends Tile {
         else if (owner == null) // can't buy
             return "U heeft niet genoeg geld om deze bezitting te kopen";
         else if (!owner.equals(speler)) // rent
-            return "U moet €" + currentRent + " huur betalen aan " + owner.getShortendName();
+            return "U moet €" + currentRent + " huur betalen aan " + owner.getShortendName(30);
         return "Deze bezitting is in uw bezit"; // yours
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers) {
+    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
         if (owner == null && cost <= speler.getBalance()) // buy
             buyProperty(speler);
         else if (owner != null && !owner.equals(speler)) // rent
             payRent(speler);
+
     }
 
     public void buyProperty(Speler speler) {
@@ -77,11 +79,17 @@ public abstract class PossessionTile extends Tile {
 
         // check if speler now has the all eigendommen of this areaColour and update rent if so
         checkForRentUpdate(speler);
+
+        // logs
+        logText = speler.getName() + " heeft " + name + " gekocht voor €" + cost + ".";
     }
     public abstract void checkForRentUpdate(Speler speler);
 
     public void payRent(Speler speler) {
         owner.updateBalance(currentRent);
         speler.updateBalance(-currentRent);
+
+        logText = speler.getShortendName(10) + " moest €" + currentRent + " betalen aan " +
+                owner.getShortendName(10) + " voor het huren van " + name + ".";
     }
 }

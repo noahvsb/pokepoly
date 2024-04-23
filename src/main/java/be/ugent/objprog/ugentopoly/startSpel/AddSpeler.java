@@ -3,9 +3,12 @@ package be.ugent.objprog.ugentopoly.startSpel;
 import be.ugent.objprog.ugentopoly.Speler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
@@ -20,8 +23,13 @@ public class AddSpeler extends VBox {
     private int colourIndex;
 
     private TextField nameField;
+
     private ComboBox<String> pawnComboBox;
+    private HBox pawnBox;
+
     private ComboBox<String> colourComboBox;
+    private HBox colourBox;
+
     private Button voegToeButton;
 
     private static final StringConverter<IconAndString> CONVERTER = new IconConverter();
@@ -52,7 +60,7 @@ public class AddSpeler extends VBox {
         pawnComboBox = new PawnComboBox(usedIconIndexes);
         pawnComboBox.setOnAction(e -> pawnComboBoxUsed());
 
-        HBox pawnBox = new HBox(20, pawn, pawnComboBox);
+        pawnBox = new HBox(20, pawn, pawnComboBox, new Circle(8.4, Color.web("white")));
         pawnBox.setAlignment(Pos.CENTER);
 
         // colour
@@ -62,7 +70,7 @@ public class AddSpeler extends VBox {
         colourComboBox = new ColourComboBox(usedColourIndexes);
         colourComboBox.setOnAction(e -> colourComboBoxUsed());
 
-        HBox colourBox = new HBox(20, colour, colourComboBox);
+        colourBox = new HBox(20, colour, colourComboBox, new Circle(10, Color.web("white")));
         colourBox.setAlignment(Pos.CENTER);
 
         // buttons
@@ -92,12 +100,19 @@ public class AddSpeler extends VBox {
         iconIndex = pawnComboBox.getSelectionModel().getSelectedIndex();
         icon = CONVERTER.fromString(pawnComboBox.getSelectionModel().getSelectedItem()).icon();
 
+        ImageView pawnImage = new ImageView(icon.getImage());
+        pawnImage.setFitWidth(16.8); pawnImage.setFitHeight(20);
+
+        pawnBox.getChildren().set(2, pawnImage);
+
         voegToeButton.setDisable(name == null || name.isEmpty() || colour == null);
     }
 
     public void colourComboBoxUsed() {
         colourIndex = colourComboBox.getSelectionModel().getSelectedIndex();
         colour = colourComboBox.getSelectionModel().getSelectedItem();
+
+        colourBox.getChildren().set(2, new Circle(10, Color.web(colour)));
 
         voegToeButton.setDisable(icon == null || name == null || name.isEmpty());
     }

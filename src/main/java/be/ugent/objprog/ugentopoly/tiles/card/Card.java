@@ -2,6 +2,7 @@ package be.ugent.objprog.ugentopoly.tiles.card;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.corner.FreeParkingTile;
 import javafx.scene.control.Alert;
 import org.jdom2.Element;
@@ -17,15 +18,15 @@ public class Card {
         this.card = card;
     }
 
-    public void handleCardAction(Speler speler, Speler[] spelers) {
+    public void handleCardAction(Speler speler, Speler[] spelers, Logs logs) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Kaart");
         alert.setHeaderText(getAlertHeaderText());
 
-        alert.showAndWait().ifPresent(r -> executeAction(speler, spelers));
+        alert.showAndWait().ifPresent(r -> executeAction(speler, spelers, logs));
     }
 
-    private void executeAction(Speler speler, Speler[] spelers) {
+    private void executeAction(Speler speler, Speler[] spelers, Logs logs) {
         switch (card.getAttributeValue("type")) {
             case "JAIL" -> speler.addGetOutOfJailCard();
             case "MOVE" -> {
@@ -37,9 +38,9 @@ public class Card {
                 bord.setPos(speler, pos);
 
                 if (collect && prevPos > pos)
-                    bord.getTiles()[0].handleTileAction(speler, spelers);
+                    bord.getTiles()[0].handleTileAction(speler, spelers, logs);
 
-                bord.getTiles()[pos].handleTileAction(speler, spelers);
+                bord.getTiles()[pos].handleTileAction(speler, spelers, logs);
             }
             case "MOVEREL" -> {
                 int relative = Integer.parseInt(card.getAttributeValue("relative"));
@@ -50,9 +51,9 @@ public class Card {
                 bord.setPos(speler, pos);
 
                 if (relative > 0 && prevPos > pos)
-                    bord.getTiles()[0].handleTileAction(speler, spelers);
+                    bord.getTiles()[0].handleTileAction(speler, spelers, logs);
 
-                bord.getTiles()[pos].handleTileAction(speler, spelers);
+                bord.getTiles()[pos].handleTileAction(speler, spelers, logs);
             }
             case "MONEY" -> {
                 int amount = Integer.parseInt(card.getAttributeValue("amount"));

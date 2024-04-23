@@ -1,6 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -35,7 +36,7 @@ public abstract class Tile {
             return txt;
         }
         public static Text owner(Speler owner) {
-            Text txt = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getShortendName()));
+            Text txt = new Text("Huidige eigenaar\n" + (owner == null ? "<te koop>" : owner.getShortendName(30)));
             txt.setFont(new Font(INFO_TILE_FONT_SIZE));
             txt.setTextAlignment(TextAlignment.CENTER);
             return txt;
@@ -77,6 +78,8 @@ public abstract class Tile {
 
     protected InfoTile infoTile;
     protected boolean mouseToggle; // for showing or closing the tile
+
+    protected String logText;
 
     public void createTile() throws IOException {
         Properties props = new Properties();
@@ -169,7 +172,7 @@ public abstract class Tile {
         mouseToggle = !mouseToggle;
     }
 
-    public void handleTileAction(Speler speler, Speler[] spelers) {
+    public void handleTileAction(Speler speler, Speler[] spelers, Logs logs) {
         Alert alert = new Alert(getAlertType(speler));
         alert.setTitle(alert.getAlertType().equals(Alert.AlertType.CONFIRMATION) ? "Aankoop" : "Melding");
         alert.setHeaderText(getAlertDescription(speler));
@@ -181,13 +184,18 @@ public abstract class Tile {
         alert.showAndWait().ifPresent(response -> {
             tilePressed();
             if (response == ButtonType.OK)
-                responseWasOk(speler, spelers);
+                responseWasOk(speler, spelers, logs);
         });
+
+        logs.add(logText);
     }
 
     public abstract Alert.AlertType getAlertType(Speler speler);
     public abstract String getAlertDescription(Speler speler);
-    public abstract void responseWasOk(Speler speler, Speler[] spelers);
+    public abstract void responseWasOk(Speler speler, Speler[] spelers, Logs logs);
+    public String getLogText() {
+        return logText;
+    }
 
     public String getId() {
         return id;

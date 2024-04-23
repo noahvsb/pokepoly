@@ -89,75 +89,63 @@ public class Bord extends BorderPane {
             String id = tile.getAttributeValue("id");
             int pos = Integer.parseInt(tile.getAttributeValue("position"));
 
-            // Street
-            if (type.equals("STREET")) {
-                String areaId = tile.getAttributeValue("area");
-                Element area = null;
-                for (int x = 0; x < 8; x++) {
-                    area = rootAreas.getChildren().get(x);
-                    if (areaId.equals(area.getAttributeValue("id")))
-                        break;
+            switch (type) {
+                case "STREET" -> {
+                    String areaId = tile.getAttributeValue("area");
+                    Element area = null;
+                    for (int x = 0; x < 8; x++) {
+                        area = rootAreas.getChildren().get(x);
+                        if (areaId.equals(area.getAttributeValue("id")))
+                            break;
+                    }
+
+                    String colour = area.getAttributeValue("color");
+                    int cost = Integer.parseInt(tile.getAttributeValue("cost"));
+
+                    tiles[pos] = new StreetTile(id, areaId, colour, cost, infoTile, this,
+                            Integer.parseInt(tile.getAttributeValue("rent0")),
+                            Integer.parseInt(tile.getAttributeValue("rent1")),
+                            Integer.parseInt(tile.getAttributeValue("rent2")),
+                            Integer.parseInt(tile.getAttributeValue("rent3")),
+                            Integer.parseInt(tile.getAttributeValue("rent4")),
+                            Integer.parseInt(tile.getAttributeValue("rent5")));
                 }
 
-                String colour = area.getAttributeValue("color");
-                int cost = Integer.parseInt(tile.getAttributeValue("cost"));
+                case "CHANCE" -> {
+                    Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst();
+                    tiles[pos] = new ChanceTile(id, infoTile, this, deck);
+                }
 
-                tiles[pos] = new StreetTile(id, areaId, colour, cost, infoTile, this,
-                        Integer.parseInt(tile.getAttributeValue("rent0")),
-                        Integer.parseInt(tile.getAttributeValue("rent1")),
-                        Integer.parseInt(tile.getAttributeValue("rent2")),
-                        Integer.parseInt(tile.getAttributeValue("rent3")),
-                        Integer.parseInt(tile.getAttributeValue("rent4")),
-                        Integer.parseInt(tile.getAttributeValue("rent5")));
+                case "CHEST" -> {
+                    Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst();
+                    tiles[pos] = new ChestTile(id, infoTile, this, deck);
+                }
+
+                case "TAX" -> {
+                    int amount = Integer.parseInt(tile.getAttributeValue("amount"));
+                    tiles[pos] = new TaxTile(id, amount, infoTile, this);
+                }
+
+                case "RAILWAY" -> {
+                    int cost = Integer.parseInt(tile.getAttributeValue("cost"));
+                    int rent = Integer.parseInt(tile.getAttributeValue("rent"));
+                    tiles[pos] = new RailwayTile(id, cost, rent, infoTile, this);
+                }
+
+                case "UTILITY" -> {
+                    int cost = Integer.parseInt(tile.getAttributeValue("cost"));
+                    tiles[pos] = new UtilityTile(id, util, cost, infoTile, this);
+                    util++;
+                }
+
+                case "GO_TO_JAIL" -> tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile, this);
+
+                case "START" -> tiles[pos] = new StartTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")));
+
+                case "JAIL" -> tiles[pos] = new JailTile(id, "jail", infoTile);
+
+                case "FREE_PARKING" -> tiles[pos] = new FreeParkingTile(id, "free_parking",  infoTile);
             }
-
-            // Chance
-            if (type.equals("CHANCE")) {
-                Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst();
-                tiles[pos] = new ChanceTile(id, infoTile, this, deck);
-            }
-
-            // Chest
-            if (type.equals("CHEST")) {
-                Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst();
-                tiles[pos] = new ChestTile(id, infoTile, this, deck);
-            }
-
-            // Tax
-            if (type.equals("TAX")) {
-                int amount = Integer.parseInt(tile.getAttributeValue("amount"));
-                tiles[pos] = new TaxTile(id, amount, infoTile, this);
-            }
-
-            // Railway
-            if (type.equals("RAILWAY")) {
-                int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                int rent = Integer.parseInt(tile.getAttributeValue("rent"));
-                tiles[pos] = new RailwayTile(id, cost, rent, infoTile, this);
-            }
-
-            // Utility
-            if (type.equals("UTILITY")) {
-                int cost = Integer.parseInt(tile.getAttributeValue("cost"));
-                tiles[pos] = new UtilityTile(id, util, cost, infoTile, this);
-                util++;
-            }
-
-            // Go to jail
-            if (type.equals("GO_TO_JAIL"))
-                tiles[pos] = new GoToJailTile(id, "go_to_jail", infoTile, this);
-
-            // Start
-            if (type.equals("START"))
-                tiles[pos] = new StartTile(id, "start", infoTile, Integer.parseInt(rootSettings.getAttributeValue("start")));
-
-            // Jail
-            if (type.equals("JAIL"))
-                tiles[pos] = new JailTile(id, "jail", infoTile);
-
-            // Free parking
-            if (type.equals("FREE_PARKING"))
-                tiles[pos] = new FreeParkingTile(id, "free_parking",  infoTile);
         }
     }
 

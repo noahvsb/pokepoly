@@ -68,7 +68,7 @@ public class UtilityTile extends PossessionTile {
         else if (owner == null) // can't buy
             return "U heeft niet genoeg geld om deze bezitting te kopen";
         else if (!owner.equals(speler)) // rent
-            return "U moet €" + speler.getLastRoll() * currentFactor + " huur (laatste worp x " + currentFactor + ") betalen aan " + owner.getShortendName();
+            return "U moet €" + speler.getLastRoll() * currentFactor + " huur (laatste worp x " + currentFactor + ") betalen aan " + owner.getShortendName(30);
         return "Deze bezitting is in uw bezit"; // yours
     }
     @Override
@@ -85,5 +85,8 @@ public class UtilityTile extends PossessionTile {
     public void payRent(Speler speler) {
         speler.updateBalance(-(speler.getLastRoll() * currentFactor));
         owner.updateBalance(speler.getLastRoll() * currentFactor);
+
+        logText = speler.getShortendName(10) + " moest €" + (speler.getLastRoll() * currentFactor) + " betalen aan " +
+                owner.getShortendName(10) + " voor het huren van " + name + ".";
     }
 }

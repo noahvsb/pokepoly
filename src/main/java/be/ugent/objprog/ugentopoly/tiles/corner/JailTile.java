@@ -1,6 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles.corner;
 
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import javafx.scene.control.Alert;
 
@@ -25,7 +26,9 @@ public class JailTile extends CornerTile {
         return speler.isInJail() ? "U heeft geen dubbel gegooid, blijven zitten dus" : "Op bezoek";
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers) {
-        // doe niets
+    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
+        logText = speler.getShortendName(10) + (speler.isInJail()
+                ? " heeft geen dubbel gegooid en moet blijven zitten in de overpoort."
+                : " is op bezoek geweest in de overpoort.");
     }
 }

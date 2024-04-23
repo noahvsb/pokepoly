@@ -2,6 +2,7 @@ package be.ugent.objprog.ugentopoly.tiles;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.corner.FreeParkingTile;
 import javafx.scene.control.Alert;
 import javafx.scene.text.Font;
@@ -51,11 +52,13 @@ public class TaxTile extends Tile {
         return "Betaal €" + cost + " TAX";
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers) {
+    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
         if (freeParkingTile == null)
             freeParkingTile = (FreeParkingTile) bord.getTiles()[20];
 
         speler.updateBalance(-cost);
         freeParkingTile.addToCurrentPot(cost);
+
+        logText = speler.getShortendName(10) + " moest €" + cost + " TAX betalen.";
     }
 }

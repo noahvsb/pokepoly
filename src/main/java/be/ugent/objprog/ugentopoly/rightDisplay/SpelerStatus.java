@@ -49,7 +49,7 @@ public class SpelerStatus extends TabPane {
         getTabs().get(i).setContent(getTabContent(speler));
     }
 
-    public Node getTabContent(Speler speler) {
+    private Node getTabContent(Speler speler) {
         VBox tabContent = new VBox(20);
         tabContent.setAlignment(Pos.BOTTOM_CENTER);
         tabContent.setStyle("-fx-background-color: E3F1FF");

@@ -14,6 +14,7 @@ public class RollHandler {
 
     private Bord bord;
     private SpelerStatus spelerStatus;
+    private Logs logs;
 
     private Button rolButton;
 
@@ -23,11 +24,12 @@ public class RollHandler {
     private int beurt;
     private int amountOfDoubleRollsAfterEachOther;
 
-    public RollHandler(RightDisplay parent, Bord bord, SpelerStatus spelerStatus, Button rolButton) {
+    public RollHandler(RightDisplay parent, Bord bord, SpelerStatus spelerStatus, Logs logs, Button rolButton) {
         this.parent = parent;
 
         this.bord = bord;
         this.spelerStatus = spelerStatus;
+        this.logs = logs;
 
         this.rolButton = rolButton;
 
@@ -46,6 +48,7 @@ public class RollHandler {
         if (spelers[beurt].isInJail() && result.getFirst().equals(result.getLast())) {
             spelers[beurt].setInJail(false);
             freshOutOfJail = true;
+            logs.add(spelers[beurt].getShortendName(10) + " heeft dubbel gegooid en mag de overpoort verlaten.");
         }
 
         if (!spelers[beurt].isInJail()) {
@@ -63,48 +66,57 @@ public class RollHandler {
 
             // do the tile action
             if (pos < prevPos && pos != 0) {
-                bord.getTiles()[0].handleTileAction(spelers[beurt], spelers);
+                bord.getTiles()[0].handleTileAction(spelers[beurt], spelers, logs);
                 updateSpelerStatus(beurt);
             }
-            bord.getTiles()[pos].handleTileAction(spelers[beurt], spelers);
+            bord.getTiles()[pos].handleTileAction(spelers[beurt], spelers, logs);
             updateSpelerStatus();
 
             // check for game over
             if (spelers[beurt].getBalance() < 0)
                 gameOver();
 
-            // no double roll
-            if (!result.getFirst().equals(result.getLast())) {
+            // no double roll or fresh out of jail
+            if (!result.getFirst().equals(result.getLast()) || freshOutOfJail) {
                 amountOfDoubleRollsAfterEachOther = 0;
                 beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
 
                 parent.setSpelerBeurtBox(spelers[beurt].getLabel(), false);
             }
             // double roll
-            else if (!freshOutOfJail) {
+            else {
                 amountOfDoubleRollsAfterEachOther++;
-                if (amountOfDoubleRollsAfterEachOther >= 3)
-                    bord.getTiles()[30].handleTileAction(spelers[beurt], spelers); // handles the GoToJailTile-action to put them in jail
+                if (amountOfDoubleRollsAfterEachOther >= 3) {
+                    logs.add(spelers[beurt].getShortendName(10) + " heeft 3 keer na elkaar dubbel gegooid.");
+                    bord.getTiles()[30].handleTileAction(spelers[beurt], spelers, logs); // handles the GoToJailTile-action to put them in jail
 
-                parent.setSpelerBeurtBox(spelers[beurt].getLabel(), true);
+                    amountOfDoubleRollsAfterEachOther = 0;
+                    beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
+
+                    parent.setSpelerBeurtBox(spelers[beurt].getLabel(), false);
+                } else {
+                    logs.add(spelers[beurt].getShortendName(10) + " heeft dubbel gegooid en mag nog een keer.");
+
+                    parent.setSpelerBeurtBox(spelers[beurt].getLabel(), true);
+                }
             }
         } else
-            bord.getTiles()[10].handleTileAction(spelers[beurt], spelers);
+            bord.getTiles()[10].handleTileAction(spelers[beurt], spelers, logs);
 
         // enable rolButton
         rolButton.setDisable(false);
     }
 
-    public void updateSpelerStatus() {
+    private void updateSpelerStatus() {
         for (int i = 0; i < spelersAmount; i++)
             spelerStatus.updateTab(i, spelers[i]);
     }
 
-    public void updateSpelerStatus(int i) {
+    private void updateSpelerStatus(int i) {
         spelerStatus.updateTab(i, spelers[i]);
     }
 
-    public void gameOver() {
+    private void gameOver() {
         // zoek winnaar
         Speler winnaar = spelers[beurt];
         for (Speler s : spelers)

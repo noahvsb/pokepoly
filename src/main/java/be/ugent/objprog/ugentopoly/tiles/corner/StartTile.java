@@ -1,6 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles.corner;
 
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import javafx.scene.control.Alert;
 
@@ -28,7 +29,8 @@ public class StartTile extends CornerTile {
         return "U passeert langs start en ontvangt €" + start;
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers) {
+    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
         speler.updateBalance(start);
+        logText = speler.getShortendName(10) + " passeerde langs start en ontving €" + start;
     }
 }
