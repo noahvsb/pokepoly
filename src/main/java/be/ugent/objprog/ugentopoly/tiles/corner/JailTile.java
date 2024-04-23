@@ -26,7 +26,7 @@ public class JailTile extends CornerTile {
         return speler.isInJail() ? "U heeft geen dubbel gegooid, blijven zitten dus" : "Op bezoek";
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
+    public void responseWasOk(Speler speler) {
         logText = speler.getShortendName(10) + (speler.isInJail()
                 ? " heeft geen dubbel gegooid en moet blijven zitten in de overpoort."
                 : " is op bezoek geweest in de overpoort.");

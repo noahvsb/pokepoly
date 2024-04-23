@@ -30,7 +30,7 @@ public class GoToJailTile extends CornerTile {
         return "Ga direct naar de overpoort!";
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
+    public void responseWasOk(Speler speler) {
         speler.setInJail(true);
         speler.setPos(10);
         bord.setPos(speler, 10);

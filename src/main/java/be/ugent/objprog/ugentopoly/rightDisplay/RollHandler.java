@@ -66,10 +66,10 @@ public class RollHandler {
 
             // do the tile action
             if (pos < prevPos && pos != 0) {
-                bord.getTiles()[0].handleTileAction(spelers[beurt], spelers, logs);
+                bord.getTiles()[0].handleTileAction(spelers[beurt]);
                 updateSpelerStatus(beurt);
             }
-            bord.getTiles()[pos].handleTileAction(spelers[beurt], spelers, logs);
+            bord.getTiles()[pos].handleTileAction(spelers[beurt]);
             updateSpelerStatus();
 
             // check for game over
@@ -88,7 +88,7 @@ public class RollHandler {
                 amountOfDoubleRollsAfterEachOther++;
                 if (amountOfDoubleRollsAfterEachOther >= 3) {
                     logs.add(spelers[beurt].getShortendName(10) + " heeft 3 keer na elkaar dubbel gegooid.");
-                    bord.getTiles()[30].handleTileAction(spelers[beurt], spelers, logs); // handles the GoToJailTile-action to put them in jail
+                    bord.getTiles()[30].handleTileAction(spelers[beurt]); // handles the GoToJailTile-action to put them in jail
 
                     amountOfDoubleRollsAfterEachOther = 0;
                     beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
@@ -101,7 +101,7 @@ public class RollHandler {
                 }
             }
         } else
-            bord.getTiles()[10].handleTileAction(spelers[beurt], spelers, logs);
+            bord.getTiles()[10].handleTileAction(spelers[beurt]);
 
         // enable rolButton
         rolButton.setDisable(false);

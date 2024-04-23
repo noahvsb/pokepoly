@@ -52,7 +52,7 @@ public class TaxTile extends Tile {
         return "Betaal €" + cost + " TAX";
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
+    public void responseWasOk(Speler speler) {
         if (freeParkingTile == null)
             freeParkingTile = (FreeParkingTile) bord.getTiles()[20];
 

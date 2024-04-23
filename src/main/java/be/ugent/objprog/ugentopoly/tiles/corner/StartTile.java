@@ -29,7 +29,7 @@ public class StartTile extends CornerTile {
         return "U passeert langs start en ontvangt €" + start;
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
+    public void responseWasOk(Speler speler) {
         speler.updateBalance(start);
         logText = speler.getShortendName(10) + " passeerde langs start en ontving €" + start;
     }

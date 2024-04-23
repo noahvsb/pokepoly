@@ -79,6 +79,8 @@ public abstract class Tile {
     protected InfoTile infoTile;
     protected boolean mouseToggle; // for showing or closing the tile
 
+    protected Logs logs;
+    protected Speler[] spelers;
     protected String logText;
 
     public void createTile() throws IOException {
@@ -134,6 +136,11 @@ public abstract class Tile {
         return imageView;
     }
 
+    public void setLogsAndSpelers(Logs logs, Speler[] spelers) {
+        this.logs = logs;
+        this.spelers = spelers;
+    }
+
     public void tilePressed() {
         // set active
         if (mouseToggle) {
@@ -172,7 +179,7 @@ public abstract class Tile {
         mouseToggle = !mouseToggle;
     }
 
-    public void handleTileAction(Speler speler, Speler[] spelers, Logs logs) {
+    public void handleTileAction(Speler speler) {
         Alert alert = new Alert(getAlertType(speler));
         alert.setTitle(alert.getAlertType().equals(Alert.AlertType.CONFIRMATION) ? "Aankoop" : "Melding");
         alert.setHeaderText(getAlertDescription(speler));
@@ -184,7 +191,7 @@ public abstract class Tile {
         alert.showAndWait().ifPresent(response -> {
             tilePressed();
             if (response == ButtonType.OK)
-                responseWasOk(speler, spelers, logs);
+                responseWasOk(speler);
         });
 
         logs.add(logText);
@@ -192,7 +199,7 @@ public abstract class Tile {
 
     public abstract Alert.AlertType getAlertType(Speler speler);
     public abstract String getAlertDescription(Speler speler);
-    public abstract void responseWasOk(Speler speler, Speler[] spelers, Logs logs);
+    public abstract void responseWasOk(Speler speler);
     public String getLogText() {
         return logText;
     }

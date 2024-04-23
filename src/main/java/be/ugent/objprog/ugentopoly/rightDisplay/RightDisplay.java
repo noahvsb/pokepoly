@@ -3,6 +3,7 @@ package be.ugent.objprog.ugentopoly.rightDisplay;
 import be.ugent.objprog.dice.DicePanel;
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -11,6 +12,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class RightDisplay extends VBox {
+
+    private Bord bord;
 
     private SpelerStatus spelerStatus;
     private Logs logs;
@@ -27,6 +30,8 @@ public class RightDisplay extends VBox {
 
     public RightDisplay(double width, double height, Bord bord) {
         // variable assignment
+        this.bord = bord;
+
         this.width = width;
         this.height = height;
 
@@ -70,9 +75,9 @@ public class RightDisplay extends VBox {
         spelerStatus.addTabs(spelers);
 
         // spelersbeurt
-        Text t = new Text("Aan de beurt: ");
-        t.setFont(new Font(15));
-        spelerBeurtBox = new HBox(t, spelers[0].getLabel());
+        Text txt = new Text("Aan de beurt: ");
+        txt.setFont(new Font(15));
+        spelerBeurtBox = new HBox(txt, spelers[0].getLabel());
         spelerBeurtBox.setAlignment(Pos.CENTER);
         spelerBeurtBox.setSpacing(10);
         spelerBeurtBox.setMaxWidth(width - 10);
@@ -82,6 +87,9 @@ public class RightDisplay extends VBox {
 
         // enable rol button
         dice.getChildren().getFirst().setDisable(false);
+
+        for (Tile t : bord.getTiles())
+            t.setLogsAndSpelers(logs, spelers);
     }
 
     public void setSpelerBeurtBox(Label label, boolean isDouble) {

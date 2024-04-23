@@ -18,15 +18,15 @@ public class Card {
         this.card = card;
     }
 
-    public void handleCardAction(Speler speler, Speler[] spelers, Logs logs) {
+    public void handleCardAction(Speler speler, Speler[] spelers) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Kaart");
         alert.setHeaderText(getAlertHeaderText());
 
-        alert.showAndWait().ifPresent(r -> executeAction(speler, spelers, logs));
+        alert.showAndWait().ifPresent(r -> executeAction(speler, spelers));
     }
 
-    private void executeAction(Speler speler, Speler[] spelers, Logs logs) {
+    private void executeAction(Speler speler, Speler[] spelers) {
         switch (card.getAttributeValue("type")) {
             case "JAIL" -> speler.addGetOutOfJailCard();
             case "MOVE" -> {
@@ -38,9 +38,9 @@ public class Card {
                 bord.setPos(speler, pos);
 
                 if (collect && prevPos > pos)
-                    bord.getTiles()[0].handleTileAction(speler, spelers, logs);
+                    bord.getTiles()[0].handleTileAction(speler);
 
-                bord.getTiles()[pos].handleTileAction(speler, spelers, logs);
+                bord.getTiles()[pos].handleTileAction(speler);
             }
             case "MOVEREL" -> {
                 int relative = Integer.parseInt(card.getAttributeValue("relative"));
@@ -51,9 +51,9 @@ public class Card {
                 bord.setPos(speler, pos);
 
                 if (relative > 0 && prevPos > pos)
-                    bord.getTiles()[0].handleTileAction(speler, spelers, logs);
+                    bord.getTiles()[0].handleTileAction(speler);
 
-                bord.getTiles()[pos].handleTileAction(speler, spelers, logs);
+                bord.getTiles()[pos].handleTileAction(speler);
             }
             case "MONEY" -> {
                 int amount = Integer.parseInt(card.getAttributeValue("amount"));

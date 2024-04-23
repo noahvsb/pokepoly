@@ -56,7 +56,7 @@ public abstract class PossessionTile extends Tile {
         return "Deze bezitting is in uw bezit"; // yours
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
+    public void responseWasOk(Speler speler) {
         if (owner == null && cost <= speler.getBalance()) // buy
             buyProperty(speler);
         else if (owner != null && !owner.equals(speler)) // rent

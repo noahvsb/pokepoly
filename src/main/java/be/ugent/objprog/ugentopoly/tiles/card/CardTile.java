@@ -43,11 +43,11 @@ public abstract class CardTile extends Tile {
         return Alert.AlertType.INFORMATION;
     }
     @Override
-    public void responseWasOk(Speler speler, Speler[] spelers, Logs logs) {
+    public void responseWasOk(Speler speler) {
         Element c = deck.get(new Random().nextInt(deck.size()));
         Card card = new Card(c, bord);
 
-        card.handleCardAction(speler, spelers, logs);
+        card.handleCardAction(speler, spelers);
 
         logText = speler.getShortendName(10) + " heeft een " + (imageName.equals("chance") ? "Kans-" : "Algemeen Fonds-") + "kaart getrokken.";
     }
