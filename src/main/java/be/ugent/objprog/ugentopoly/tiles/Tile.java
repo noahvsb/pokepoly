@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Properties;
 
 public abstract class Tile {
-    protected static final double INFO_TILE_FONT_SIZE = 13;
     protected static class Texts {
         public static Text title(String name) {
             Text txt = new Text(name);
@@ -59,9 +58,10 @@ public abstract class Tile {
     }
 
     // final variables
-    protected final double FONT_SIZE = 11;
-    protected final int N = 65; // used for WIDTH and HEIGHT
-    protected final double BORDER_WIDTH = 1;
+    protected static final double FONT_SIZE = 11;
+    protected static final int N = 65; // used for WIDTH and HEIGHT
+    protected static final double BORDER_WIDTH = 1;
+    protected static final double INFO_TILE_FONT_SIZE = 13;
 
     // other variables
     protected String id;

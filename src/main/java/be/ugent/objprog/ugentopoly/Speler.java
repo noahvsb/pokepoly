@@ -21,8 +21,8 @@ public class Speler {
     private int iconIndex;
     private int colourIndex;
 
-    private final double DEFAULT_ICON_WIDTH = 30;
-    private final double DEFAULT_ICON_HEIGHT = 40;
+    private static final double DEFAULT_ICON_WIDTH = 30;
+    private static final double DEFAULT_ICON_HEIGHT = 40;
 
     // gameplay
     private int pos;

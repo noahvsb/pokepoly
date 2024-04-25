@@ -5,8 +5,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 public class InfoTile extends VBox {
-    private final double WIDTH = 200;
-    private final double HEIGHT = 300;
+    private static final double WIDTH = 200;
+    private static final double HEIGHT = 300;
     private Tile currentActive;
 
     public InfoTile() {
