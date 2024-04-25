@@ -21,8 +21,8 @@ public class Speler {
     private int iconIndex;
     private int colourIndex;
 
-    private static final double DEFAULT_WIDTH = 30;
-    private static final double DEFAULT_HEIGHT = 40;
+    private final double DEFAULT_ICON_WIDTH = 30;
+    private final double DEFAULT_ICON_HEIGHT = 40;
 
     // gameplay
     private int pos;
@@ -38,8 +38,8 @@ public class Speler {
         this.name = name;
 
         this.icon = icon;
-        icon.setFitWidth(DEFAULT_WIDTH);
-        icon.setFitHeight(DEFAULT_HEIGHT);
+        icon.setFitWidth(DEFAULT_ICON_WIDTH);
+        icon.setFitHeight(DEFAULT_ICON_HEIGHT);
 
         this.colour = colour;
 

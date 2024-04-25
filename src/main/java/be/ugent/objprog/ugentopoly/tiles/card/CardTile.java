@@ -16,6 +16,7 @@ import java.util.Random;
 public abstract class CardTile extends Tile {
     private Bord bord;
     private List<Element> deck;
+    private int cardCounter;
 
     public CardTile(String id, String imageName, InfoTile infoTile, Bord bord, Element deck) throws IOException {
         this.id = id;
@@ -27,6 +28,8 @@ public abstract class CardTile extends Tile {
         this.infoTile = infoTile;
         this.bord = bord;
         this.deck = deck.getChildren();
+
+        cardCounter = 0;
 
         createTile();
     }
@@ -44,8 +47,10 @@ public abstract class CardTile extends Tile {
     }
     @Override
     public void responseWasOk(Speler speler) {
-        Element c = deck.get(new Random().nextInt(deck.size()));
+        Element c = deck.get(cardCounter);
         Card card = new Card(c, bord);
+
+        cardCounter = cardCounter != deck.size() - 1 ? cardCounter + 1 : 0;
 
         card.handleCardAction(speler, spelers);
 

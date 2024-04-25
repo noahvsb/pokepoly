@@ -32,7 +32,7 @@ public class AddSpeler extends VBox {
 
     private Button voegToeButton;
 
-    private static final StringConverter<IconAndString> CONVERTER = new IconConverter();
+    private final StringConverter<IconAndString> CONVERTER = new IconConverter();
 
     public AddSpeler(int width, int height, StartSpel startSpel, List<Integer> usedIconIndexes, List<Integer> usedColourIndexes) {
         // configurations

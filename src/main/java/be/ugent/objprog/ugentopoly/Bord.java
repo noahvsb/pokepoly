@@ -117,7 +117,7 @@ public class Bord extends BorderPane {
                 }
 
                 case "CHEST" -> {
-                    Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst();
+                    Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHEST")).toList().getFirst();
                     tiles[pos] = new ChestTile(id, infoTile, this, deck);
                 }
 
