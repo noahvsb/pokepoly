@@ -21,7 +21,7 @@ public class Logs extends ScrollPane {
         setStyle("-fx-border-color: black; -fx-border-width: 1");
 
         lView = new ListView<>();
-        lView.setEditable(false);
+        lView.setMouseTransparent(true);
         lView.setMaxSize(parent.getMinWidth() - 24, parent.getMinHeight());
         lView.setPrefSize(parent.getMinWidth() - 24, parent.getMinHeight() / 5 - 4);
         lView.setMinSize(parent.getMinWidth() - 24, 0);

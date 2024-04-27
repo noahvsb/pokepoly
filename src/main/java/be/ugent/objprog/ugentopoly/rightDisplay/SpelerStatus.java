@@ -87,7 +87,7 @@ public class SpelerStatus extends TabPane {
         bezittingen.setStyle("-fx-border-color: black; -fx-border-width: 1");
 
         ListView<Label> bezittingenLView = new ListView<>();
-        bezittingenLView.setEditable(false);
+        bezittingenLView.setMouseTransparent(true);
         bezittingenLView.setMaxSize(parentWidth - 24, parentHeight);
         bezittingenLView.setPrefSize(parentWidth - 24, parentHeight / 4 - 4);
         bezittingenLView.setMinSize(parentWidth - 24, 0);
