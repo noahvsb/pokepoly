@@ -86,19 +86,14 @@ public class SpelerStatus extends TabPane {
         bezittingen.setMinSize(parentWidth - 20, parentHeight / 4);
         bezittingen.setStyle("-fx-border-color: black; -fx-border-width: 1");
 
-        ListView<Label> bezittingenLView = new ListView<>();
-        bezittingenLView.setMouseTransparent(true);
-        bezittingenLView.setMaxSize(parentWidth - 24, parentHeight);
-        bezittingenLView.setPrefSize(parentWidth - 24, parentHeight / 4 - 4);
-        bezittingenLView.setMinSize(parentWidth - 24, 0);
-
+        VBox bezittingenLView = new VBox();
         bezittingen.setContent(bezittingenLView);
 
         for (PossessionTile t : speler.getBezittingen()) {
             Label bezitting = new Label(t.getName(), t.createGraphic(15));
             bezitting.setFont(new Font(fontSize));
 
-            bezittingenLView.getItems().add(bezitting);
+            bezittingenLView.getChildren().add(bezitting);
         }
 
         // addAll
