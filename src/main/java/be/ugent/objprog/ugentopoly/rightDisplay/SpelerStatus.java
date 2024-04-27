@@ -4,11 +4,9 @@ import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.tiles.possession.PossessionTile;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.Node;
+import javafx.scene.effect.Effect;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -84,14 +82,18 @@ public class SpelerStatus extends TabPane {
         bezittingen.setMinSize(parentWidth - 20, parentHeight / 4);
         bezittingen.setStyle("-fx-border-color: black; -fx-border-width: 1");
 
-        VBox bezittingenVBox = new VBox();
-        bezittingen.setContent(bezittingenVBox);
+        ListView<Label> bezittingenLView = new ListView<>();
+        bezittingenLView.setMaxSize(parentWidth - 24, parentHeight);
+        bezittingenLView.setPrefSize(parentWidth - 24, parentHeight / 4 - 4);
+        bezittingenLView.setMinSize(parentWidth - 24, 0);
+
+        bezittingen.setContent(bezittingenLView);
 
         for (PossessionTile t : speler.getBezittingen()) {
             Label bezitting = new Label(t.getName(), t.createGraphic(15));
             bezitting.setFont(new Font(fontSize));
 
-            bezittingenVBox.getChildren().add(bezitting);
+            bezittingenLView.getItems().add(bezitting);
         }
 
         // addAll

@@ -45,7 +45,7 @@ public class RollHandler {
     public void handleRoll(List<Integer> result) {
         // remove from jail if double roll
         boolean freshOutOfJail = false;
-        if (spelers[beurt].isInJail() && result.getFirst().equals(result.getLast())) {
+        if (spelers[beurt].isInJail() && allSameIntegers(result)) {
             spelers[beurt].setInJail(false);
             freshOutOfJail = true;
             logs.add(spelers[beurt].getShortendName(10) + " heeft dubbel gegooid en mag de overpoort verlaten.");
@@ -77,7 +77,7 @@ public class RollHandler {
                 gameOver();
 
             // no double roll or fresh out of jail
-            if (!result.getFirst().equals(result.getLast()) || freshOutOfJail) {
+            if (!allSameIntegers(result) || freshOutOfJail) {
                 amountOfDoubleRollsAfterEachOther = 0;
                 beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
 
@@ -105,6 +105,13 @@ public class RollHandler {
 
         // enable rolButton
         rolButton.setDisable(false);
+    }
+
+    private boolean allSameIntegers(List<Integer> list) {
+        // ik kan ook gewoon checken of het eerste gelijk is aan het laatste, maar hiermee kan je het ook checken bij lijsten met lengte groter dan 2
+        // dit is niet nodig voor dit project, maar het is gewoon zo leuk om te prutsen met streams
+        List<Integer> sameAsFirst = list.stream().filter(i -> i.equals(list.getFirst())).toList();
+        return sameAsFirst.size() == list.size();
     }
 
     private void updateSpelerStatus() {
