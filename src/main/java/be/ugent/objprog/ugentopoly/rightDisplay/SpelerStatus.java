@@ -7,7 +7,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.effect.Effect;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -83,6 +87,7 @@ public class SpelerStatus extends TabPane {
         bezittingen.setStyle("-fx-border-color: black; -fx-border-width: 1");
 
         ListView<Label> bezittingenLView = new ListView<>();
+        bezittingenLView.setEditable(false);
         bezittingenLView.setMaxSize(parentWidth - 24, parentHeight);
         bezittingenLView.setPrefSize(parentWidth - 24, parentHeight / 4 - 4);
         bezittingenLView.setMinSize(parentWidth - 24, 0);
