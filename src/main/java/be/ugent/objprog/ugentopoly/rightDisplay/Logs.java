@@ -1,6 +1,5 @@
 package be.ugent.objprog.ugentopoly.rightDisplay;
 
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;

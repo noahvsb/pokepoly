@@ -1,7 +1,6 @@
 package be.ugent.objprog.ugentopoly.tiles.corner;
 
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import javafx.scene.control.Alert;
 

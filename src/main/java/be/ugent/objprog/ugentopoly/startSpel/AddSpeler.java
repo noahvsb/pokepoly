@@ -3,7 +3,6 @@ package be.ugent.objprog.ugentopoly.startSpel;
 import be.ugent.objprog.ugentopoly.Speler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;

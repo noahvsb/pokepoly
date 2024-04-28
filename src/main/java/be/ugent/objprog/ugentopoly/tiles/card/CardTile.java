@@ -2,7 +2,6 @@ package be.ugent.objprog.ugentopoly.tiles.card;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.control.Alert;
@@ -11,7 +10,6 @@ import org.jdom2.Element;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 public abstract class CardTile extends Tile {
     private Bord bord;
