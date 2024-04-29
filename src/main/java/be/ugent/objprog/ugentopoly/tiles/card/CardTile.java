@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import org.jdom2.Element;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class CardTile extends Tile {
@@ -26,6 +27,7 @@ public abstract class CardTile extends Tile {
         this.infoTile = infoTile;
         this.bord = bord;
         this.deck = deck.getChildren();
+        Collections.shuffle(this.deck);
 
         cardCounter = 0;
 

@@ -39,7 +39,10 @@ public class Card {
                 if (collect && prevPos > pos)
                     bord.getTiles()[0].handleTileAction(speler);
 
-                bord.getTiles()[pos].handleTileAction(speler);
+                if (pos == 10)
+                    bord.getTiles()[30].handleTileAction(speler); // to put him in jail instead of "op bezoek"
+                else
+                    bord.getTiles()[pos].handleTileAction(speler);
             }
             case "MOVEREL" -> {
                 int relative = Integer.parseInt(card.getAttributeValue("relative"));
