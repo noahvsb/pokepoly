@@ -17,17 +17,20 @@ public class Card {
         this.card = card;
     }
 
-    public void handleCardAction(Speler speler, Speler[] spelers) {
+    public void handleCardAction(Speler speler, Speler[] spelers, Deck deck) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Kaart");
         alert.setHeaderText(getAlertHeaderText());
 
-        alert.showAndWait().ifPresent(r -> executeAction(speler, spelers));
+        alert.showAndWait().ifPresent(r -> executeAction(speler, spelers, deck));
     }
 
-    private void executeAction(Speler speler, Speler[] spelers) {
+    private void executeAction(Speler speler, Speler[] spelers, Deck deck) {
         switch (card.getAttributeValue("type")) {
-            case "JAIL" -> speler.addGetOutOfJailCard();
+            case "JAIL" -> {
+                speler.addGetOutOfJailCard();
+                deck.removeGetOutOfJailCard();
+            }
             case "MOVE" -> {
                 int pos = Integer.parseInt(card.getAttributeValue("position"));
                 boolean collect = Boolean.parseBoolean(card.getAttributeValue("collect"));

@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class ChestTile extends CardTile {
 
-    public ChestTile(String id, InfoTile infoTile, Bord bord, Element deck) throws IOException {
+    public ChestTile(String id, InfoTile infoTile, Bord bord, Deck deck) throws IOException {
         super(id, "chest", infoTile, bord, deck);
     }
 

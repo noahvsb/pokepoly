@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class ChanceTile extends CardTile {
 
-    public ChanceTile(String id, InfoTile infoTile, Bord bord, Element deck) throws IOException {
+    public ChanceTile(String id, InfoTile infoTile, Bord bord, Deck deck) throws IOException {
         super(id, "chance", infoTile, bord, deck);
     }
 

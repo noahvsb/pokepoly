@@ -3,6 +3,7 @@ package be.ugent.objprog.ugentopoly;
 import be.ugent.objprog.ugentopoly.tiles.*;
 import be.ugent.objprog.ugentopoly.tiles.card.ChanceTile;
 import be.ugent.objprog.ugentopoly.tiles.card.ChestTile;
+import be.ugent.objprog.ugentopoly.tiles.card.Deck;
 import be.ugent.objprog.ugentopoly.tiles.corner.FreeParkingTile;
 import be.ugent.objprog.ugentopoly.tiles.corner.GoToJailTile;
 import be.ugent.objprog.ugentopoly.tiles.corner.JailTile;
@@ -83,6 +84,9 @@ public class Bord extends BorderPane {
     private void addTilesToArray() throws IOException {
         int util = 1;
 
+        Deck chanceDeck = new Deck(decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst());
+        Deck chestDeck = new Deck(decks.stream().filter(d -> d.getAttributeValue("type").equals("CHEST")).toList().getFirst());
+
         for (int i = 0; i < 40; i++) {
             Element tile = rootTiles.getChildren().get(i);
             String type = tile.getAttributeValue("type");
@@ -111,15 +115,9 @@ public class Bord extends BorderPane {
                             Integer.parseInt(tile.getAttributeValue("rent5")));
                 }
 
-                case "CHANCE" -> {
-                    Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst();
-                    tiles[pos] = new ChanceTile(id, infoTile, this, deck);
-                }
+                case "CHANCE" -> tiles[pos] = new ChanceTile(id, infoTile, this, chanceDeck);
 
-                case "CHEST" -> {
-                    Element deck = decks.stream().filter(d -> d.getAttributeValue("type").equals("CHEST")).toList().getFirst();
-                    tiles[pos] = new ChestTile(id, infoTile, this, deck);
-                }
+                case "CHEST" -> tiles[pos] = new ChestTile(id, infoTile, this, chestDeck);
 
                 case "TAX" -> {
                     int amount = Integer.parseInt(tile.getAttributeValue("amount"));

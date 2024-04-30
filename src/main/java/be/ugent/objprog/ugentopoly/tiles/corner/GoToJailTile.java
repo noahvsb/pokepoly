@@ -38,6 +38,8 @@ public class GoToJailTile extends CornerTile {
         if (speler.getAmountOfGetOutOfJailCards() > 0) {
             speler.useGetOutOfJailCard();
             speler.setInJail(false);
+            // add the card back to the deck
+            // TODO
         }
 
         // show an alert
