@@ -84,8 +84,8 @@ public class Bord extends BorderPane {
     private void addTilesToArray() throws IOException {
         int util = 1;
 
-        Deck chanceDeck = new Deck(decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst());
-        Deck chestDeck = new Deck(decks.stream().filter(d -> d.getAttributeValue("type").equals("CHEST")).toList().getFirst());
+        Deck chanceDeck = new Deck(decks.stream().filter(d -> d.getAttributeValue("type").equals("CHANCE")).toList().getFirst(), 1);
+        Deck chestDeck = new Deck(decks.stream().filter(d -> d.getAttributeValue("type").equals("CHEST")).toList().getFirst(), -1);
 
         for (int i = 0; i < 40; i++) {
             Element tile = rootTiles.getChildren().get(i);

@@ -70,8 +70,8 @@ public class SpelerStatus extends TabPane {
 
         // optionele GetOutOfJailCards text
         Text getOutOfJailCards = new Text();
-        if (speler.getAmountOfGetOutOfJailCards() > 0) {
-            getOutOfJailCards.setText("Verlaat-overpoort-kaarten: " + speler.getAmountOfGetOutOfJailCards());
+        if (speler.getGetOutOfJailCards() != 0) {
+            getOutOfJailCards.setText("Verlaat-overpoort-kaarten: " + Math.abs(speler.getGetOutOfJailCards()));
             getOutOfJailCards.setFont(Font.font("System", FontWeight.BOLD, fontSize - 3));
         }
 
@@ -95,7 +95,7 @@ public class SpelerStatus extends TabPane {
         tabContent.getChildren().addAll(speler.getLabel(), balance, position);
         if (speler.isInJail())
             tabContent.getChildren().add(inJail);
-        else if (speler.getAmountOfGetOutOfJailCards() > 0)
+        else if (speler.getGetOutOfJailCards() != 0)
             tabContent.getChildren().add(getOutOfJailCards);
         tabContent.getChildren().add(bezittingen);
 

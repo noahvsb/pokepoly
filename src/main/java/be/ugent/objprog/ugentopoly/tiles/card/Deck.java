@@ -7,13 +7,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class Deck extends ArrayList<Element> {
+    private int type; // 1 = chance, -1 = chest
     private int cardCounter;
     private Element getOutOfJailCard;
 
-    public Deck(Element deckElement) {
+    public Deck(Element deckElement, int type) {
         addAll(deckElement.getChildren());
         Collections.shuffle(this);
 
+        this.type = type;
         cardCounter = 0;
         getOutOfJailCard = deckElement.getChildren().getFirst();
     }
@@ -39,5 +41,9 @@ public class Deck extends ArrayList<Element> {
             return true;
         }
         return false;
+    }
+
+    public int getType() {
+        return type;
     }
 }

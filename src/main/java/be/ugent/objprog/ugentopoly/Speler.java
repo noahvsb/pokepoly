@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class Speler {
     // general info
@@ -31,7 +32,7 @@ public class Speler {
 
     private int lastRoll;
 
-    private int amountOfGetOutOfJailCards;
+    private int getOutOfJailCards; // 0 = none, 1 = chance, -1 = chest, 2 = both
     private boolean inJail;
 
     public Speler(String name, ImageView icon, String colour, int iconIndex, int colourIndex) {
@@ -48,7 +49,7 @@ public class Speler {
 
         bezittingen = new ArrayList<>();
 
-        amountOfGetOutOfJailCards = 0;
+        getOutOfJailCards = 0;
         inJail = false;
     }
 
@@ -146,13 +147,19 @@ public class Speler {
     public boolean isInJail() {
         return inJail;
     }
-    public void addGetOutOfJailCard() {
-        amountOfGetOutOfJailCards++;
+    public void addGetOutOfJailCard(int type) {
+        if (getOutOfJailCards == 0)
+            getOutOfJailCards = type;
+        else
+            getOutOfJailCards = 2;
     }
-    public int getAmountOfGetOutOfJailCards() {
-        return amountOfGetOutOfJailCards;
+    public int getGetOutOfJailCards() {
+        return getOutOfJailCards;
     }
-    public void useGetOutOfJailCard() {
-        amountOfGetOutOfJailCards--;
+    public void useGetOutOfJailCard(int type) {
+        if (getOutOfJailCards == 2)
+            getOutOfJailCards = -type;
+        else
+            getOutOfJailCards = 0;
     }
 }

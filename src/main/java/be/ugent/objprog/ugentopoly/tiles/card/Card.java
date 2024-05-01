@@ -28,7 +28,7 @@ public class Card {
     private void executeAction(Speler speler, Speler[] spelers, Deck deck) {
         switch (card.getAttributeValue("type")) {
             case "JAIL" -> {
-                speler.addGetOutOfJailCard();
+                speler.addGetOutOfJailCard(deck.getType());
                 deck.removeGetOutOfJailCard();
             }
             case "MOVE" -> {

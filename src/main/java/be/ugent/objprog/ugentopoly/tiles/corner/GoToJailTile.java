@@ -3,9 +3,13 @@ package be.ugent.objprog.ugentopoly.tiles.corner;
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
+import be.ugent.objprog.ugentopoly.tiles.Tile;
+import be.ugent.objprog.ugentopoly.tiles.card.ChanceTile;
+import be.ugent.objprog.ugentopoly.tiles.card.ChestTile;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class GoToJailTile extends CornerTile {
     private Bord bord;
@@ -35,11 +39,25 @@ public class GoToJailTile extends CornerTile {
         bord.setPos(speler, 10);
 
         // check for GetOutOfJailCards and use one if possible
-        if (speler.getAmountOfGetOutOfJailCards() > 0) {
-            speler.useGetOutOfJailCard();
+        int cardType = speler.getGetOutOfJailCards();
+        if (cardType != 0) {
+            if (cardType == 2)
+                cardType = new Random().nextInt(2) == 0 ? -1 : 1;
+
+            speler.useGetOutOfJailCard(cardType);
             speler.setInJail(false);
+
             // add the card back to the deck
-            // TODO
+            int i = 0;
+            Tile t = bord.getTiles()[i];
+            while ((cardType == 1 && !t.getId().matches("tile.chance")) || (cardType == -1 && !t.getId().matches("tile.chest"))) {
+                i++;
+                t = bord.getTiles()[i];
+            }
+            if (cardType == 1)
+                ((ChanceTile) t).getDeck().addGetOutOfJailCard();
+            else
+                ((ChestTile) t).getDeck().addGetOutOfJailCard();
         }
 
         // show an alert
