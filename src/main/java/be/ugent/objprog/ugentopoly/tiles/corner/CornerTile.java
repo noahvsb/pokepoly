@@ -2,12 +2,9 @@ package be.ugent.objprog.ugentopoly.tiles.corner;
 
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public abstract class CornerTile extends Tile {
 
@@ -24,20 +21,6 @@ public abstract class CornerTile extends Tile {
     }
 
     @Override
-    public ImageView createGraphic(boolean orientation) {
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
-        imageView.setFitWidth(Math.max(width, height) / getImageWidthDivider());
-        imageView.setFitHeight(Math.max(width, height) / getImageHeightDivider());
-
-        // zelfde opmerking als bij StreetTile
-        hbox.setSpacing(10);
-        vbox.setSpacing(10);
-
-        return imageView;
-    }
-
-    @Override
     public void setupInfoTile() {
         Text title = Tile.Texts.title(name);
 
@@ -46,11 +29,19 @@ public abstract class CornerTile extends Tile {
         infoTile.setup(40, this, createGraphic(true), title, description);
     }
 
+    @Override
+    public double getImageSizeDivider() {
+        return 2;
+    }
+
+    @Override
+    public double getHBoxSpacing() {
+        return 10;
+    }
+    @Override
+    public double getVBoxSpacing() {
+        return 10;
+    }
+
     public abstract String getDescription();
-    public double getImageWidthDivider() {
-        return 2.8;
-    }
-    public double getImageHeightDivider() {
-        return 2.0;
-    }
 }

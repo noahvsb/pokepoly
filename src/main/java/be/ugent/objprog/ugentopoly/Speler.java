@@ -11,7 +11,6 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 public class Speler {
     // general info
@@ -22,8 +21,8 @@ public class Speler {
     private int iconIndex;
     private int colourIndex;
 
-    private static final double DEFAULT_ICON_WIDTH = 30;
-    private static final double DEFAULT_ICON_HEIGHT = 40;
+    private static final double DEFAULT_ICON_FIT_WIDTH = 40;
+    private static final double DEFAULT_ICON_FIT_HEIGHT = 40;
 
     // gameplay
     private int pos;
@@ -39,8 +38,9 @@ public class Speler {
         this.name = name;
 
         this.icon = icon;
-        icon.setFitWidth(DEFAULT_ICON_WIDTH);
-        icon.setFitHeight(DEFAULT_ICON_HEIGHT);
+        icon.setFitWidth(DEFAULT_ICON_FIT_WIDTH);
+        icon.setFitHeight(DEFAULT_ICON_FIT_HEIGHT);
+        icon.setPreserveRatio(true);
 
         this.colour = colour;
 
@@ -56,7 +56,8 @@ public class Speler {
     public Label getLabel() {
         ImageView iconCopy = new ImageView(icon.getImage());
         iconCopy.setFitHeight(28);
-        iconCopy.setFitWidth(21);
+        iconCopy.setFitWidth(28);
+        iconCopy.setPreserveRatio(true);
 
         Label label = new Label(name, iconCopy);
         label.setTextFill(Color.web(colour));

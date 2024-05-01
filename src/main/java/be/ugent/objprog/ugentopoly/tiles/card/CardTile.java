@@ -9,8 +9,6 @@ import javafx.scene.text.Text;
 import org.jdom2.Element;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 public abstract class CardTile extends Tile {
     private Bord bord;

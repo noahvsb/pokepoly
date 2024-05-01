@@ -28,10 +28,10 @@ public class StreetTile extends PossessionTile {
         // deze code hoort hier niet echt thuis, maar het is wel doordat deze graphic specifieker is,
         // dat de alignment en spacing lichtjes aangepast moeten worden
         hbox.setAlignment(Pos.CENTER_RIGHT);
-        hbox.setSpacing(35);
+        hbox.setSpacing(getHBoxSpacing());
 
         vbox.setAlignment(Pos.BOTTOM_CENTER);
-        vbox.setSpacing(60);
+        vbox.setSpacing(getVBoxSpacing());
 
         /*
             de stripe is een HBox, met de bedoeling om er zo makkelijk de huisjes op te plaatsen
@@ -55,6 +55,16 @@ public class StreetTile extends PossessionTile {
 
         infoTile.setup(Pos.TOP_CENTER, 30, this, new Stripe(areaColour, 200, 50), title, rent, cost, owner);
     }
+
+    @Override
+    public double getHBoxSpacing() {
+        return 35;
+    }
+    @Override
+    public double getVBoxSpacing() {
+        return 60;
+    }
+
     @Override
     public void checkForRentUpdate(Speler speler) {
         int amount = speler.getAmountOfBezittingenInArea(areaId);

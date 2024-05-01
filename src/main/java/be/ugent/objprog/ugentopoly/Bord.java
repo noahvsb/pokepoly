@@ -65,7 +65,8 @@ public class Bord extends BorderPane {
         // adding logo and infoTile to center
         ImageView logo = new ImageView();
         logo.setImage(new Image(Objects.requireNonNull(getClass().getResource("assets/logo.png")).toExternalForm()));
-        logo.setFitWidth(500); logo.setFitHeight(100);
+        logo.setFitWidth(500); logo.setFitHeight(500);
+        logo.setPreserveRatio(true);
         logo.setRotate(45);
 
         StackPane center = new StackPane(logo, infoTile);

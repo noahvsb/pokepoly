@@ -4,7 +4,6 @@ import org.jdom2.Element;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class Deck extends ArrayList<Element> {
     private int type; // 1 = chance, -1 = chest

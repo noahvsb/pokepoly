@@ -34,6 +34,7 @@ public abstract class PossessionTile extends Tile {
         ImageView imageView = (ImageView) createGraphic(true);
         imageView.setFitWidth(height);
         imageView.setFitHeight(height);
+        imageView.setPreserveRatio(true);
 
         return imageView;
     }

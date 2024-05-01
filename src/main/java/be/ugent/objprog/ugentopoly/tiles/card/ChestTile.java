@@ -3,7 +3,6 @@ package be.ugent.objprog.ugentopoly.tiles.card;
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
-import org.jdom2.Element;
 
 import java.io.IOException;
 

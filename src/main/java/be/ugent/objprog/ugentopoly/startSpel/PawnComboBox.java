@@ -32,8 +32,9 @@ public class PawnComboBox extends ComboBox<String> {
             }
             else {
                 ImageView graphic = CONVERTER.fromString(item).icon();
-                graphic.setFitWidth(16.8);
+                graphic.setFitWidth(20);
                 graphic.setFitHeight(20);
+                graphic.setPreserveRatio(true);
 
                 setGraphic(graphic);
                 setText(item);

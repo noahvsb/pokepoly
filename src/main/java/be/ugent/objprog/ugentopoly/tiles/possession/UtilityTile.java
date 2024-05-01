@@ -4,13 +4,11 @@ import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class UtilityTile extends PossessionTile {
     private int util;
@@ -27,30 +25,8 @@ public class UtilityTile extends PossessionTile {
     }
 
     @Override
-    public ImageView createGraphic(boolean orientation) {
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
-        imageView.setFitWidth(Math.max(width, height) / 2);
-        imageView.setFitHeight(Math.max(width, height) / (util == 1 ? 6 : 4));
-
-        // zelfde opmerking als bij StreetTile
-        hbox.setSpacing(0);
-        vbox.setSpacing(25);
-
-        return imageView;
-    }
-    @Override
-    public ImageView createGraphic(double height) {
-        ImageView imageView = createGraphic(true);
-        imageView.setFitWidth(height);
-        imageView.setFitHeight(height / (util == 1 ? 3 : 2));
-
-        return imageView;
-    }
-
-    @Override
     public void setupInfoTile() {
-        ImageView imageView = createGraphic(100);
+        ImageView imageView = (ImageView) createGraphic(100);
 
         Text huur = new Text("Huur:   worp x €" + currentFactor);
         huur.setFont(new Font(INFO_TILE_FONT_SIZE));
@@ -59,6 +35,20 @@ public class UtilityTile extends PossessionTile {
         Text owner = Tile.Texts.owner(this.owner);
 
         infoTile.setup(20, this, imageView, huur, cost, owner);
+    }
+
+    @Override
+    public double getImageSizeDivider() {
+        return 2;
+    }
+
+    @Override
+    public double getHBoxSpacing() {
+        return 0;
+    }
+    @Override
+    public double getVBoxSpacing() {
+        return 42;
     }
 
     @Override

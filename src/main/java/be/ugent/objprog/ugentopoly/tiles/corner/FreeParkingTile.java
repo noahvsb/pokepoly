@@ -22,10 +22,6 @@ public class FreeParkingTile extends CornerTile {
     public String getDescription() {
         return "Ontvang alles (€" + bonuspot + ") uit de bonuspot";
     }
-    @Override
-    public double getImageWidthDivider() {
-        return 2.0;
-    }
 
     @Override
     public Alert.AlertType getAlertType(Speler speler) {

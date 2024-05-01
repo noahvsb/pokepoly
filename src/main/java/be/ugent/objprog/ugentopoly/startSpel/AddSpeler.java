@@ -2,7 +2,9 @@ package be.ugent.objprog.ugentopoly.startSpel;
 
 import be.ugent.objprog.ugentopoly.Speler;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -59,7 +61,7 @@ public class AddSpeler extends VBox {
         pawnComboBox = new PawnComboBox(usedIconIndexes);
         pawnComboBox.setOnAction(e -> pawnComboBoxUsed());
 
-        pawnBox = new HBox(20, pawn, pawnComboBox, new Circle(8.4, Color.web("white")));
+        pawnBox = new HBox(20, pawn, pawnComboBox, new Circle(8, Color.web("white")));
         pawnBox.setAlignment(Pos.CENTER);
 
         // colour
@@ -100,7 +102,8 @@ public class AddSpeler extends VBox {
         icon = CONVERTER.fromString(pawnComboBox.getSelectionModel().getSelectedItem()).icon();
 
         ImageView pawnImage = new ImageView(icon.getImage());
-        pawnImage.setFitWidth(16.8); pawnImage.setFitHeight(20);
+        pawnImage.setFitWidth(20); pawnImage.setFitHeight(20);
+        pawnImage.setPreserveRatio(true);
 
         pawnBox.getChildren().set(2, pawnImage);
 

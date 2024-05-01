@@ -91,8 +91,8 @@ public abstract class Tile {
         name = props.getProperty(id);
 
         // boxes
-        hbox = new HBox(12, createName());
-        vbox = new VBox(12, createName());
+        hbox = new HBox(createName());
+        vbox = new VBox(createName());
         playerBox = new HBox(-20); // negative spacing, because there is not enough space to display all 4 icons on one tile
 
         hbox.setMaxSize(width, height); hbox.setMinSize(width, height);
@@ -130,8 +130,12 @@ public abstract class Tile {
     public Node createGraphic(boolean orientation) {
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource(getImagePath())).toExternalForm()));
-        imageView.setFitWidth(Math.max(width, height) / 3.0);
-        imageView.setFitHeight(Math.max(width, height) / 3.0);
+        imageView.setFitWidth(Math.max(width, height) / getImageSizeDivider());
+        imageView.setFitHeight(Math.max(width, height) / getImageSizeDivider());
+        imageView.setPreserveRatio(true);
+
+        hbox.setSpacing(getHBoxSpacing());
+        vbox.setSpacing(getVBoxSpacing());
 
         return imageView;
     }
@@ -217,6 +221,16 @@ public abstract class Tile {
         return normalStyle;
     }
 
+    public double getImageSizeDivider() {
+        return 3;
+    }
+
+    public double getHBoxSpacing() {
+        return 12;
+    }
+    public double getVBoxSpacing() {
+        return 12;
+    }
     public StackPane getTileWithHBox() {
         return new StackPane(hbox, playerBox);
     }
