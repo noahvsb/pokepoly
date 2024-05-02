@@ -12,18 +12,18 @@ public class Deck extends ArrayList<Element> {
 
     public Deck(Element deckElement, int type) {
         addAll(deckElement.getChildren());
-        Collections.shuffle(this);
 
         this.type = type;
-        cardCounter = 0;
+        cardCounter = -1;
         getOutOfJailCard = deckElement.getChildren().getFirst();
+        Collections.shuffle(this);
     }
 
     public Element getTopCard() {
         cardCounter++;
         if (cardCounter == size())
-            cardCounter = 1;
-        return get(cardCounter - 1);
+            cardCounter = 0;
+        return get(cardCounter);
     }
 
     public boolean removeGetOutOfJailCard() {
@@ -35,8 +35,8 @@ public class Deck extends ArrayList<Element> {
     }
 
     public boolean addGetOutOfJailCard() {
-        if (!getFirst().equals(getOutOfJailCard)) {
-            addFirst(getOutOfJailCard);
+        if (!contains(getOutOfJailCard)) {
+            add(getOutOfJailCard);
             return true;
         }
         return false;
