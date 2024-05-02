@@ -168,11 +168,10 @@ public class Bord extends BorderPane {
                 rightTiles.getChildren().add(t.getTileWithHBox());
             // bottom
             else {
-                VBox v = t.getVBox();
-                if (v.getPrefWidth() != 130) {
+                if (i != 30) {
+                    VBox v = t.getVBox();
                     v.setRotate(180);
-                    v.getChildren().getFirst().setRotate(180);
-                    v.getChildren().getLast().setRotate(180);
+                    v.getChildren().forEach(child -> child.setRotate(180));
                 }
                 bottomTiles.getChildren().addFirst(t.getTileWithVBox());
             }

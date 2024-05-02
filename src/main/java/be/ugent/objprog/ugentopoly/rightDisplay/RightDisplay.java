@@ -64,7 +64,6 @@ public class RightDisplay extends VBox {
             dicePanel.roll(r -> rollHandler.handleRoll(r));
         });
 
-
         dice = new VBox();
         dice.getChildren().addAll(rolButton, dicePanel);
         dice.setAlignment(Pos.CENTER);

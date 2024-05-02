@@ -2,6 +2,7 @@ package be.ugent.objprog.ugentopoly.rightDisplay;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import javafx.beans.property.IntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
@@ -38,6 +39,9 @@ public class RollHandler {
 
     public void setSpelers(Speler[] spelers) {
         this.spelers = spelers;
+        for (Speler s : spelers)
+            if (s != null)
+                s.setRollHandler(this);
 
         spelersAmount = (int) Arrays.stream(spelers).filter(Objects::nonNull).count();
     }
@@ -71,10 +75,6 @@ public class RollHandler {
             }
             bord.getTiles()[pos].handleTileAction(spelers[beurt]);
             updateSpelerStatus();
-
-            // check for game over
-            if (spelers[beurt].getBalance() < 0)
-                gameOver();
 
             // no double roll or fresh out of jail
             if (!allSameIntegers(result) || freshOutOfJail) {
@@ -123,16 +123,16 @@ public class RollHandler {
         spelerStatus.updateTab(i, spelers[i]);
     }
 
-    private void gameOver() {
+    public void gameOver() {
         // zoek winnaar
-        Speler winnaar = spelers[beurt];
+        Speler winnaar = spelers[0];
         for (Speler s : spelers)
             if (s != null && winnaar.getBalance() < s.getBalance())
                 winnaar = s;
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("GAME OVER");
-        alert.setHeaderText("GAME OVER\nwinnaar: " + winnaar.getName());
+        alert.setHeaderText("GAME OVER\nwinnaar: " + winnaar.getName() + " met €" + winnaar.getBalance());
 
         alert.showAndWait().ifPresent(response -> System.exit(0));
     }

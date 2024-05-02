@@ -1,5 +1,6 @@
 package be.ugent.objprog.ugentopoly;
 
+import be.ugent.objprog.ugentopoly.rightDisplay.RollHandler;
 import be.ugent.objprog.ugentopoly.tiles.possession.PossessionTile;
 import be.ugent.objprog.ugentopoly.tiles.possession.StreetTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
@@ -34,6 +35,8 @@ public class Speler {
     private int getOutOfJailCards; // 0 = none, 1 = chance, -1 = chest, 2 = both
     private boolean inJail;
 
+    private RollHandler rollHandler;
+
     public Speler(String name, ImageView icon, String colour, int iconIndex, int colourIndex) {
         this.name = name;
 
@@ -51,6 +54,10 @@ public class Speler {
 
         getOutOfJailCards = 0;
         inJail = false;
+    }
+
+    public void setRollHandler(RollHandler rollHandler) {
+        this.rollHandler = rollHandler;
     }
 
     public Label getLabel() {
@@ -133,6 +140,9 @@ public class Speler {
     }
     public void updateBalance(int amount) {
         balance += amount;
+
+        if (balance < 0)
+            rollHandler.gameOver();
     }
 
     public void setLastRoll(int lastRoll) {
