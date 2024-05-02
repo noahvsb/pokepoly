@@ -5,6 +5,7 @@ import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -185,7 +186,14 @@ public abstract class Tile {
 
     public void handleTileAction(Speler speler) {
         Alert alert = new Alert(getAlertType(speler));
-        alert.setTitle(alert.getAlertType().equals(Alert.AlertType.CONFIRMATION) ? "Aankoop" : "Melding");
+
+        if (alert.getAlertType().equals(Alert.AlertType.CONFIRMATION)) {
+            alert.setTitle("Aankoop");
+            Button cancelButton = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
+            cancelButton.setText("Liever niet");
+        } else
+            alert.setTitle("Melding");
+
         alert.setHeaderText(getAlertDescription(speler));
 
         // show infoTile
