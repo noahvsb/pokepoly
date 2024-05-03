@@ -1,20 +1,21 @@
 # ugentopoly
-monopoly but in UGent style!
+monopoly, maar in UGent style
+
+project voor objprog
 
 # pros
-- good time guaranteed
+- plezier gegarandeerd
 
 # cons
-- only in Dutch
-- online not supported
-- no houses/hotels
+- online niet ondersteund
+- geen huizen/hotels
 
 
 # windows ~~and mac~~
-- open the `ugentopoly_win`~~/mac~~ folder
-- run the `ugentopoly_exe.cmd`~~/sh~~ by double-clicking
+- open de `ugentopoly_win`~~/mac~~ folder
+- voer de `ugentopoly_exe.cmd`~~/sh~~ file uit met dubbelklik
 
-(mac doesn't work)
+(mac werkt niet voor de moment)
 
 # linux
 you are a linux user, so you can probably pull your plan on yourself
