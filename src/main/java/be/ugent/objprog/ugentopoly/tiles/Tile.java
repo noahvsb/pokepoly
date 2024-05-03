@@ -82,7 +82,6 @@ public abstract class Tile {
 
     protected Logs logs;
     protected Speler[] spelers;
-    protected String logText;
 
     public void createTile() throws IOException {
         Properties props = new Properties();
@@ -202,19 +201,14 @@ public abstract class Tile {
 
         alert.showAndWait().ifPresent(response -> {
             tilePressed();
-            if (response == ButtonType.OK) {
+            if (response == ButtonType.OK)
                 responseWasOk(speler);
-                logs.add(logText);
-            }
         });
     }
 
     public abstract Alert.AlertType getAlertType(Speler speler);
     public abstract String getAlertDescription(Speler speler);
     public abstract void responseWasOk(Speler speler);
-    public String getLogText() {
-        return logText;
-    }
 
     public String getId() {
         return id;

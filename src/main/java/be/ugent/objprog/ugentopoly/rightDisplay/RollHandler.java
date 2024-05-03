@@ -76,15 +76,8 @@ public class RollHandler {
             bord.getTiles()[pos].handleTileAction(spelers[beurt]);
             updateSpelerStatus();
 
-            // no double roll or fresh out of jail
-            if (!allSameIntegers(result) || freshOutOfJail) {
-                amountOfDoubleRollsAfterEachOther = 0;
-                beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
-
-                parent.setSpelerBeurtBox(spelers[beurt].getLabel(), false);
-            }
-            // double roll
-            else {
+            // double roll and not fresh out of jail
+            if (allSameIntegers(result) && !freshOutOfJail) {
                 amountOfDoubleRollsAfterEachOther++;
                 if (amountOfDoubleRollsAfterEachOther >= 3) {
                     logs.add(spelers[beurt].getShortendName(10) + " heeft 3 keer na elkaar dubbel gegooid.");
@@ -102,6 +95,14 @@ public class RollHandler {
             }
         } else
             bord.getTiles()[10].handleTileAction(spelers[beurt]);
+
+        // update beurt if no double roll
+        if (!allSameIntegers(result) || freshOutOfJail) {
+            amountOfDoubleRollsAfterEachOther = 0;
+            beurt = beurt == spelersAmount - 1 ? 0 : beurt + 1;
+
+            parent.setSpelerBeurtBox(spelers[beurt].getLabel(), false);
+        }
 
         // enable rolButton
         rolButton.setDisable(false);

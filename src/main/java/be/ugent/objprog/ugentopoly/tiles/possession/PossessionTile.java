@@ -81,7 +81,7 @@ public abstract class PossessionTile extends Tile {
         checkForRentUpdate(speler);
 
         // logs
-        logText = speler.getName() + " heeft " + name + " gekocht voor €" + cost + ".";
+        logs.add(speler.getName() + " heeft " + name + " gekocht voor €" + cost + ".");
     }
     public abstract void checkForRentUpdate(Speler speler);
 
@@ -89,7 +89,7 @@ public abstract class PossessionTile extends Tile {
         owner.updateBalance(currentRent);
         speler.updateBalance(-currentRent);
 
-        logText = speler.getShortendName(10) + " moest €" + currentRent + " betalen aan " +
-                owner.getShortendName(10) + " voor het huren van " + name + ".";
+        logs.add(speler.getShortendName(10) + " moest €" + currentRent + " betalen aan " +
+                owner.getShortendName(10) + " voor het huren van " + name + ".");
     }
 }

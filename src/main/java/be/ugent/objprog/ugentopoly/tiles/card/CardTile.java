@@ -2,6 +2,7 @@ package be.ugent.objprog.ugentopoly.tiles.card;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
+import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
 import be.ugent.objprog.ugentopoly.tiles.InfoTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;
 import javafx.scene.control.Alert;
@@ -41,12 +42,12 @@ public abstract class CardTile extends Tile {
     }
     @Override
     public void responseWasOk(Speler speler) {
+        logs.add(speler.getShortendName(10) + " heeft een " + (imageName.equals("chance") ? "Kans-" : "Algemeen Fonds-") + "kaart getrokken.");
+
         Element c = deck.getTopCard();
-        Card card = new Card(c, bord);
+        Card card = new Card(c, bord, logs);
 
         card.handleCardAction(speler, spelers, deck);
-
-        logText = speler.getShortendName(10) + " heeft een " + (imageName.equals("chance") ? "Kans-" : "Algemeen Fonds-") + "kaart getrokken.";
     }
 
     public Deck getDeck() {

@@ -76,7 +76,7 @@ public class UtilityTile extends PossessionTile {
         speler.updateBalance(-(speler.getLastRoll() * currentFactor));
         owner.updateBalance(speler.getLastRoll() * currentFactor);
 
-        logText = speler.getShortendName(10) + " moest €" + (speler.getLastRoll() * currentFactor) + " betalen aan " +
-                owner.getShortendName(10) + " voor het huren van " + name + ".";
+        logs.add(speler.getShortendName(10) + " moest €" + (speler.getLastRoll() * currentFactor) + " betalen aan " +
+                owner.getShortendName(10) + " voor het huren van " + name + ".");
     }
 }

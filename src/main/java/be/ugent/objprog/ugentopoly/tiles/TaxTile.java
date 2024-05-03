@@ -58,6 +58,6 @@ public class TaxTile extends Tile {
         speler.updateBalance(-cost);
         freeParkingTile.addToCurrentPot(cost);
 
-        logText = speler.getShortendName(10) + " moest €" + cost + " TAX betalen.";
+        logs.add(speler.getShortendName(10) + " moest €" + cost + " TAX betalen.");
     }
 }

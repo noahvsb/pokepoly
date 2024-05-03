@@ -34,7 +34,7 @@ public class FreeParkingTile extends CornerTile {
     @Override
     public void responseWasOk(Speler speler) {
         speler.updateBalance(bonuspot);
-        logText = speler.getShortendName(10) + " ontving €" + bonuspot + " uit de bonuspot.";
+        logs.add(speler.getShortendName(10) + " ontving €" + bonuspot + " uit de bonuspot.");
         bonuspot = 0;
     }
 }

@@ -68,8 +68,8 @@ public class GoToJailTile extends CornerTile {
                 : "U heeft een verlaat-overpoort-kaart gebruikt, geen overpoort deze keer");
 
         // logs
-        logText = speler.getShortendName(10) + (speler.isInJail()
+        logs.add(speler.getShortendName(10) + (speler.isInJail()
                 ? " is in de overpoort beland."
-                : " heeft een verlaat-overpoort-kaart gebruikt om aan de overpoort te ontsnappen.");
+                : " heeft een verlaat-overpoort-kaart gebruikt om aan de overpoort te ontsnappen."));
     }
 }

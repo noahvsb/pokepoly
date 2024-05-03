@@ -30,6 +30,6 @@ public class StartTile extends CornerTile {
     @Override
     public void responseWasOk(Speler speler) {
         speler.updateBalance(start);
-        logText = speler.getShortendName(10) + " passeerde langs start en ontving €" + start;
+        logs.add(speler.getShortendName(10) + " passeerde langs start en ontving €" + start);
     }
 }
