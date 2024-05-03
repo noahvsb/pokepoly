@@ -1,0 +1,1 @@
+java -p libraries --add-modules ALL-MODULE-PATH -cp ugentopoly.jar be.ugent.objprog.ugentopoly.Ugentopoly
