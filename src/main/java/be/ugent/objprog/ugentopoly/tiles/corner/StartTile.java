@@ -29,7 +29,12 @@ public class StartTile extends CornerTile {
     }
     @Override
     public void responseWasOk(Speler speler) {
-        speler.updateBalance(start);
-        logs.add(speler.getShortendName(10) + " passeerde langs start en ontving €" + start);
+        if (speler.getPos() != 0) {
+            speler.updateBalance(start);
+            logs.add(speler.getShortendName(10) + " passeerde langs start en ontving €" + start);
+        } else {
+            speler.updateBalance(start * 2);
+            logs.add(speler.getShortendName(10) + " lande op start en ontving het dubbele bedrag: €" + (start * 2));
+        }
     }
 }
