@@ -1,7 +1,7 @@
 package be.ugent.objprog.ugentopoly;
 
-import be.ugent.objprog.ugentopoly.rightDisplay.RightDisplay;
-import be.ugent.objprog.ugentopoly.startSpel.StartSpel;
+import be.ugent.objprog.ugentopoly.rightdisplay.RightDisplay;
+import be.ugent.objprog.ugentopoly.startspel.StartSpel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;

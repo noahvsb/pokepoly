@@ -1,7 +1,7 @@
-package be.ugent.objprog.ugentopoly.startSpel;
+package be.ugent.objprog.ugentopoly.startspel;
 
 import be.ugent.objprog.ugentopoly.Bord;
-import be.ugent.objprog.ugentopoly.rightDisplay.RightDisplay;
+import be.ugent.objprog.ugentopoly.rightdisplay.RightDisplay;
 import be.ugent.objprog.ugentopoly.Speler;
 import be.ugent.objprog.ugentopoly.StageController;
 import javafx.geometry.Pos;

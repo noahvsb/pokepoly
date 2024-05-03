@@ -1,6 +1,6 @@
 package be.ugent.objprog.ugentopoly;
 
-import be.ugent.objprog.ugentopoly.rightDisplay.RollHandler;
+import be.ugent.objprog.ugentopoly.rightdisplay.RollHandler;
 import be.ugent.objprog.ugentopoly.tiles.possession.PossessionTile;
 import be.ugent.objprog.ugentopoly.tiles.possession.StreetTile;
 import be.ugent.objprog.ugentopoly.tiles.Tile;

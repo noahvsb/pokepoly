@@ -1,8 +1,7 @@
-package be.ugent.objprog.ugentopoly.rightDisplay;
+package be.ugent.objprog.ugentopoly.rightdisplay;
 
 import be.ugent.objprog.ugentopoly.Bord;
 import be.ugent.objprog.ugentopoly.Speler;
-import javafx.beans.property.IntegerProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 

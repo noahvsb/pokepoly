@@ -1,4 +1,4 @@
-package be.ugent.objprog.ugentopoly.rightDisplay;
+package be.ugent.objprog.ugentopoly.rightdisplay;
 
 import be.ugent.objprog.dice.DicePanel;
 import be.ugent.objprog.ugentopoly.Bord;

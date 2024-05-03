@@ -1,7 +1,7 @@
 package be.ugent.objprog.ugentopoly.tiles;
 
 import be.ugent.objprog.ugentopoly.Speler;
-import be.ugent.objprog.ugentopoly.rightDisplay.Logs;
+import be.ugent.objprog.ugentopoly.rightdisplay.Logs;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;

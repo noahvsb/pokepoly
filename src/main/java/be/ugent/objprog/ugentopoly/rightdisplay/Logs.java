@@ -1,4 +1,4 @@
-package be.ugent.objprog.ugentopoly.rightDisplay;
+package be.ugent.objprog.ugentopoly.rightdisplay;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;

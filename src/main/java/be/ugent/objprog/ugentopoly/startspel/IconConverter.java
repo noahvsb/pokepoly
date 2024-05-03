@@ -1,4 +1,4 @@
-package be.ugent.objprog.ugentopoly.startSpel;
+package be.ugent.objprog.ugentopoly.startspel;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

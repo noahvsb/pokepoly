@@ -1,4 +1,4 @@
-package be.ugent.objprog.ugentopoly.startSpel;
+package be.ugent.objprog.ugentopoly.startspel;
 
 import be.ugent.objprog.ugentopoly.Speler;
 import javafx.geometry.Pos;
