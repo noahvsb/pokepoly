@@ -19,7 +19,7 @@ public class UtilityTile extends PossessionTile {
         this.imageName = "utility" + util;
 
         this.util = util;
-        currentFactor = 4;
+        currentFactor = 10;
 
         createTile();
     }
@@ -69,7 +69,7 @@ public class UtilityTile extends PossessionTile {
                     ((UtilityTile) t).updateCurrentFactor();
     }
     private void updateCurrentFactor() {
-        currentFactor = 10;
+        currentFactor = 25;
     }
 
     public void payRent(Speler speler) {

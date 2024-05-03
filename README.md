@@ -1,6 +1,15 @@
 # ugentopoly
-ugentopoly - project objprog
+monopoly but in UGent style!
+
+# pros
+- good time guaranteed
+
+# cons
+- only in Dutch
+- online not supported
+- no houses/hotels
 
 
-# windows
-- in the `ugentopoly_nvs` folder there's a file called `ugentopoly.cmd`, double click it to run the game
+# windows and mac
+- open the `ugentopoly_win/mac` folder
+- run the `ugentopoly_exe.cmd/sh` by double-clicking
