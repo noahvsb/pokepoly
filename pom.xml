@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>be.ugent.objprog</groupId>
-    <artifactId>ugentopoly</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>ugentopoly</name>
+    <artifactId>pokepoly</artifactId>
+    <version>1.1</version>
+    <name>pokepoly</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -61,7 +61,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>be.ugent.objprog.ugentopoly/be.ugent.objprog.ugentopoly.Ugentopoly
+                            <mainClass>be.ugent.objprog.pokepoly.Pokepoly
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
