@@ -1,0 +1,1 @@
+java -p libraries --add-modules ALL-MODULE-PATH -cp pokepoly.jar be.ugent.objprog.pokepoly.Pokepoly

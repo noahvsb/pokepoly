@@ -7,3 +7,7 @@ target/
 
 mvnw
 mvnw.cmd
+
+out/
+
+poképoly.zip
