@@ -16,8 +16,8 @@ We were tasked to make ugentopoly, a monopoly clone, and we had to make sure tha
 #### board
 ![start board](/screenshots/start_board.png)
 
-![buy property](/screenshots/buy_property.png)
-
 ![chance card](/screenshots/chance_card.png)
+
+![buy property](/screenshots/buy_property.png)
 
 ![mid-game board](/screenshots/midgame_board.png)
